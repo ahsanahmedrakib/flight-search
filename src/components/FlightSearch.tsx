@@ -12,7 +12,7 @@ import {
   Users,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
+import { useRouter, usePathname } from "next/navigation";
 import { useFlight } from "@/store/flightStore";
 
 // Mock Airport Data
@@ -29,6 +29,9 @@ const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frida
 
 export default function FlightSearch() {
   const { searchCriteria, triggerSearch } = useFlight();
+  const router = useRouter();
+  const pathname = usePathname();
+  const isResultsPage = pathname === "/flights";
 
   // State management for tabs & layouts
   const [activeTab, setActiveTab] = useState("flight");
@@ -141,10 +144,11 @@ export default function FlightSearch() {
       passengers: passengerCount,
       cabinClass,
     });
+    router.push("/flights");
   };
 
   return (
-    <div className="relative min-h-150 w-full bg-slate-900 font-sans antialiased overflow-hidden">
+    <div className={`relative w-full bg-slate-900 font-sans antialiased overflow-hidden ${isResultsPage ? "min-h-0" : "min-h-150"}`}>
       {/* Hero Background Gradient */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none bg-gradient-to-br from-slate-900 via-red-950/40 to-slate-800">
         <div className="absolute inset-0 opacity-20" style={{backgroundImage: "radial-gradient(circle at 20% 50%, rgba(220,38,38,0.4) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(239,68,68,0.3) 0%, transparent 50%)"}} />
@@ -152,16 +156,18 @@ export default function FlightSearch() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-16 pb-24 flex flex-col items-center">
-        {/* Hero Typography */}
-        <div className="text-center text-white mb-8 space-y-2">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-md">
-            Create A New Story With Every Trip
-          </h1>
-          <p className="text-sm md:text-lg font-medium opacity-90 tracking-wide drop-shadow-sm">
-            Flight, Holiday, Visa & eSIM at your fingertips
-          </p>
-        </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-10 pb-16 flex flex-col items-center">
+        {/* Hero Typography — hidden on results page */}
+        {!isResultsPage && (
+          <div className="text-center text-white mb-8 space-y-2">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-md">
+              Create A New Story With Every Trip
+            </h1>
+            <p className="text-sm md:text-lg font-medium opacity-90 tracking-wide drop-shadow-sm">
+              Flight, Holiday, Visa &amp; eSIM at your fingertips
+            </p>
+          </div>
+        )}
 
         {/* Navigation Tabs */}
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl md:rounded-full shadow-xl flex flex-wrap md:flex-nowrap p-1.5 justify-center gap-1 -mb-6 z-20 border border-gray-100 max-w-full">
@@ -465,14 +471,14 @@ export default function FlightSearch() {
             </div>
           </div>
 
-          {/* Row 3: Action Execution Execution Button Trigger */}
+          {/* Row 3: Action Button */}
           <div className="flex justify-center mt-6">
             <button
               onClick={() => handleSearchFlight()}
               type="button"
               className="bg-red-600 cursor-pointer hover:bg-red-700 text-white font-semibold px-10 py-3.5 rounded-xl shadow-lg shadow-red-600/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
             >
-              <span>Search Flights</span>
+              <span>{isResultsPage ? "Modify Search" : "Search Flights"}</span>
               <Search className="w-5 h-5" />
             </button>
           </div>

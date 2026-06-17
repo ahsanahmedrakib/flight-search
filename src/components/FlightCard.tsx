@@ -1,14 +1,35 @@
 "use client";
 
-import { AlertCircle, ChevronDown, Plane, ThumbsUp } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useFlight } from "@/store/flightStore";
 import type { Flight } from "@/types/flight";
+import { AlertCircle, ChevronDown, Plane, ThumbsUp } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const WEEKDAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 interface FlightCardProps {
   flight: Flight;
@@ -42,7 +63,6 @@ export default function FlightCard({ flight }: FlightCardProps) {
     const mins = totalMinutes % 60;
     return `${hours}h ${mins}m`;
   };
-
 
   return (
     <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden font-sans">
@@ -182,7 +202,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
         <div className="w-full md:w-64 bg-gray-50/40 p-5 flex flex-col justify-center items-stretch md:items-end border-t border-gray-100 md:border-t-0">
           {/* Promo code badge lookup conditional context */}
           <span className="inline-block bg-orange-50 text-orange-600 text-[10px] font-black tracking-wider uppercase px-2 py-0.5 rounded-md border border-orange-100 self-start md:self-auto mb-2 shadow-xs">
-            🎟️ FTDOM26
+            🎟️ DOM26
           </span>
 
           {/* Dynamic Price Render */}
@@ -194,7 +214,8 @@ export default function FlightCard({ flight }: FlightCardProps) {
               {(flight.price.total * passengers).toLocaleString()}
             </span>
             <p className="text-[10px] text-gray-400 font-medium mt-0.5">
-              ৳ {flight.price.total.toLocaleString()} × {passengers} {passengers === 1 ? "traveller" : "travellers"}
+              ৳ {flight.price.total.toLocaleString()} × {passengers}{" "}
+              {passengers === 1 ? "traveller" : "travellers"}
             </p>
             {/* Strikeout Base Price display if markdown metrics available */}
             <p className="text-xs text-gray-400 font-medium line-through mt-0.5">
@@ -205,9 +226,6 @@ export default function FlightCard({ flight }: FlightCardProps) {
 
           {/* Call To Actions */}
           <div className="grid grid-cols-2 md:flex md:flex-col gap-2 w-full">
-            <button className="border border-red-500 text-red-600 font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors order-2 md:order-1">
-              View Prices
-            </button>
             <button
               onClick={() => {
                 setSelectedFlight(flight);

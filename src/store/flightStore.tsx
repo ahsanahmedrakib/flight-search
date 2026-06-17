@@ -14,10 +14,11 @@ export interface SearchCriteria {
 
 export interface FiltersState {
   selectedTime: string | null;
-  baggage20kg: boolean;
   partiallyRefundable: boolean;
   layoverTime: number;
   selectedAircraft: string[];
+  selectedAirlines: string[];
+  maxPrice: number;
 }
 
 interface FlightStore {
@@ -60,10 +61,11 @@ const defaultCriteria: SearchCriteria = {
 
 const defaultFilters: FiltersState = {
   selectedTime: null,
-  baggage20kg: false,
   partiallyRefundable: false,
   layoverTime: 15,
   selectedAircraft: [],
+  selectedAirlines: [],
+  maxPrice: 0,
 };
 
 export const useFlightStore = create<FlightStore>((set, get) => ({
@@ -96,14 +98,12 @@ export const useFlightStore = create<FlightStore>((set, get) => ({
       });
     }
 
-    if (filters.baggage20kg) {
-      result = result.filter((f) =>
-        f.baggage.checked.toLowerCase().includes("20kg"),
-      );
-    }
-
     if (filters.partiallyRefundable) {
       result = result.filter((f) => f.refundable === true);
+    }
+
+    if (filters.selectedAirlines.length > 0) {
+      result = result.filter((f) => filters.selectedAirlines.includes(f.airline.code));
     }
 
     if (filters.layoverTime < 15) {
@@ -118,22 +118,14 @@ export const useFlightStore = create<FlightStore>((set, get) => ({
 
     if (filters.selectedAircraft.length > 0) {
       result = result.filter((f) => {
-        const model = f.aircraft.model.toLowerCase();
-        return filters.selectedAircraft.some((code) => {
-          const c = code.toLowerCase();
-          if (c === "atr72")
-            return model.includes("72-") || model.includes("atr");
-          if (c === "atr72600") return model.includes("72-600");
-          if (c === "atr725") return model.includes("72-500");
-          if (c === "dh8")
-            return (
-              model.includes("dh") ||
-              model.includes("q400") ||
-              model.includes("dash")
-            );
-          return false;
-        });
+        const code = f.aircraft.model.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+        return filters.selectedAircraft.includes(code);
       });
+    }
+
+    if (filters.maxPrice > 0) {
+      const pax = get().searchCriteria.passengers;
+      result = result.filter((f) => f.price.total * pax <= filters.maxPrice);
     }
 
     result.sort((a, b) => {
