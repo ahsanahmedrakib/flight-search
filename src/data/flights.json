@@ -1,0 +1,1886 @@
+[
+  {
+    "id": "FL001",
+    "airline": {
+      "code": "BG",
+      "name": "Biman Bangladesh Airlines",
+      "logo": "/airlines/biman.png",
+      "rating": 4.4
+    },
+    "flightNumber": "BG437",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T06:00:00",
+    "arrival": "2026-07-15T07:10:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5000,
+      "taxes": 600,
+      "serviceFee": 200,
+      "discount": 0,
+      "total": 5800,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 4,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": true,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 92,
+    "carbonEmissionKg": 82,
+    "rewardPointsEarned": 58,
+    "lastBookedMinutesAgo": 6,
+    "tags": ["Best Value", "Refundable"]
+  },
+  {
+    "id": "FL002",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS151",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T07:00:00",
+    "arrival": "2026-07-15T08:15:00",
+    "durationMinutes": 75,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5400,
+      "taxes": 700,
+      "serviceFee": 250,
+      "discount": 150,
+      "total": 6200,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 2,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 90,
+    "carbonEmissionKg": 84,
+    "rewardPointsEarned": 62,
+    "lastBookedMinutesAgo": 2,
+    "tags": ["Only 2 Seats Left"]
+  },
+  {
+    "id": "FL003",
+    "airline": {
+      "code": "VQ",
+      "name": "Novoair",
+      "logo": "/airlines/novoair.png",
+      "rating": 4.2
+    },
+    "flightNumber": "VQ923",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T08:10:00",
+    "arrival": "2026-07-15T09:25:00",
+    "durationMinutes": 75,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 4900,
+      "taxes": 500,
+      "serviceFee": 200,
+      "discount": 0,
+      "total": 5600,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 12,
+    "refundable": false,
+    "changeAllowed": false,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 88,
+    "carbonEmissionKg": 78,
+    "rewardPointsEarned": 56,
+    "lastBookedMinutesAgo": 18,
+    "tags": ["Cheapest"]
+  },
+
+  {
+    "id": "FL004",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A201",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T09:00:00",
+    "arrival": "2026-07-15T10:20:00",
+    "durationMinutes": 80,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5200,
+      "taxes": 650,
+      "serviceFee": 200,
+      "discount": 100,
+      "total": 5950,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 8,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 91,
+    "carbonEmissionKg": 80,
+    "rewardPointsEarned": 60,
+    "lastBookedMinutesAgo": 12,
+    "tags": ["Popular"]
+  },
+
+  {
+    "id": "FL005",
+    "airline": {
+      "code": "BG",
+      "name": "Biman Bangladesh Airlines",
+      "logo": "/airlines/biman.png",
+      "rating": 4.4
+    },
+    "flightNumber": "BG441",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T10:30:00",
+    "arrival": "2026-07-15T11:40:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6200,
+      "taxes": 700,
+      "serviceFee": 250,
+      "discount": 0,
+      "total": 7150,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 5,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": true,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": true,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 94,
+    "carbonEmissionKg": 85,
+    "rewardPointsEarned": 72,
+    "lastBookedMinutesAgo": 9,
+    "tags": ["Premium"]
+  },
+
+  {
+    "id": "FL006",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS155",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T11:15:00",
+    "arrival": "2026-07-15T12:35:00",
+    "durationMinutes": 80,
+    "stops": 1,
+    "stopDetails": [
+      {
+        "airport": "Chittagong Airport",
+        "durationMinutes": 20
+      }
+    ],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 4700,
+      "taxes": 500,
+      "serviceFee": 200,
+      "discount": 100,
+      "total": 5300,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 15,
+    "refundable": false,
+    "changeAllowed": false,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "Delayed",
+    "punctuality": 82,
+    "carbonEmissionKg": 95,
+    "rewardPointsEarned": 50,
+    "lastBookedMinutesAgo": 25,
+    "tags": ["Lowest Price"]
+  },
+
+  {
+    "id": "FL007",
+    "airline": {
+      "code": "VQ",
+      "name": "Novoair",
+      "logo": "/airlines/novoair.png",
+      "rating": 4.2
+    },
+    "flightNumber": "VQ925",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T12:30:00",
+    "arrival": "2026-07-15T13:45:00",
+    "durationMinutes": 75,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5500,
+      "taxes": 600,
+      "serviceFee": 200,
+      "discount": 0,
+      "total": 6300,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 9,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 89,
+    "carbonEmissionKg": 79,
+    "rewardPointsEarned": 55,
+    "lastBookedMinutesAgo": 15,
+    "tags": []
+  },
+  {
+    "id": "FL008",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A205",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T13:30:00",
+    "arrival": "2026-07-15T14:50:00",
+    "durationMinutes": 80,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5300,
+      "taxes": 600,
+      "serviceFee": 200,
+      "discount": 0,
+      "total": 6100,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 10,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 90,
+    "carbonEmissionKg": 81,
+    "rewardPointsEarned": 59,
+    "lastBookedMinutesAgo": 20,
+    "tags": ["Recommended"]
+  },
+  {
+    "id": "FL009",
+    "airline": {
+      "code": "BG",
+      "name": "Biman Bangladesh Airlines",
+      "logo": "/airlines/biman.png",
+      "rating": 4.4
+    },
+    "flightNumber": "BG445",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T15:00:00",
+    "arrival": "2026-07-15T16:10:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6800,
+      "taxes": 800,
+      "serviceFee": 250,
+      "discount": 0,
+      "total": 7850,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 3,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": true,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": true,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 95,
+    "carbonEmissionKg": 86,
+    "rewardPointsEarned": 75,
+    "lastBookedMinutesAgo": 5,
+    "tags": ["Fast Booking"]
+  },
+  {
+    "id": "FL010",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS160",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T16:00:00",
+    "arrival": "2026-07-15T17:20:00",
+    "durationMinutes": 80,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5700,
+      "taxes": 650,
+      "serviceFee": 200,
+      "discount": 100,
+      "total": 6450,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 7,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 87,
+    "carbonEmissionKg": 83,
+    "rewardPointsEarned": 61,
+    "lastBookedMinutesAgo": 11,
+    "tags": []
+  },
+  {
+    "id": "FL011",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A357",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T17:45:00",
+    "arrival": "2026-07-15T18:55:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5006,
+      "taxes": 400,
+      "serviceFee": 291,
+      "discount": 0,
+      "total": 5697,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 16,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "Delayed",
+    "punctuality": 93,
+    "carbonEmissionKg": 78,
+    "rewardPointsEarned": 68,
+    "lastBookedMinutesAgo": 21,
+    "tags": ["Flexible"]
+  },
+  {
+    "id": "FL012",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS668",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T16:30:00",
+    "arrival": "2026-07-15T17:45:00",
+    "durationMinutes": 75,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6725,
+      "taxes": 805,
+      "serviceFee": 219,
+      "discount": 0,
+      "total": 7749,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 4,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 93,
+    "carbonEmissionKg": 83,
+    "rewardPointsEarned": 62,
+    "lastBookedMinutesAgo": 30,
+    "tags": ["Only Few Seats", "Recommended"]
+  },
+  {
+    "id": "FL013",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A404",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T15:45:00",
+    "arrival": "2026-07-15T17:34:00",
+    "durationMinutes": 109,
+    "stops": 1,
+    "stopDetails": [
+      {
+        "airport": "Chittagong Airport",
+        "durationMinutes": 24
+      }
+    ],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 4514,
+      "taxes": 690,
+      "serviceFee": 189,
+      "discount": 0,
+      "total": 5393,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 12,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 95,
+    "carbonEmissionKg": 76,
+    "rewardPointsEarned": 59,
+    "lastBookedMinutesAgo": 10,
+    "tags": ["Cheapest", "Best Value"]
+  },
+  {
+    "id": "FL014",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS934",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T05:30:00",
+    "arrival": "2026-07-15T06:45:00",
+    "durationMinutes": 75,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 4625,
+      "taxes": 811,
+      "serviceFee": 207,
+      "discount": 0,
+      "total": 5643,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 6,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 95,
+    "carbonEmissionKg": 82,
+    "rewardPointsEarned": 79,
+    "lastBookedMinutesAgo": 28,
+    "tags": ["Flexible", "Popular"]
+  },
+  {
+    "id": "FL015",
+    "airline": {
+      "code": "VQ",
+      "name": "Novoair",
+      "logo": "/airlines/novoair.png",
+      "rating": 4.2
+    },
+    "flightNumber": "VQ724",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T15:45:00",
+    "arrival": "2026-07-15T17:05:00",
+    "durationMinutes": 80,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 4787,
+      "taxes": 566,
+      "serviceFee": 251,
+      "discount": 78,
+      "total": 5526,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 14,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 92,
+    "carbonEmissionKg": 98,
+    "rewardPointsEarned": 65,
+    "lastBookedMinutesAgo": 26,
+    "tags": ["Flexible", "Best Value"]
+  },
+  {
+    "id": "FL016",
+    "airline": {
+      "code": "BG",
+      "name": "Biman Bangladesh Airlines",
+      "logo": "/airlines/biman.png",
+      "rating": 4.4
+    },
+    "flightNumber": "BG353",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T17:15:00",
+    "arrival": "2026-07-15T18:45:00",
+    "durationMinutes": 90,
+    "stops": 1,
+    "stopDetails": [
+      {
+        "airport": "Chittagong Airport",
+        "durationMinutes": 15
+      }
+    ],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6398,
+      "taxes": 577,
+      "serviceFee": 261,
+      "discount": 0,
+      "total": 7236,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 18,
+    "refundable": true,
+    "changeAllowed": false,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": true,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 96,
+    "carbonEmissionKg": 94,
+    "rewardPointsEarned": 76,
+    "lastBookedMinutesAgo": 31,
+    "tags": []
+  },
+  {
+    "id": "FL017",
+    "airline": {
+      "code": "BG",
+      "name": "Biman Bangladesh Airlines",
+      "logo": "/airlines/biman.png",
+      "rating": 4.4
+    },
+    "flightNumber": "BG927",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T20:30:00",
+    "arrival": "2026-07-15T22:20:00",
+    "durationMinutes": 110,
+    "stops": 1,
+    "stopDetails": [
+      {
+        "airport": "Chittagong Airport",
+        "durationMinutes": 30
+      }
+    ],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6040,
+      "taxes": 879,
+      "serviceFee": 230,
+      "discount": 0,
+      "total": 7149,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 16,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 89,
+    "carbonEmissionKg": 85,
+    "rewardPointsEarned": 80,
+    "lastBookedMinutesAgo": 38,
+    "tags": ["Flexible"]
+  },
+  {
+    "id": "FL018",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A552",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T10:30:00",
+    "arrival": "2026-07-15T11:55:00",
+    "durationMinutes": 85,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6983,
+      "taxes": 833,
+      "serviceFee": 216,
+      "discount": 0,
+      "total": 8032,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 10,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 84,
+    "carbonEmissionKg": 79,
+    "rewardPointsEarned": 48,
+    "lastBookedMinutesAgo": 18,
+    "tags": []
+  },
+  {
+    "id": "FL019",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS884",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T09:30:00",
+    "arrival": "2026-07-15T10:50:00",
+    "durationMinutes": 80,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 4504,
+      "taxes": 504,
+      "serviceFee": 238,
+      "discount": 205,
+      "total": 5041,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 15,
+    "refundable": true,
+    "changeAllowed": false,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 95,
+    "carbonEmissionKg": 87,
+    "rewardPointsEarned": 71,
+    "lastBookedMinutesAgo": 30,
+    "tags": ["Cheapest", "Recommended"]
+  },
+  {
+    "id": "FL020",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS722",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T15:00:00",
+    "arrival": "2026-07-15T16:10:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 4576,
+      "taxes": 470,
+      "serviceFee": 266,
+      "discount": 294,
+      "total": 5018,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 16,
+    "refundable": false,
+    "changeAllowed": false,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 93,
+    "carbonEmissionKg": 82,
+    "rewardPointsEarned": 53,
+    "lastBookedMinutesAgo": 27,
+    "tags": ["Cheapest", "Popular"]
+  },
+  {
+    "id": "FL021",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A127",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T05:00:00",
+    "arrival": "2026-07-15T06:15:00",
+    "durationMinutes": 75,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6477,
+      "taxes": 779,
+      "serviceFee": 202,
+      "discount": 0,
+      "total": 7458,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 11,
+    "refundable": true,
+    "changeAllowed": false,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 87,
+    "carbonEmissionKg": 97,
+    "rewardPointsEarned": 59,
+    "lastBookedMinutesAgo": 24,
+    "tags": ["Popular"]
+  },
+  {
+    "id": "FL022",
+    "airline": {
+      "code": "BG",
+      "name": "Biman Bangladesh Airlines",
+      "logo": "/airlines/biman.png",
+      "rating": 4.4
+    },
+    "flightNumber": "BG364",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T08:00:00",
+    "arrival": "2026-07-15T09:10:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6810,
+      "taxes": 652,
+      "serviceFee": 227,
+      "discount": 0,
+      "total": 7689,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 4,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": true,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 89,
+    "carbonEmissionKg": 76,
+    "rewardPointsEarned": 76,
+    "lastBookedMinutesAgo": 28,
+    "tags": ["Only Few Seats"]
+  },
+  {
+    "id": "FL023",
+    "airline": {
+      "code": "VQ",
+      "name": "Novoair",
+      "logo": "/airlines/novoair.png",
+      "rating": 4.2
+    },
+    "flightNumber": "VQ192",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T10:45:00",
+    "arrival": "2026-07-15T12:10:00",
+    "durationMinutes": 85,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5707,
+      "taxes": 528,
+      "serviceFee": 274,
+      "discount": 10,
+      "total": 6499,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 7,
+    "refundable": true,
+    "changeAllowed": false,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 84,
+    "carbonEmissionKg": 97,
+    "rewardPointsEarned": 78,
+    "lastBookedMinutesAgo": 30,
+    "tags": []
+  },
+  {
+    "id": "FL024",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A490",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T12:00:00",
+    "arrival": "2026-07-15T13:20:00",
+    "durationMinutes": 80,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5074,
+      "taxes": 550,
+      "serviceFee": 173,
+      "discount": 214,
+      "total": 5583,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 5,
+    "refundable": false,
+    "changeAllowed": false,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": true,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 86,
+    "carbonEmissionKg": 87,
+    "rewardPointsEarned": 57,
+    "lastBookedMinutesAgo": 1,
+    "tags": []
+  },
+  {
+    "id": "FL025",
+    "airline": {
+      "code": "BS",
+      "name": "US-Bangla Airlines",
+      "logo": "/airlines/usbangla.png",
+      "rating": 4.3
+    },
+    "flightNumber": "BS885",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T18:00:00",
+    "arrival": "2026-07-15T19:20:00",
+    "durationMinutes": 80,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 7060,
+      "taxes": 841,
+      "serviceFee": 291,
+      "discount": 0,
+      "total": 8192,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 14,
+    "refundable": false,
+    "changeAllowed": false,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": true,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 91,
+    "carbonEmissionKg": 95,
+    "rewardPointsEarned": 76,
+    "lastBookedMinutesAgo": 20,
+    "tags": []
+  },
+  {
+    "id": "FL026",
+    "airline": {
+      "code": "VQ",
+      "name": "Novoair",
+      "logo": "/airlines/novoair.png",
+      "rating": 4.2
+    },
+    "flightNumber": "VQ621",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T09:15:00",
+    "arrival": "2026-07-15T10:25:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5875,
+      "taxes": 604,
+      "serviceFee": 179,
+      "discount": 0,
+      "total": 6658,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 4,
+    "refundable": false,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 85,
+    "carbonEmissionKg": 98,
+    "rewardPointsEarned": 71,
+    "lastBookedMinutesAgo": 25,
+    "tags": ["Only Few Seats"]
+  },
+  {
+    "id": "FL027",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A863",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T14:30:00",
+    "arrival": "2026-07-15T15:55:00",
+    "durationMinutes": 85,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 6618,
+      "taxes": 747,
+      "serviceFee": 248,
+      "discount": 296,
+      "total": 7317,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 16,
+    "refundable": true,
+    "changeAllowed": true,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 92,
+    "carbonEmissionKg": 78,
+    "rewardPointsEarned": 76,
+    "lastBookedMinutesAgo": 38,
+    "tags": ["Flexible", "Recommended"]
+  },
+  {
+    "id": "FL028",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A475",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-500"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T13:45:00",
+    "arrival": "2026-07-15T14:55:00",
+    "durationMinutes": 70,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5921,
+      "taxes": 785,
+      "serviceFee": 243,
+      "discount": 0,
+      "total": 6949,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 20,
+    "refundable": true,
+    "changeAllowed": false,
+    "seatSelectionIncluded": true,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": true,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 86,
+    "carbonEmissionKg": 92,
+    "rewardPointsEarned": 50,
+    "lastBookedMinutesAgo": 15,
+    "tags": ["Best Value"]
+  },
+  {
+    "id": "FL029",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A487",
+    "aircraft": {
+      "manufacturer": "ATR",
+      "model": "72-600"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T2"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T14:15:00",
+    "arrival": "2026-07-15T15:40:00",
+    "durationMinutes": 85,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5018,
+      "taxes": 843,
+      "serviceFee": 206,
+      "discount": 0,
+      "total": 6067,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 11,
+    "refundable": true,
+    "changeAllowed": false,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "On Time",
+    "punctuality": 93,
+    "carbonEmissionKg": 94,
+    "rewardPointsEarned": 79,
+    "lastBookedMinutesAgo": 38,
+    "tags": []
+  },
+  {
+    "id": "FL030",
+    "airline": {
+      "code": "2A",
+      "name": "Air Astra",
+      "logo": "/airlines/airastra.png",
+      "rating": 4.1
+    },
+    "flightNumber": "2A484",
+    "aircraft": {
+      "manufacturer": "Boeing",
+      "model": "737-800"
+    },
+    "route": {
+      "origin": {
+        "code": "DAC",
+        "city": "Dhaka",
+        "airport": "Hazrat Shahjalal International Airport",
+        "terminal": "T1"
+      },
+      "destination": {
+        "code": "CXB",
+        "city": "Cox's Bazar",
+        "airport": "Cox's Bazar Airport",
+        "terminal": "T1"
+      }
+    },
+    "departure": "2026-07-15T05:00:00",
+    "arrival": "2026-07-15T06:15:00",
+    "durationMinutes": 75,
+    "stops": 0,
+    "stopDetails": [],
+    "cabinClass": "Economy",
+    "price": {
+      "baseFare": 5889,
+      "taxes": 633,
+      "serviceFee": 270,
+      "discount": 0,
+      "total": 6792,
+      "currency": "BDT"
+    },
+    "baggage": {
+      "cabin": "7kg",
+      "checked": "20kg"
+    },
+    "seatAvailability": 5,
+    "refundable": true,
+    "changeAllowed": false,
+    "seatSelectionIncluded": false,
+    "priorityBoarding": false,
+    "loungeAccess": false,
+    "mealsIncluded": false,
+    "wifiAvailable": false,
+    "entertainmentAvailable": false,
+    "mobileTicketAvailable": true,
+    "status": "Delayed",
+    "punctuality": 89,
+    "carbonEmissionKg": 90,
+    "rewardPointsEarned": 65,
+    "lastBookedMinutesAgo": 20,
+    "tags": ["Recommended"]
+  }
+]
