@@ -1,9 +1,12 @@
 "use client";
 
-import { ChevronDown, ChevronUp, Moon, Sun } from "lucide-react";
 import { useState } from "react";
+import { ChevronDown, ChevronUp, Moon, Sun } from "lucide-react";
+import { useFlight } from "@/store/flightStore";
 
 export default function FlightFilterSidebar() {
+  const { filters, setFilters } = useFlight();
+
   // Accordion open/close states
   const [sections, setSections] = useState({
     baggage: true,
@@ -12,13 +15,6 @@ export default function FlightFilterSidebar() {
     aircraft: true,
   });
 
-  // Filter value states
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [baggage20kg, setBaggage20kg] = useState(false);
-  const [partiallyRefundable, setPartiallyRefundable] = useState(false);
-  const [layoverTime, setLayoverTime] = useState(15);
-  const [selectedAircraft, setSelectedAircraft] = useState<string[]>([]);
-
   // Toggle accordion helper
   const toggleSection = (section: keyof typeof sections) => {
     setSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -26,11 +22,12 @@ export default function FlightFilterSidebar() {
 
   // Toggle aircraft selection helper
   const handleAircraftChange = (code: string) => {
-    setSelectedAircraft((prev) =>
-      prev.includes(code)
-        ? prev.filter((item) => item !== code)
-        : [...prev, code],
-    );
+    setFilters((prev) => ({
+      ...prev,
+      selectedAircraft: prev.selectedAircraft.includes(code)
+        ? prev.selectedAircraft.filter((item) => item !== code)
+        : [...prev.selectedAircraft, code],
+    }));
   };
 
   return (
@@ -39,16 +36,19 @@ export default function FlightFilterSidebar() {
       <div className="grid grid-cols-2 gap-2 mb-6">
         <button
           onClick={() =>
-            setSelectedTime(selectedTime === "afternoon" ? null : "afternoon")
+            setFilters((prev) => ({
+              ...prev,
+              selectedTime: prev.selectedTime === "afternoon" ? null : "afternoon",
+            }))
           }
           className={`p-3 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
-            selectedTime === "afternoon"
+            filters.selectedTime === "afternoon"
               ? "border-red-500 bg-red-50/30 ring-1 ring-red-500"
               : "border-gray-100 bg-gray-50/40 hover:border-gray-200"
           }`}
         >
           <Sun
-            className={`w-5 h-5 ${selectedTime === "afternoon" ? "text-red-500" : "text-gray-400"}`}
+            className={`w-5 h-5 ${filters.selectedTime === "afternoon" ? "text-red-500" : "text-gray-400"}`}
           />
           <div>
             <div className="text-xs font-bold text-gray-700">Afternoon</div>
@@ -58,16 +58,19 @@ export default function FlightFilterSidebar() {
 
         <button
           onClick={() =>
-            setSelectedTime(selectedTime === "evening" ? null : "evening")
+            setFilters((prev) => ({
+              ...prev,
+              selectedTime: prev.selectedTime === "evening" ? null : "evening",
+            }))
           }
           className={`p-3 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
-            selectedTime === "evening"
+            filters.selectedTime === "evening"
               ? "border-red-500 bg-red-50/30 ring-1 ring-red-500"
               : "border-gray-100 bg-gray-50/40 hover:border-gray-200"
           }`}
         >
           <Moon
-            className={`w-5 h-5 ${selectedTime === "evening" ? "text-red-500" : "text-gray-400"}`}
+            className={`w-5 h-5 ${filters.selectedTime === "evening" ? "text-red-500" : "text-gray-400"}`}
           />
           <div>
             <div className="text-xs font-bold text-gray-700">Evening</div>
@@ -96,8 +99,13 @@ export default function FlightFilterSidebar() {
               <label className="flex items-center gap-3 p-3 bg-red-50/40 rounded-xl cursor-pointer border border-transparent hover:border-red-100 transition-all">
                 <input
                   type="checkbox"
-                  checked={baggage20kg}
-                  onChange={(e) => setBaggage20kg(e.target.checked)}
+                  checked={filters.baggage20kg}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      baggage20kg: e.target.checked,
+                    }))
+                  }
                   className="w-4 h-4 rounded text-red-600 border-gray-300 focus:ring-red-500 accent-red-600 cursor-pointer"
                 />
                 <span className="text-xs font-bold text-gray-600">20 Kg</span>
@@ -125,8 +133,13 @@ export default function FlightFilterSidebar() {
               <label className="flex items-center gap-3 px-1 py-1.5 cursor-pointer group">
                 <input
                   type="checkbox"
-                  checked={partiallyRefundable}
-                  onChange={(e) => setPartiallyRefundable(e.target.checked)}
+                  checked={filters.partiallyRefundable}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      partiallyRefundable: e.target.checked,
+                    }))
+                  }
                   className="w-4 h-4 rounded text-red-600 border-gray-300 focus:ring-red-500 accent-red-600 cursor-pointer"
                 />
                 <span className="text-xs font-semibold text-gray-600 group-hover:text-gray-900 transition-colors">
@@ -158,15 +171,20 @@ export default function FlightFilterSidebar() {
                   type="range"
                   min="0"
                   max="15"
-                  value={layoverTime}
-                  onChange={(e) => setLayoverTime(Number(e.target.value))}
+                  value={filters.layoverTime}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      layoverTime: Number(e.target.value),
+                    }))
+                  }
                   className="w-full h-1 bg-red-600 rounded-lg appearance-none cursor-pointer accent-red-600 range-sm"
                 />
               </div>
               <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 mt-2">
                 <span>0 hrs</span>
                 <span className="text-red-600 bg-red-50 px-1.5 py-0.5 rounded text-[10px]">
-                  {layoverTime === 15 ? "15+ hrs" : `${layoverTime} hrs`}
+                  {filters.layoverTime === 15 ? "15+ hrs" : `${filters.layoverTime} hrs`}
                 </span>
                 <span>15+ hrs</span>
               </div>
@@ -202,7 +220,7 @@ export default function FlightFilterSidebar() {
                 >
                   <input
                     type="checkbox"
-                    checked={selectedAircraft.includes(plane.code)}
+                    checked={filters.selectedAircraft.includes(plane.code)}
                     onChange={() => handleAircraftChange(plane.code)}
                     className="w-4 h-4 rounded text-red-600 border-gray-300 focus:ring-red-500 accent-red-600 cursor-pointer"
                   />

@@ -11,8 +11,9 @@ import {
   Search,
   Users,
 } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+
+import { useFlight } from "@/store/flightStore";
 
 // Mock Airport Data
 const AIRPORTS = [
@@ -23,22 +24,37 @@ const AIRPORTS = [
   { city: "Jessore", airport: "JSR, Jessore Airport" },
 ];
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 export default function FlightSearch() {
+  const { searchCriteria, triggerSearch } = useFlight();
+
   // State management for tabs & layouts
   const [activeTab, setActiveTab] = useState("flight");
   const [tripType, setTripType] = useState("one-way");
 
   // Locations
-  const [fromLocation, setFromLocation] = useState(AIRPORTS[0]); // Default: Dhaka
-  const [toLocation, setToLocation] = useState(AIRPORTS[1]); // Default: Cox's Bazar
+  const [fromLocation, setFromLocation] = useState(() => {
+    const found = AIRPORTS.find(
+      (a) => a.city.toLowerCase() === searchCriteria.from.toLowerCase()
+    );
+    return found || AIRPORTS[0];
+  });
+  const [toLocation, setToLocation] = useState(() => {
+    const found = AIRPORTS.find(
+      (a) => a.city.toLowerCase() === searchCriteria.to.toLowerCase()
+    );
+    return found || AIRPORTS[1];
+  });
 
   // Dates
-  const [departureDate, setDepartureDate] = useState("2026-06-19");
-  const [returnDate, setReturnDate] = useState("2026-06-26");
+  const [departureDate, setDepartureDate] = useState(searchCriteria.departureDate);
+  const [returnDate, setReturnDate] = useState(searchCriteria.returnDate);
 
   // Passengers
-  const [passengerCount, setPassengerCount] = useState(1);
-  const [cabinClass, setCabinClass] = useState("Economy");
+  const [passengerCount, setPassengerCount] = useState(searchCriteria.passengers);
+  const [cabinClass, setCabinClass] = useState(searchCriteria.cabinClass);
 
   // Dropdown visibility states
   const [isOpenFrom, setIsOpenFrom] = useState(false);
@@ -71,9 +87,8 @@ export default function FlightSearch() {
     if (departureInputRef.current) {
       try {
         departureInputRef.current.showPicker();
-      } catch (e) {
+      } catch {
         departureInputRef.current.focus();
-        console.error(e);
       }
     }
   };
@@ -82,9 +97,8 @@ export default function FlightSearch() {
     if (tripType !== "one-way" && returnInputRef.current) {
       try {
         returnInputRef.current.showPicker();
-      } catch (e) {
+      } catch {
         returnInputRef.current.focus();
-        console.error(e);
       }
     }
   };
@@ -96,39 +110,45 @@ export default function FlightSearch() {
     setToLocation(fromLocation);
   };
 
-  // Helper formatting logic for display values
+  // Helper formatting logic for display values (deterministic parsing)
   const formatDateDisplay = (dateString: string) => {
     if (!dateString) return "Select Date";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+    const parts = dateString.split("-");
+    if (parts.length !== 3) return "Select Date";
+    const year = Number(parts[0]);
+    const month = Number(parts[1]);
+    const day = Number(parts[2]);
+    return `${day} ${MONTHS[month - 1]} ${year}`;
   };
 
   const formatWeekdayDisplay = (dateString: string) => {
     if (!dateString) return "";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      weekday: "long",
-    });
+    const parts = dateString.split("-");
+    if (parts.length !== 3) return "";
+    const year = Number(parts[0]);
+    const month = Number(parts[1]);
+    const day = Number(parts[2]);
+    const date = new Date(year, month - 1, day);
+    return WEEKDAYS[date.getDay()];
   };
 
   const handleSearchFlight = () => {
-    console.log("flight searched");
+    triggerSearch({
+      from: fromLocation.city,
+      to: toLocation.city,
+      departureDate,
+      returnDate,
+      passengers: passengerCount,
+      cabinClass,
+    });
   };
 
   return (
     <div className="relative min-h-150 w-full bg-slate-900 font-sans antialiased overflow-hidden">
-      {/* Hero Background Image */}
-      <div className="absolute inset-0 z-0 select-none pointer-events-none">
-        <Image
-          src="/path-to-your-beach-image.jpg"
-          alt="Beach holiday background"
-          fill
-          priority
-          className="object-cover object-center brightness-[0.85]"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/10" />
+      {/* Hero Background Gradient */}
+      <div className="absolute inset-0 z-0 select-none pointer-events-none bg-gradient-to-br from-slate-900 via-red-950/40 to-slate-800">
+        <div className="absolute inset-0 opacity-20" style={{backgroundImage: "radial-gradient(circle at 20% 50%, rgba(220,38,38,0.4) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(239,68,68,0.3) 0%, transparent 50%)"}} />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
       </div>
 
       {/* Content Container */}

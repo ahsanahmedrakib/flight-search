@@ -1,5 +1,6 @@
 "use client";
 
+import { useFlight } from "@/store/flightStore";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   AlertCircle,
@@ -9,6 +10,7 @@ import {
   ShieldCheck,
   User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -46,6 +48,9 @@ const bookingSchema = yup
 type BookingFormData = yup.InferType<typeof bookingSchema>;
 
 export default function FlightBookingForm() {
+  const router = useRouter();
+  const { bookingDetails, setBookingDetails } = useFlight();
+
   const {
     register,
     handleSubmit,
@@ -53,20 +58,20 @@ export default function FlightBookingForm() {
   } = useForm<BookingFormData>({
     resolver: yupResolver(bookingSchema),
     defaultValues: {
-      gender: "male",
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      passportNumber: "",
-      agreeToTerms: false,
+      gender: bookingDetails?.gender || "male",
+      firstName: bookingDetails?.firstName || "",
+      lastName: bookingDetails?.lastName || "",
+      email: bookingDetails?.email || "",
+      phone: bookingDetails?.phone || "",
+      passportNumber: bookingDetails?.passportNumber || "",
+      agreeToTerms: bookingDetails?.agreeToTerms || false,
     },
   });
 
   // 3. Handle Form Submission
   const onSubmit: SubmitHandler<BookingFormData> = (data) => {
-    // Submit data to your flight booking endpoint here
-    console.log(data);
+    setBookingDetails(data);
+    router.push("/confirmation");
   };
 
   return (
@@ -277,6 +282,7 @@ export default function FlightBookingForm() {
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:justify-end pt-2">
           <button
             type="button"
+            onClick={() => router.push("/")}
             className="w-full sm:w-auto border border-gray-200 text-gray-500 font-bold text-xs px-5 py-3 rounded-xl hover:bg-gray-50 transition-colors order-2 sm:order-1"
           >
             Back to Flights

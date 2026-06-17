@@ -9,56 +9,45 @@ import {
     Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
-// Mock Data for the Airline Slider Track
-const AIRLINE_FILTERS = [
-  {
-    id: "BS",
-    name: "US-Bangla",
-    code: "BS",
-    count: 8,
-    minPrice: 10187,
-    logo: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=32&h=32&fit=crop&q=80",
-  },
-  {
-    id: "2A",
-    name: "Astra Airways",
-    code: "2A",
-    count: 3,
-    minPrice: 10523,
-    logo: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=32&h=32&fit=crop&q=80",
-  },
-  {
-    id: "VQ",
-    name: "Novoair",
-    code: "VQ",
-    count: 2,
-    minPrice: 12238,
-    logo: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=32&h=32&fit=crop&q=80",
-  },
-  {
-    id: "BG",
-    name: "Biman Bangladesh",
-    code: "BG",
-    count: 1,
-    minPrice: 15642,
-    logo: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=32&h=32&fit=crop&q=80",
-  },
-];
+import { useFlight } from "@/store/flightStore";
 
 export default function FlightSortBar() {
-  // Main Top-level Quick Sort state
-  const [activeSort, setActiveSort] = useState("cheapest");
-
-  // Selected Airline filter from track slider
-  const [selectedAirline, setSelectedAirline] = useState<string | null>(null);
+  const { flights, sortBy, setSortBy, selectedAirline, setSelectedAirline, searchCriteria } = useFlight();
+  const passengers = searchCriteria.passengers;
 
   // Custom Dropdown Open/Close and current value state
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownSortLabel, setDropdownSortLabel] = useState("More Sorts");
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Compute carrier metrics dynamically from flights data
+  const dynamicAirlineFilters = useMemo(() => {
+    const map: Record<string, { name: string; logo: string; count: number; minPrice: number }> = {};
+
+    flights.forEach((flight) => {
+      const { code, name, logo } = flight.airline;
+      if (!map[code]) {
+        map[code] = { name, logo, count: 0, minPrice: 0 };
+      }
+      map[code].count += 1;
+      const price = flight.price.total;
+      if (map[code].minPrice === 0 || price < map[code].minPrice) {
+        map[code].minPrice = price;
+      }
+    });
+
+    return Object.entries(map).map(([code, data]) => ({
+      id: code,
+      code,
+      name: data.name,
+      logo: data.logo,
+      count: data.count,
+      minPrice: data.minPrice,
+    }));
+  }, [flights]);
 
   // Close dropdown menu when clicking anywhere else on page
   useEffect(() => {
@@ -75,7 +64,7 @@ export default function FlightSortBar() {
   }, []);
 
   const handleDropdownSelect = (sortKey: string, label: string) => {
-    setActiveSort(sortKey);
+    setSortBy(sortKey);
     setDropdownSortLabel(label);
     setIsDropdownOpen(false);
   };
@@ -84,7 +73,8 @@ export default function FlightSortBar() {
     <div className="w-full max-w-5xl space-y-4 font-sans antialiased bg-slate-50 p-4 rounded-2xl">
       {/* Summary Matrix Indicator text */}
       <div className="text-sm font-bold text-slate-700 tracking-wide px-1">
-        Showing 14 Flights & 4 Airlines
+        Showing {flights.length} Flights & {new Set(flights.map((f) => f.airline.code)).size} Carriers
+        {passengers > 1 && <span className="ml-2 text-red-600">({passengers} Travellers)</span>}
       </div>
 
       {/* Row 1: Core Priority Quick Sort Buttons */}
@@ -92,28 +82,28 @@ export default function FlightSortBar() {
         {/* Cheapest Metric Box */}
         <button
           onClick={() => {
-            setActiveSort("cheapest");
+            setSortBy("cheapest");
             setDropdownSortLabel("More Sorts");
           }}
           className={`flex items-center gap-3 p-3 px-4 rounded-xl border text-left transition-all ${
-            activeSort === "cheapest"
+            sortBy === "cheapest"
               ? "bg-red-50/60 border-red-500 ring-1 ring-red-500/20"
               : "bg-white border-gray-100 hover:border-gray-300"
           }`}
         >
           <div
-            className={`p-2.5 rounded-lg flex items-center justify-center ${activeSort === "cheapest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
+            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "cheapest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
           >
             <DollarSign className="w-5 h-5 stroke-[2.5]" />
           </div>
           <div>
             <div
-              className={`text-sm font-black ${activeSort === "cheapest" ? "text-red-600" : "text-gray-700"}`}
+              className={`text-sm font-black ${sortBy === "cheapest" ? "text-red-600" : "text-gray-700"}`}
             >
               Cheapest
             </div>
             <div className="text-xs font-bold text-gray-500 mt-0.5">
-              ৳ 10,187
+              {flights.length > 0 ? `৳ ${(Math.min(...flights.map((f) => f.price.total)) * passengers).toLocaleString()}` : "—"}
             </div>
           </div>
         </button>
@@ -121,54 +111,73 @@ export default function FlightSortBar() {
         {/* Fastest Metric Box */}
         <button
           onClick={() => {
-            setActiveSort("fastest");
+            setSortBy("fastest");
             setDropdownSortLabel("More Sorts");
           }}
           className={`flex items-center gap-3 p-3 px-4 rounded-xl border text-left transition-all ${
-            activeSort === "fastest"
+            sortBy === "fastest"
               ? "bg-red-50/60 border-red-500 ring-1 ring-red-500/20"
               : "bg-white border-gray-100 hover:border-gray-300"
           }`}
         >
           <div
-            className={`p-2.5 rounded-lg flex items-center justify-center ${activeSort === "fastest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
+            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "fastest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
           >
             <Zap className="w-5 h-5" />
           </div>
           <div>
             <div
-              className={`text-sm font-black ${activeSort === "fastest" ? "text-red-600" : "text-gray-700"}`}
+              className={`text-sm font-black ${sortBy === "fastest" ? "text-red-600" : "text-gray-700"}`}
             >
               Fastest
             </div>
-            <div className="text-xs font-bold text-gray-500 mt-0.5">1h 5m</div>
+            <div className="text-xs font-bold text-gray-500 mt-0.5">
+              {flights.length > 0
+                ? (() => {
+                    const minD = Math.min(...flights.map((f) => f.durationMinutes));
+                    const h = Math.floor(minD / 60);
+                    const m = minD % 60;
+                    return h > 0 ? `${h}h ${m}m` : `${m}m`;
+                  })()
+                : "—"}
+            </div>
           </div>
         </button>
 
         {/* Earliest Metric Box */}
         <button
           onClick={() => {
-            setActiveSort("earliest");
+            setSortBy("earliest");
             setDropdownSortLabel("More Sorts");
           }}
           className={`flex items-center gap-3 p-3 px-4 rounded-xl border text-left transition-all ${
-            activeSort === "earliest"
+            sortBy === "earliest"
               ? "bg-red-50/60 border-red-500 ring-1 ring-red-500/20"
               : "bg-white border-gray-100 hover:border-gray-300"
           }`}
         >
           <div
-            className={`p-2.5 rounded-lg flex items-center justify-center ${activeSort === "earliest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
+            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "earliest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
           >
             <Clock className="w-5 h-5" />
           </div>
           <div>
             <div
-              className={`text-sm font-black ${activeSort === "earliest" ? "text-red-600" : "text-gray-700"}`}
+              className={`text-sm font-black ${sortBy === "earliest" ? "text-red-600" : "text-gray-700"}`}
             >
               Earliest
             </div>
-            <div className="text-xs font-bold text-gray-500 mt-0.5">07:30</div>
+            <div className="text-xs font-bold text-gray-500 mt-0.5">
+              {flights.length > 0
+                ? (() => {
+                    const times = flights.map((f) => {
+                      const timePart = f.departure.split("T")[1] || "00:00:00";
+                      return timePart.substring(0, 5);
+                    });
+                    return times.sort()[0];
+                  })()
+                : "—"}
+            </div>
           </div>
         </button>
 
@@ -177,7 +186,7 @@ export default function FlightSortBar() {
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className={`w-full h-full flex items-center justify-between p-4 bg-white border rounded-xl transition-all font-bold text-sm ${
-              isDropdownOpen || activeSort.startsWith("more_")
+              isDropdownOpen || sortBy.startsWith("more_")
                 ? "border-gray-400 text-blue-900"
                 : "border-gray-100 text-gray-700 hover:border-gray-300"
             }`}
@@ -203,7 +212,7 @@ export default function FlightSortBar() {
                   type="button"
                   onClick={() => handleDropdownSelect(opt.key, opt.label)}
                   className={`w-full text-left px-4 py-2.5 rounded-lg text-xs font-bold transition-colors ${
-                    activeSort === opt.key
+                    sortBy === opt.key
                       ? "bg-gray-50 text-red-600"
                       : "text-gray-600 hover:bg-slate-50 hover:text-gray-900"
                   }`}
@@ -225,7 +234,7 @@ export default function FlightSortBar() {
 
         {/* Dynamic Track containing individual Carrier options */}
         <div className="flex flex-1 items-center gap-2 overflow-x-auto no-scrollbar px-3 py-1">
-          {AIRLINE_FILTERS.map((item) => {
+          {dynamicAirlineFilters.map((item) => {
             const isChosen = selectedAirline === item.id;
             return (
               <div
@@ -250,7 +259,7 @@ export default function FlightSortBar() {
                   <span className="font-bold text-gray-700">{item.code}</span> (
                   {item.count})
                   <div className="font-black text-gray-800 mt-0.5">
-                    ৳ {item.minPrice.toLocaleString()}
+                    {item.minPrice > 0 ? `৳ ${(item.minPrice * passengers).toLocaleString()}` : "N/A"}
                   </div>
                 </div>
               </div>

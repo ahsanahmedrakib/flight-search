@@ -4,7 +4,7 @@
     "airline": {
       "code": "BG",
       "name": "Biman Bangladesh Airlines",
-      "logo": "/airlines/biman.png",
+      "logo": "/images/airline/bg.svg",
       "rating": 4.4
     },
     "flightNumber": "BG437",
@@ -66,7 +66,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS151",
@@ -128,7 +128,7 @@
     "airline": {
       "code": "VQ",
       "name": "Novoair",
-      "logo": "/airlines/novoair.png",
+      "logo": "/images/airline/vq.svg",
       "rating": 4.2
     },
     "flightNumber": "VQ923",
@@ -191,7 +191,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A201",
@@ -254,7 +254,7 @@
     "airline": {
       "code": "BG",
       "name": "Biman Bangladesh Airlines",
-      "logo": "/airlines/biman.png",
+      "logo": "/images/airline/bg.svg",
       "rating": 4.4
     },
     "flightNumber": "BG441",
@@ -317,7 +317,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS155",
@@ -385,7 +385,7 @@
     "airline": {
       "code": "VQ",
       "name": "Novoair",
-      "logo": "/airlines/novoair.png",
+      "logo": "/images/airline/vq.svg",
       "rating": 4.2
     },
     "flightNumber": "VQ925",
@@ -447,7 +447,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A205",
@@ -509,7 +509,7 @@
     "airline": {
       "code": "BG",
       "name": "Biman Bangladesh Airlines",
-      "logo": "/airlines/biman.png",
+      "logo": "/images/airline/bg.svg",
       "rating": 4.4
     },
     "flightNumber": "BG445",
@@ -571,7 +571,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS160",
@@ -633,7 +633,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A357",
@@ -695,7 +695,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS668",
@@ -757,7 +757,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A404",
@@ -824,7 +824,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS934",
@@ -886,7 +886,7 @@
     "airline": {
       "code": "VQ",
       "name": "Novoair",
-      "logo": "/airlines/novoair.png",
+      "logo": "/images/airline/vq.svg",
       "rating": 4.2
     },
     "flightNumber": "VQ724",
@@ -948,7 +948,7 @@
     "airline": {
       "code": "BG",
       "name": "Biman Bangladesh Airlines",
-      "logo": "/airlines/biman.png",
+      "logo": "/images/airline/bg.svg",
       "rating": 4.4
     },
     "flightNumber": "BG353",
@@ -1015,7 +1015,7 @@
     "airline": {
       "code": "BG",
       "name": "Biman Bangladesh Airlines",
-      "logo": "/airlines/biman.png",
+      "logo": "/images/airline/bg.svg",
       "rating": 4.4
     },
     "flightNumber": "BG927",
@@ -1082,7 +1082,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A552",
@@ -1144,7 +1144,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS884",
@@ -1206,7 +1206,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS722",
@@ -1268,7 +1268,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A127",
@@ -1330,7 +1330,7 @@
     "airline": {
       "code": "BG",
       "name": "Biman Bangladesh Airlines",
-      "logo": "/airlines/biman.png",
+      "logo": "/images/airline/bg.svg",
       "rating": 4.4
     },
     "flightNumber": "BG364",
@@ -1392,7 +1392,7 @@
     "airline": {
       "code": "VQ",
       "name": "Novoair",
-      "logo": "/airlines/novoair.png",
+      "logo": "/images/airline/vq.svg",
       "rating": 4.2
     },
     "flightNumber": "VQ192",
@@ -1454,7 +1454,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A490",
@@ -1516,7 +1516,7 @@
     "airline": {
       "code": "BS",
       "name": "US-Bangla Airlines",
-      "logo": "/airlines/usbangla.png",
+      "logo": "/images/airline/bs.svg",
       "rating": 4.3
     },
     "flightNumber": "BS885",
@@ -1578,7 +1578,7 @@
     "airline": {
       "code": "VQ",
       "name": "Novoair",
-      "logo": "/airlines/novoair.png",
+      "logo": "/images/airline/vq.svg",
       "rating": 4.2
     },
     "flightNumber": "VQ621",
@@ -1640,7 +1640,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A863",
@@ -1702,7 +1702,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A475",
@@ -1764,7 +1764,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A487",
@@ -1826,7 +1826,7 @@
     "airline": {
       "code": "2A",
       "name": "Air Astra",
-      "logo": "/airlines/airastra.png",
+      "logo": "/images/airline/2a.svg",
       "rating": 4.1
     },
     "flightNumber": "2A484",

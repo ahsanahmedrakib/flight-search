@@ -3,93 +3,37 @@
 import { AlertCircle, ChevronDown, Plane, ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useFlight } from "@/store/flightStore";
+import type { Flight } from "@/types/flight";
 
-// 1. TypeScript Interface definition mapping exactly to your data payload
-interface FlightData {
-  id: string;
-  airline: {
-    code: string;
-    name: string;
-    logo: string;
-    rating: number;
-  };
-  flightNumber: string;
-  aircraft: {
-    manufacturer: string;
-    model: string;
-  };
-  route: {
-    origin: {
-      code: string;
-      city: string;
-      airport: string;
-      terminal: string;
-    };
-    destination: {
-      code: string;
-      city: string;
-      airport: string;
-      terminal: string;
-    };
-  };
-  departure: string;
-  arrival: string;
-  durationMinutes: number;
-  stops: number;
-  stopDetails: string[];
-  cabinClass: string;
-  price: {
-    baseFare: number;
-    taxes: number;
-    serviceFee: number;
-    discount: number;
-    total: number;
-    currency: string;
-  };
-  baggage: {
-    cabin: string;
-    checked: string;
-  };
-  seatAvailability: number;
-  refundable: boolean;
-  changeAllowed: boolean;
-  seatSelectionIncluded: boolean;
-  priorityBoarding: boolean;
-  loungeAccess: boolean;
-  mealsIncluded: boolean;
-  wifiAvailable: boolean;
-  entertainmentAvailable: boolean;
-  mobileTicketAvailable: boolean;
-  status: string;
-  punctuality: number;
-  carbonEmissionKg: number;
-  rewardPointsEarned: number;
-  lastBookedMinutesAgo: number;
-  tags: string[];
-}
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 interface FlightCardProps {
-  flight: FlightData;
+  flight: Flight;
 }
 
 export default function FlightCard({ flight }: FlightCardProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const router = useRouter();
+  const { setSelectedFlight, searchCriteria } = useFlight();
+  const passengers = searchCriteria.passengers;
 
-  // Formatting date helpers for display targets (e.g. "15 Jul, Wednesday" or "06:00")
+  // Formatting date helpers for display targets (e.g. "15 Jul, Wednesday" or "06:00") (Deterministic)
   const formatTime = (isoString: string) => {
-    return new Date(isoString).toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
+    if (!isoString) return "";
+    const timePart = isoString.split("T")[1] || "00:00:00";
+    const [hour, minute] = timePart.split(":");
+    return `${hour}:${minute}`;
   };
 
   const formatDate = (isoString: string) => {
-    return new Date(isoString).toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      weekday: "long",
-    });
+    if (!isoString) return "";
+    const datePart = isoString.split("T")[0];
+    const [year, month, day] = datePart.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+    return `${day} ${MONTHS[month - 1]}, ${WEEKDAYS[date.getDay()]}`;
   };
 
   // Convert flat minutes into human hours/minutes e.g., 70 -> "1h 10m"
@@ -99,10 +43,6 @@ export default function FlightCard({ flight }: FlightCardProps) {
     return `${hours}h ${mins}m`;
   };
 
-  // Safe fallback mock image if your local path /airlines/biman.png isn't configured yet
-  const logoSrc =
-    flight.airline.logo ||
-    "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=64&h=64&fit=crop&q=80";
 
   return (
     <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden font-sans">
@@ -149,7 +89,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
             <div className="sm:col-span-3 flex items-center gap-3">
               <div className="w-12 h-12 relative bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center overflow-hidden shrink-0">
                 <Image
-                  src={logoSrc}
+                  src={flight.airline.logo}
                   alt={flight.airline.name}
                   width={36}
                   height={36}
@@ -251,13 +191,15 @@ export default function FlightCard({ flight }: FlightCardProps) {
               {flight.price.currency}
             </span>
             <span className="text-3xl font-black text-red-600 tracking-tight">
-              {flight.price.total.toLocaleString()}
+              {(flight.price.total * passengers).toLocaleString()}
             </span>
-
+            <p className="text-[10px] text-gray-400 font-medium mt-0.5">
+              ৳ {flight.price.total.toLocaleString()} × {passengers} {passengers === 1 ? "traveller" : "travellers"}
+            </p>
             {/* Strikeout Base Price display if markdown metrics available */}
             <p className="text-xs text-gray-400 font-medium line-through mt-0.5">
               {flight.price.currency}{" "}
-              {(flight.price.total + 1511).toLocaleString()}
+              {((flight.price.total + 1511) * passengers).toLocaleString()}
             </p>
           </div>
 
@@ -266,7 +208,13 @@ export default function FlightCard({ flight }: FlightCardProps) {
             <button className="border border-red-500 text-red-600 font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors order-2 md:order-1">
               View Prices
             </button>
-            <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-red-600/10 active:scale-[0.99] transition-all order-1 md:order-2">
+            <button
+              onClick={() => {
+                setSelectedFlight(flight);
+                router.push("/booking");
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-red-600/10 active:scale-[0.99] transition-all order-1 md:order-2"
+            >
               Select
             </button>
           </div>
