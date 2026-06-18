@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Flight Search & Booking System",
   description: "Dynamic flight search, sorting, filtering and booking app.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -28,7 +31,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-slate-50" suppressHydrationWarning>
+      <body
+        className="min-h-full flex flex-col bg-slate-50"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

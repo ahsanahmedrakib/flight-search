@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Premium Flight Search & Booking Application
 
-## Getting Started
+A high-performance, visually polished, fully responsive, and accessible Flight Search, Filtering, and Booking application built with Next.js (App Router), TypeScript, and TailwindCSS. It utilizes Zustand for robust, centralized state management that survives browser reloads across the multi-step search-and-checkout pipeline.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Key Engineering & Architecture Highlights
+
+### 1. Robust TypeScript Architecture
+- **Strict, Native Types:** Every object and data structure is rigorously typed. See `src/types/flight.ts` for comprehensive airline, aircraft, route, stop details, pricing, and baggage configurations.
+- **Form Schema Type Inference:** Passenger data models (`src/types/booking.ts`) are completely backed by `yup` validation schemas, with types inferred natively via `yup.InferType` to ensure zero runtime or build-time discrepancies.
+- **Type-Checking Sanitation:** Verified fully compliant with TypeScript strict mode via non-emitting type checking (`tsc --noEmit`).
+
+### 2. Centralized State Management (`src/store/flightStore.tsx`)
+- Powered by **Zustand** featuring unified states for:
+  - `searchCriteria`: Real-time inputs from departure, destination, dates, passengers, and cabin classes.
+  - `filters`: Multi-faceted configurations including maximum price slider, stop counts, airline/aircraft selections, departure hour brackets, refundability, punctuality rating thresholds, and inclusion of meals or seat selection.
+  - `selectedFlight`: The chosen flight being carried seamlessly into checkout.
+  - `bookingDetails`: Securely stored form details for multi-passenger bookings.
+- **Session Persistence:** Integrated with Zustand's `persist` middleware configured with `sessionStorage` to allow users to refresh pages mid-flow without losing selected flights or pre-filled passenger details.
+- **Backwards-Compatible Integration:** Custom React hooks (`useFlight`) bridge store state and dynamically pre-compute filter/sorting combinations on the fly to maximize rendering performance.
+
+### 3. Comprehensive Form Validation & Safety
+- Form orchestration built on top of **React Hook Form** and **Yup validation resolvers**.
+- **Dynamic Field Arrays:** Dynamic fields scale effortlessly depending on the exact passenger count searched (supporting up to 12 travellers), offering clean inline field validation warnings for genders, names, and optional identifiers.
+
+### 4. Fully Responsive & Polished Visual Layouts
+- Designed mobile-first using advanced Tailwind layout matrices (`grid`, dynamic column splits, sticky parameters, and interactive backdrops).
+- Layout sections expand and collapse dynamically to handle all viewports (from standard mobile devices up to ultra-wide displays) cleanly without any layout breakages.
+
+### 5. Accessibility (A11y) & Semantic Layout Standards
+- Employs semantic elements throughout (`main`, `form`, `h1`-`h4`, `label`, `button`, `input`).
+- Supports form control inputs with explicit type declarations, placeholder indicators, screen-reader visibility, and native platform components (such as programmatic invocation of `showPicker()` for calendar dates).
+
+### 6. Interactive Confirmation Pipeline
+- Generates unique record locator PNRs dynamically.
+- Automatically handles e-ticket notifications via backend API integrations.
+- Supports platform-native actions like **Print Pass** layout overrides (`print:hidden` visibility controls) and **Web Share APIs** for seamless travel coordination.
+
+---
+
+## 🛠️ Tech Stack & Dependencies
+
+- **Framework:** Next.js 16 (App Router) with Turbopack compiling
+- **Language:** TypeScript 5
+- **Styling:** TailwindCSS 4 & PostCSS
+- **State Management:** Zustand 5
+- **Forms & Validation:** React Hook Form 7, @hookform/resolvers 5, Yup 1
+- **Icons:** Lucide React
+
+---
+
+## 📂 Codebase Directory Breakdown
+
+```text
+src/
+├── app/
+│   ├── api/send-confirmation/  # Serverless route for e-ticket booking confirmations
+│   ├── booking/                # Step 2: Passenger details and checkout matrix
+│   ├── confirmation/           # Step 3: Verified PNR ticket print pass screen
+│   ├── flights/                # Step 1: Search modification, sort bar & multi-filter listings
+│   ├── globals.css             # Main stylesheet configuring fonts and visual variables
+│   ├── layout.tsx              # Root HTML boilerplate layout wrapper
+│   └── page.tsx                # Application landpage hosting full-screen Hero search panel
+├── components/
+│   ├── FlightBookingForm.tsx   # Dynamic validation form matching traveller numbers
+│   ├── FlightCard.tsx          # Comprehensive card component with inline accordion details
+│   ├── FlightFiltersSidebar.tsx# Collapsible facets (price slider, stops, airline matrices)
+│   ├── FlightSearch.tsx        # Omni-present travel input box with native date pickers
+│   └── FlightSortBar.tsx       # Dynamic sorter (cheapest, fastest, earliest departure, etc.)
+├── data/
+│   └── flights.json            # Mock live-flight database schema definitions
+├── store/
+│   └── flightStore.tsx         # Centralized Zustand reactive store with session persistence
+└── types/
+    ├── booking.ts              # Core passenger & multi-seat checkout TypeScript models
+    └── flight.ts               # Core full-flight and destination airport interface definitions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚡ Setup, Installation & Verification
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Follow these steps to run and verify the codebase locally:
 
-## Learn More
+### 1. Install Dependencies
+Ensure you have Node.js installed, then execute:
+```bash
+pnpm install
+# or
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Run the Development Server
+```bash
+pnpm dev
+# or
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) with your browser to experience the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Verify Code Quality & Type Safety
+To execute static analysis and type safety audits independently:
+```bash
+# Verify type correctness across all source files
+pnpm exec tsc --noEmit
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Execute lint check validation
+pnpm run lint
+```
+All components are fully validated to be free of any type warnings or linting compliance flags.

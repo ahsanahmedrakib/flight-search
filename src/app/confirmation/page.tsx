@@ -1,6 +1,6 @@
 "use client";
 
-import { useFlight, useFlightStore } from "@/store/flightStore";
+import { useFlight } from "@/store/flightStore";
 import {
   Calendar,
   CheckCircle2,
@@ -43,15 +43,13 @@ const WEEKDAYS = [
 export default function ConfirmationPage() {
   const { selectedFlight, bookingDetails, resetAll } = useFlight();
   const router = useRouter();
-  const [hasHydrated, setHasHydrated] = useState(() =>
-    useFlightStore.persist.hasHydrated(),
-  );
+
   const [mailStatus, setMailStatus] = useState<
     "idle" | "sending" | "sent" | "error"
   >("idle");
   const sentRef = useRef(false);
 
-  // Generate PNR once (stable value)
+  // Generate stable PNR
   const [pnr] = useState(() =>
     Math.random().toString(36).substring(2, 8).toUpperCase(),
   );
@@ -69,7 +67,6 @@ export default function ConfirmationPage() {
     return `${day} ${MONTHS[month - 1]}, ${WEEKDAYS[date.getDay()]}`;
   };
 
-  // Removed unnecessary `pnr` from dependency array
   const sendEmail = useCallback(
     async (
       flight: NonNullable<typeof selectedFlight>,
@@ -117,42 +114,25 @@ export default function ConfirmationPage() {
         setMailStatus("error");
       }
     },
-    [], // No dependencies needed (pnr is passed as argument)
+    [],
   );
 
-  // Wait for store hydration
+  // Redirect if no booking data
   useEffect(() => {
-    if (!useFlightStore.persist.hasHydrated()) {
-      const unsub = useFlightStore.persist.onFinishHydration(() =>
-        setHasHydrated(true),
-      );
-      return () => unsub();
-    }
-  }, []);
-
-  // After hydration, redirect or send email
-  useEffect(() => {
-    if (!hasHydrated) return;
-
-    const state = useFlightStore.getState();
-    if (!state.selectedFlight || !state.bookingDetails) {
+    if (!selectedFlight || !bookingDetails) {
       router.push("/");
-      return;
+    } else if (!sentRef.current) {
+      sendEmail(selectedFlight, bookingDetails, pnr);
     }
+  }, [selectedFlight, bookingDetails, router, sendEmail, pnr]);
 
-    if (!sentRef.current) {
-      sendEmail(state.selectedFlight, state.bookingDetails, pnr);
-    }
-  }, [hasHydrated, router, sendEmail, pnr]); // pnr is stable, sendEmail is now stable
-
-  if (!hasHydrated || !selectedFlight || !bookingDetails) {
+  // Early return if data is missing
+  if (!selectedFlight || !bookingDetails) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">
         <div className="text-center space-y-3">
           <div className="animate-pulse text-emerald-600 text-3xl">✓</div>
-          <p className="text-gray-500 font-semibold text-sm">
-            {!hasHydrated ? "Loading..." : "Redirecting..."}
-          </p>
+          <p className="text-gray-500 font-semibold text-sm">Redirecting...</p>
         </div>
       </div>
     );
@@ -204,10 +184,8 @@ export default function ConfirmationPage() {
                 Could not send email.{" "}
                 <button
                   onClick={() => {
-                    const state = useFlightStore.getState();
-                    if (!state.selectedFlight || !state.bookingDetails) return;
                     sentRef.current = false;
-                    sendEmail(state.selectedFlight, state.bookingDetails, pnr);
+                    sendEmail(selectedFlight, bookingDetails, pnr);
                   }}
                   className="underline font-bold hover:text-white"
                 >
@@ -429,10 +407,8 @@ export default function ConfirmationPage() {
           <button
             disabled={mailStatus === "sending" || mailStatus === "sent"}
             onClick={() => {
-              const state = useFlightStore.getState();
-              if (!state.selectedFlight || !state.bookingDetails) return;
               sentRef.current = false;
-              sendEmail(state.selectedFlight, state.bookingDetails, pnr);
+              sendEmail(selectedFlight, bookingDetails, pnr);
             }}
             className="flex items-center cursor-pointer gap-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-bold text-xs px-5 py-2.5 rounded-xl transition-colors bg-white disabled:opacity-50 disabled:cursor-not-allowed"
           >

@@ -1,7 +1,7 @@
 "use client";
 
 import FlightBookingForm from "@/components/FlightBookingForm";
-import { allRawFlights, useFlight, useFlightStore } from "@/store/flightStore";
+import { allRawFlights, useFlight } from "@/store/flightStore";
 import {
   ArrowRight,
   Briefcase,
@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 
 const MONTHS = [
   "Jan",
@@ -41,42 +41,43 @@ const WEEKDAYS = [
 function BookingContent() {
   const { selectedFlight, searchCriteria, flights, setSelectedFlight } =
     useFlight();
-  const [hasHydrated, setHasHydrated] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const passengers = searchCriteria.passengers;
 
+  // Handle flight selection from URL
   useEffect(() => {
-    if (useFlightStore.persist.hasHydrated()) {
-      queueMicrotask(() => setHasHydrated(true));
-      return;
-    }
-    const unsub = useFlightStore.persist.onFinishHydration(() =>
-      setHasHydrated(true),
-    );
-    return () => unsub();
-  }, []);
-
-  useEffect(() => {
-    if (!hasHydrated) return;
     const flightId = searchParams.get("flightId");
+
     if (!selectedFlight && flightId) {
       const found = [...flights, ...allRawFlights].find(
         (f) => f.id === flightId,
       );
-      if (found) setSelectedFlight(found);
-      else router.push("/");
+      if (found) {
+        setSelectedFlight(found);
+      } else {
+        router.push("/");
+      }
     } else if (!selectedFlight && !flightId) {
       router.push("/");
     }
-  }, [
-    hasHydrated,
-    selectedFlight,
-    flights,
-    searchParams,
-    setSelectedFlight,
-    router,
-  ]);
+  }, [selectedFlight, flights, searchParams, setSelectedFlight, router]);
+
+  // Early return if no flight is selected
+  if (!selectedFlight) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">
+        <div className="text-center space-y-4">
+          <div className="animate-bounce text-green-600 text-3xl font-bold">
+            ✈️
+          </div>
+          <p className="text-gray-500 font-semibold text-sm">
+            Loading flight details...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const formatTime = (isoString: string) => {
     if (!isoString) return "";
@@ -98,21 +99,6 @@ function BookingContent() {
     const mins = totalMinutes % 60;
     return `${hours}h ${mins}m`;
   };
-
-  if (!hasHydrated || !selectedFlight) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">
-        <div className="text-center space-y-4">
-          <div className="animate-bounce text-green-600 text-3xl font-bold">
-            ✈️
-          </div>
-          <p className="text-gray-500 font-semibold text-sm">
-            {!hasHydrated ? "Loading..." : "Redirecting to flight search..."}
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   const basePrice = selectedFlight.price.baseFare * passengers;
   const taxes = selectedFlight.price.taxes * passengers;
@@ -153,6 +139,7 @@ function BookingContent() {
           </div>
 
           <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-2 order-1 lg:order-2">
+            {/* Flight Details Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="bg-slate-900 p-4 text-white flex items-center gap-2">
                 <Ticket className="w-4 h-4 text-green-500" />
@@ -260,6 +247,7 @@ function BookingContent() {
               </div>
             </div>
 
+            {/* Fare Summary Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="bg-slate-900 p-4 text-white flex items-center justify-between">
                 <h3 className="text-sm font-bold tracking-tight">
@@ -319,9 +307,19 @@ function BookingContent() {
 
 export default function BookingPage() {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <div className="text-center space-y-4">
+            <div className="animate-bounce text-green-600 text-3xl font-bold">
+              ✈️
+            </div>
+            <p className="text-gray-500 font-semibold text-sm">Loading...</p>
+          </div>
+        </div>
+      }
+    >
       <BookingContent />
     </Suspense>
   );
 }
-
