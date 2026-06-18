@@ -45,3 +45,8 @@ body {
   border-radius: 999px;
 }
 
+@media print {
+  body { background: white !important; }
+  @page { margin: 12mm; }
+}
+
