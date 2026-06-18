@@ -239,7 +239,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
               {isSelecting ? (
                 <>
                   <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Redirecting...</span>
+                  <span>Selecting...</span>
                 </>
               ) : (
                 "Select"

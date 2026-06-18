@@ -7,7 +7,7 @@ import FlightSortBar from "@/components/FlightSortBar";
 import { useFlight } from "@/store/flightStore";
 import { Filter, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 function LoadingSkeleton() {
   return (
@@ -76,7 +76,7 @@ function EmptyState() {
   );
 }
 
-export default function FlightsContent() {
+function FlightsContent() {
   const { hasSearched, loading, filteredFlights, triggerSearch, lastAction } =
     useFlight();
   const searchParams = useSearchParams();
@@ -138,9 +138,16 @@ export default function FlightsContent() {
   }
 
   return (
-    <main className="flex-1 flex flex-col pb-16">
-      <div ref={searchRef}>
-        <FlightSearch isSearching={loading} />
+    <main className="flex-1 flex flex-col pb-16 bg-slate-50/50 min-h-screen">
+      {/* Search Section */}
+      <div className="bg-slate-900 relative">
+        <div
+          className={`transition-all duration-300 ease-in-out overflow-hidden max-h-250 opacity-100`}
+        >
+          <div ref={searchRef}>
+            <FlightSearch isSearching={loading} />
+          </div>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-8 lg:mt-10">
@@ -156,7 +163,7 @@ export default function FlightsContent() {
                 </div>
                 <button
                   onClick={() => setShowMobileFilters(true)}
-                  className="flex items-center text-green-600 gap-2 bg-white border border-gray-200 hover:border-green-500 px-4 py-2.5 rounded-xl font-bold text-xs shadow-sm active:scale-95 transition-all"
+                  className="flex items-center gap-2 text-green-600 bg-white border border-gray-200 hover:border-green-500 px-4 py-2.5 rounded-xl font-bold text-xs shadow-sm active:scale-95 transition-all select-none"
                 >
                   <Filter className="w-4 h-4" />
                   Filters
@@ -167,7 +174,7 @@ export default function FlightsContent() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Desktop Sidebar */}
               {!shouldHideSidebar && (
-                <div className="hidden lg:block lg:col-span-3 xl:col-span-3 lg:sticky lg:top-6">
+                <div className="hidden lg:block lg:col-span-3 xl:col-span-3">
                   <div className="lg:sticky lg:top-6">
                     <FlightFilterSidebar />
                   </div>
@@ -223,7 +230,7 @@ export default function FlightsContent() {
             }`}
           >
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-lg font-bold text-green-400">Filters</h2>
+              <h2 className="text-lg font-bold text-gray-900">Filters</h2>
               <button
                 onClick={() => setShowMobileFilters(false)}
                 className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
@@ -251,5 +258,21 @@ export default function FlightsContent() {
         </div>
       )}
     </main>
+  );
+}
+
+export default function FlightsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex-1 flex flex-col pb-16 bg-slate-50/50 min-h-screen">
+          <div className="max-w-7xl mx-auto px-4 w-full mt-10">
+            <LoadingSkeleton />
+          </div>
+        </main>
+      }
+    >
+      <FlightsContent />
+    </Suspense>
   );
 }
