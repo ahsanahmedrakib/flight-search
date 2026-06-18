@@ -144,16 +144,56 @@ export default function FlightFilterSidebar() {
       <ChevronDown className="w-4 h-4 text-gray-400" />
     );
 
+  // ==================== DYNAMIC TIME OF DAY ====================
+  const timeSlots = useMemo(() => {
+    const baseSlots = [
+      {
+        key: "morning",
+        Icon: Sunrise,
+        label: "Morning",
+        time: "05-11",
+        count: 0,
+      },
+      {
+        key: "afternoon",
+        Icon: Sun,
+        label: "Afternoon",
+        time: "12-17",
+        count: 0,
+      },
+      {
+        key: "evening",
+        Icon: Sunset,
+        label: "Evening",
+        time: "18-23",
+        count: 0,
+      },
+      { key: "night", Icon: Moon, label: "Night", time: "00-04", count: 0 },
+    ];
+
+    const getSlotKey = (departure: string): string => {
+      if (!departure) return "night";
+      const hour = new Date(departure).getHours();
+      if (hour >= 5 && hour <= 11) return "morning";
+      if (hour >= 12 && hour <= 17) return "afternoon";
+      if (hour >= 18 && hour <= 23) return "evening";
+      return "night";
+    };
+
+    flights.forEach((flight: Flight) => {
+      const key = getSlotKey(flight.departure);
+      const slot = baseSlots.find((s) => s.key === key);
+      if (slot) slot.count++;
+    });
+
+    return baseSlots;
+  }, [flights]);
+
   return (
     <div className="w-full max-w-xs bg-white rounded-2xl shadow-sm border border-gray-100 p-5 font-sans antialiased text-gray-800 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin [&::-webkit-scrollbar]:w-px [&::-webkit-scrollbar-thumb]:bg-green-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
-      {/* 1. Time of Day */}
+      {/* 1. Time of Day - Dynamic + Empty State */}
       <div className="grid grid-cols-4 gap-1.5 mb-6">
-        {[
-          { key: "morning", Icon: Sunrise, label: "Morning", time: "05-11" },
-          { key: "afternoon", Icon: Sun, label: "Afternoon", time: "12-17" },
-          { key: "evening", Icon: Sunset, label: "Evening", time: "18-23" },
-          { key: "night", Icon: Moon, label: "Night", time: "00-04" },
-        ].map(({ key, Icon, label, time }) => (
+        {timeSlots.map(({ key, Icon, label, time, count }) => (
           <button
             key={key}
             onClick={() =>
@@ -162,17 +202,34 @@ export default function FlightFilterSidebar() {
                 selectedTime: prev.selectedTime === key ? null : key,
               }))
             }
+            disabled={count === 0} // ← Disabled when no flights
             className={`p-2 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 ${
               filters.selectedTime === key
                 ? "border-green-500 bg-green-50/30 ring-1 ring-green-500"
-                : "border-gray-100 bg-gray-50/40 hover:border-gray-200"
+                : count === 0
+                  ? "border-gray-100 bg-gray-50/20 opacity-50 cursor-not-allowed"
+                  : "border-gray-100 bg-gray-50/40 hover:border-gray-200"
             }`}
           >
             <Icon
-              className={`w-4 h-4 ${filters.selectedTime === key ? "text-green-500" : "text-gray-400"}`}
+              className={`w-4 h-4 transition-colors ${
+                filters.selectedTime === key
+                  ? "text-green-500"
+                  : count === 0
+                    ? "text-gray-300"
+                    : "text-gray-400"
+              }`}
             />
             <div className="text-[10px] font-bold text-gray-700">{label}</div>
             <div className="text-[9px] text-gray-400">{time}</div>
+
+            {count > 0 ? (
+              <div className="text-[9px] font-medium text-green-600 mt-0.5">
+                {count}
+              </div>
+            ) : (
+              <div className="text-[9px] text-gray-300 mt-0.5">—</div>
+            )}
           </button>
         ))}
       </div>
