@@ -14,8 +14,25 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 export default function FlightFilterSidebar() {
-  const { filters, setFilters, flights, searchCriteria } = useFlight();
+  const { filters, setFilters, flights, searchCriteria, setSelectedAirline } = useFlight();
   const passengers = searchCriteria.passengers;
+
+  const handleResetFilters = () => {
+    setSelectedAirline(null);
+    setFilters({
+      selectedTime: null,
+      partiallyRefundable: false,
+      layoverTime: 15,
+      selectedAircraft: [],
+      selectedAirlines: [],
+      maxPrice: 0,
+      stopsFilter: "all",
+      mealsIncluded: false,
+      seatSelectionIncluded: false,
+      changeAllowed: false,
+      minPunctuality: 0,
+    });
+  };
 
   const airlineOptions = useMemo(() => {
     const seen = new Map<
@@ -190,8 +207,16 @@ export default function FlightFilterSidebar() {
   }, [flights]);
 
   return (
-    <div className="w-full max-w-xs bg-white rounded-2xl shadow-sm border border-gray-100 p-5 font-sans antialiased text-gray-800 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin [&::-webkit-scrollbar]:w-px [&::-webkit-scrollbar-thumb]:bg-green-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
-      {/* 1. Time of Day - Dynamic + Empty State */}
+    <div className="w-full bg-white rounded-2xl lg:shadow-sm lg:border lg:border-gray-100 p-4 lg:p-5 font-sans antialiased text-gray-800 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto scrollbar-thin lg:[&::-webkit-scrollbar]:w-px lg:[&::-webkit-scrollbar-thumb]:bg-green-600 lg:[&::-webkit-scrollbar-thumb]:rounded-full lg:[&::-webkit-scrollbar-track]:bg-transparent">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-base font-bold text-gray-900">Filters</h3>
+        <button
+          onClick={handleResetFilters}
+          className="text-xs font-bold text-green-600 hover:text-green-700 transition-colors"
+        >
+          Reset All
+        </button>
+      </div>
       <div className="grid grid-cols-4 gap-1.5 mb-6">
         {timeSlots.map(({ key, Icon, label, time, count }) => (
           <button
@@ -233,7 +258,6 @@ export default function FlightFilterSidebar() {
           </button>
         ))}
       </div>
-
       <div className="space-y-5 divide-y divide-gray-100">
         {/* 2. Stops */}
         <div className="pt-4 first:pt-0">

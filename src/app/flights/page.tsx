@@ -5,8 +5,9 @@ import FlightFilterSidebar from "@/components/FlightFiltersSidebar";
 import FlightSearch from "@/components/FlightSearch";
 import FlightSortBar from "@/components/FlightSortBar";
 import { useFlight } from "@/store/flightStore";
+import { Filter, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function LoadingSkeleton() {
   return (
@@ -66,7 +67,7 @@ function EmptyState() {
               minPunctuality: 0,
             });
           }}
-          className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
         >
           Clear Filters
         </button>
@@ -75,11 +76,13 @@ function EmptyState() {
   );
 }
 
-function FlightsContent() {
+export default function FlightsContent() {
   const { hasSearched, loading, filteredFlights, triggerSearch, lastAction } =
     useFlight();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
+
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   useEffect(() => {
     const el = searchRef.current;
@@ -120,22 +123,15 @@ function FlightsContent() {
     lastAction === "search" && filteredFlights.length === 0;
 
   if (!hasSearched && !hasUrlParams) return null;
+
   if (!hasSearched && hasUrlParams) {
-    // Show loading while search is being triggered
     return (
       <main className="flex-1 flex flex-col pb-16">
         <div ref={searchRef}>
           <FlightSearch isSearching={true} />
         </div>
         <div className="max-w-7xl mx-auto px-4 w-full mt-10">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-1 hidden lg:block">
-              <div className="w-full h-96 bg-white rounded-2xl border border-gray-100 animate-pulse" />
-            </div>
-            <div className="lg:col-span-3">
-              <LoadingSkeleton />
-            </div>
-          </div>
+          <LoadingSkeleton />
         </div>
       </main>
     );
@@ -147,54 +143,113 @@ function FlightsContent() {
         <FlightSearch isSearching={loading} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 w-full mt-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-8 lg:mt-10">
         {loading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-1 hidden lg:block">
-              <div className="w-full h-96 bg-white rounded-2xl border border-gray-100 animate-pulse" />
-            </div>
-            <div className="lg:col-span-3">
-              <LoadingSkeleton />
-            </div>
-          </div>
+          <LoadingSkeleton />
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* Filter Sidebar - Hidden on mobile by default, toggleable */}
+          <>
+            {/* Mobile Filter & Results Count Row */}
             {!shouldHideSidebar && (
-              <div className="lg:col-span-3 xl:col-span-3 w-full lg:sticky lg:top-2">
-                <div className="lg:sticky lg:top-4">
-                  <FlightFilterSidebar />
+              <div className="lg:hidden flex items-center justify-between mb-6 mt-4">
+                <div className="text-sm font-bold text-gray-600">
+                  {filteredFlights.length} Flights Found
                 </div>
+                <button
+                  onClick={() => setShowMobileFilters(true)}
+                  className="flex items-center text-green-600 gap-2 bg-white border border-gray-200 hover:border-green-500 px-4 py-2.5 rounded-xl font-bold text-xs shadow-sm active:scale-95 transition-all"
+                >
+                  <Filter className="w-4 h-4" />
+                  Filters
+                </button>
               </div>
             )}
 
-            {/* Main Content Area */}
-            <div
-              className={`${shouldHideSidebar ? "lg:col-span-12" : "lg:col-span-9 xl:col-span-9"} space-y-6 w-full`}
-            >
-              <FlightSortBar />
-
-              {filteredFlights.length === 0 ? (
-                <EmptyState />
-              ) : (
-                <div className="space-y-4">
-                  {filteredFlights.map((flight) => (
-                    <FlightCard key={flight.id} flight={flight} />
-                  ))}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Desktop Sidebar */}
+              {!shouldHideSidebar && (
+                <div className="hidden lg:block lg:col-span-3 xl:col-span-3 lg:sticky lg:top-6">
+                  <div className="lg:sticky lg:top-6">
+                    <FlightFilterSidebar />
+                  </div>
                 </div>
               )}
+
+              {/* Main Content */}
+              <div
+                className={`${
+                  shouldHideSidebar
+                    ? "lg:col-span-12"
+                    : "lg:col-span-9 xl:col-span-9"
+                } space-y-6 w-full`}
+              >
+                <div className="w-full">
+                  <FlightSortBar />
+                </div>
+
+                {filteredFlights.length === 0 ? (
+                  <EmptyState />
+                ) : (
+                  <div className="space-y-4">
+                    {filteredFlights.map((flight) => (
+                      <FlightCard key={flight.id} flight={flight} />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
-    </main>
-  );
-}
 
-export default function FlightsPage() {
-  return (
-    <Suspense>
-      <FlightsContent />
-    </Suspense>
+      {/* Mobile Filter Drawer */}
+      {!shouldHideSidebar && (
+        <div
+          className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${
+            showMobileFilters
+              ? "opacity-100 visible"
+              : "opacity-0 invisible pointer-events-none"
+          }`}
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setShowMobileFilters(false)}
+          />
+
+          {/* Drawer */}
+          <div
+            className={`absolute right-0 top-0 bottom-0 w-[85%] max-w-[320px] bg-white shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${
+              showMobileFilters ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="text-lg font-bold text-green-400">Filters</h2>
+              <button
+                onClick={() => setShowMobileFilters(false)}
+                className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto overflow-x-hidden">
+              <FlightFilterSidebar />
+            </div>
+
+            <div className="p-4 border-t bg-gray-50">
+              <button
+                onClick={() => setShowMobileFilters(false)}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-all text-sm flex items-center justify-center gap-1.5"
+              >
+                <span>Show Results</span>
+                <span className="bg-white/20 px-2 py-0.5 rounded-md text-xs font-black">
+                  {filteredFlights.length}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
   );
 }
