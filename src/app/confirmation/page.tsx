@@ -83,6 +83,7 @@ export default function ConfirmationPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: details.email,
+            email: details.email,
             pnr: ref,
             flight: {
               airlineName: flight.airline.name,
