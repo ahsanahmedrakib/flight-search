@@ -148,11 +148,11 @@ function BookingContent() {
 
       <div className="max-w-7xl mx-auto px-4 mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-8 space-y-6 order-2 lg:order-1">
             <FlightBookingForm />
           </div>
 
-          <div className="lg:col-span-4 space-y-6 sticky top-2">
+          <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-2 order-1 lg:order-2">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="bg-slate-900 p-4 text-white flex items-center gap-2">
                 <Ticket className="w-4 h-4 text-green-500" />
