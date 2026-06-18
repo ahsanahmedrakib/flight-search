@@ -313,7 +313,7 @@ export default function FlightBookingForm() {
             className="w-full sm:w-auto cursor-pointer bg-linear-to-r from-green-600 via-green-500 to-emerald-600 hover:from-green-700 hover:via-green-600 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-black text-sm px-8 py-3.5 rounded-xl shadow-xl shadow-green-600/30 hover:shadow-2xl hover:shadow-green-600/40 flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:scale-100 order-1 sm:order-2 border-2 border-green-700/20"
           >
             <span>
-              {isSubmitting ? "Processing..." : "Continue to Payment"}
+              {isSubmitting ? "Processing..." : "Continue to Booking"}
             </span>
             {!isSubmitting && <ArrowRight className="w-5 h-5" />}
           </button>
@@ -322,4 +322,3 @@ export default function FlightBookingForm() {
     </div>
   );
 }
-
