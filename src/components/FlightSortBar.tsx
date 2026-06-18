@@ -1,20 +1,27 @@
 "use client";
 
 import {
-    ChevronDown,
-    ChevronLeft,
-    ChevronUp,
-    Clock,
-    DollarSign,
-    Zap,
+  ChevronDown,
+  ChevronLeft,
+  ChevronUp,
+  Clock,
+  DollarSign,
+  Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFlight } from "@/store/flightStore";
 
 export default function FlightSortBar() {
-  const { flights, sortBy, setSortBy, selectedAirline, setSelectedAirline, searchCriteria } = useFlight();
+  const {
+    flights,
+    sortBy,
+    setSortBy,
+    selectedAirline,
+    setSelectedAirline,
+    searchCriteria,
+  } = useFlight();
   const passengers = searchCriteria.passengers;
 
   // Custom Dropdown Open/Close and current value state
@@ -25,7 +32,10 @@ export default function FlightSortBar() {
 
   // Compute carrier metrics dynamically from flights data
   const dynamicAirlineFilters = useMemo(() => {
-    const map: Record<string, { name: string; logo: string; count: number; minPrice: number }> = {};
+    const map: Record<
+      string,
+      { name: string; logo: string; count: number; minPrice: number }
+    > = {};
 
     flights.forEach((flight) => {
       const { code, name, logo } = flight.airline;
@@ -73,8 +83,11 @@ export default function FlightSortBar() {
     <div className="w-full max-w-5xl space-y-4 font-sans antialiased bg-slate-50 p-4 rounded-2xl">
       {/* Summary Matrix Indicator text */}
       <div className="text-sm font-bold text-slate-700 tracking-wide px-1">
-        Showing {flights.length} Flights & {new Set(flights.map((f) => f.airline.code)).size} Carriers
-        {passengers > 1 && <span className="ml-2 text-red-600">({passengers} Travellers)</span>}
+        Showing {flights.length} Flights &{" "}
+        {new Set(flights.map((f) => f.airline.code)).size} Carriers
+        {passengers > 1 && (
+          <span className="ml-2 text-green-600">({passengers} Travellers)</span>
+        )}
       </div>
 
       {/* Row 1: Core Priority Quick Sort Buttons */}
@@ -87,23 +100,25 @@ export default function FlightSortBar() {
           }}
           className={`flex items-center gap-3 p-3 px-4 rounded-xl border text-left transition-all ${
             sortBy === "cheapest"
-              ? "bg-red-50/60 border-red-500 ring-1 ring-red-500/20"
+              ? "bg-green-50/60 border-green-500 ring-1 ring-green-500/20"
               : "bg-white border-gray-100 hover:border-gray-300"
           }`}
         >
           <div
-            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "cheapest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
+            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "cheapest" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-500"}`}
           >
             <DollarSign className="w-5 h-5 stroke-[2.5]" />
           </div>
           <div>
             <div
-              className={`text-sm font-black ${sortBy === "cheapest" ? "text-red-600" : "text-gray-700"}`}
+              className={`text-sm font-black ${sortBy === "cheapest" ? "text-green-600" : "text-gray-700"}`}
             >
               Cheapest
             </div>
             <div className="text-xs font-bold text-gray-500 mt-0.5">
-              {flights.length > 0 ? `৳ ${(Math.min(...flights.map((f) => f.price.total)) * passengers).toLocaleString()}` : "—"}
+              {flights.length > 0
+                ? `৳ ${(Math.min(...flights.map((f) => f.price.total)) * passengers).toLocaleString()}`
+                : "—"}
             </div>
           </div>
         </button>
@@ -116,25 +131,27 @@ export default function FlightSortBar() {
           }}
           className={`flex items-center gap-3 p-3 px-4 rounded-xl border text-left transition-all ${
             sortBy === "fastest"
-              ? "bg-red-50/60 border-red-500 ring-1 ring-red-500/20"
+              ? "bg-green-50/60 border-green-500 ring-1 ring-green-500/20"
               : "bg-white border-gray-100 hover:border-gray-300"
           }`}
         >
           <div
-            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "fastest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
+            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "fastest" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-500"}`}
           >
             <Zap className="w-5 h-5" />
           </div>
           <div>
             <div
-              className={`text-sm font-black ${sortBy === "fastest" ? "text-red-600" : "text-gray-700"}`}
+              className={`text-sm font-black ${sortBy === "fastest" ? "text-green-600" : "text-gray-700"}`}
             >
               Fastest
             </div>
             <div className="text-xs font-bold text-gray-500 mt-0.5">
               {flights.length > 0
                 ? (() => {
-                    const minD = Math.min(...flights.map((f) => f.durationMinutes));
+                    const minD = Math.min(
+                      ...flights.map((f) => f.durationMinutes),
+                    );
                     const h = Math.floor(minD / 60);
                     const m = minD % 60;
                     return h > 0 ? `${h}h ${m}m` : `${m}m`;
@@ -152,18 +169,18 @@ export default function FlightSortBar() {
           }}
           className={`flex items-center gap-3 p-3 px-4 rounded-xl border text-left transition-all ${
             sortBy === "earliest"
-              ? "bg-red-50/60 border-red-500 ring-1 ring-red-500/20"
+              ? "bg-green-50/60 border-green-500 ring-1 ring-green-500/20"
               : "bg-white border-gray-100 hover:border-gray-300"
           }`}
         >
           <div
-            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "earliest" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-500"}`}
+            className={`p-2.5 rounded-lg flex items-center justify-center ${sortBy === "earliest" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-500"}`}
           >
             <Clock className="w-5 h-5" />
           </div>
           <div>
             <div
-              className={`text-sm font-black ${sortBy === "earliest" ? "text-red-600" : "text-gray-700"}`}
+              className={`text-sm font-black ${sortBy === "earliest" ? "text-green-600" : "text-gray-700"}`}
             >
               Earliest
             </div>
@@ -213,7 +230,7 @@ export default function FlightSortBar() {
                   onClick={() => handleDropdownSelect(opt.key, opt.label)}
                   className={`w-full text-left px-4 py-2.5 rounded-lg text-xs font-bold transition-colors ${
                     sortBy === opt.key
-                      ? "bg-gray-50 text-red-600"
+                      ? "bg-gray-50 text-green-600"
                       : "text-gray-600 hover:bg-slate-50 hover:text-gray-900"
                   }`}
                 >
@@ -242,7 +259,7 @@ export default function FlightSortBar() {
                 onClick={() => setSelectedAirline(isChosen ? null : item.id)}
                 className={`flex items-center gap-2.5 px-4 py-1.5 rounded-xl border cursor-pointer select-none transition-all whitespace-nowrap ${
                   isChosen
-                    ? "border-red-500 bg-red-50/20 ring-1 ring-red-500/10"
+                    ? "border-green-500 bg-green-50/20 ring-1 ring-green-500/10"
                     : "border-gray-50 hover:border-gray-200 bg-white"
                 }`}
               >
@@ -259,7 +276,9 @@ export default function FlightSortBar() {
                   <span className="font-bold text-gray-700">{item.code}</span> (
                   {item.count})
                   <div className="font-black text-gray-800 mt-0.5">
-                    {item.minPrice > 0 ? `৳ ${(item.minPrice * passengers).toLocaleString()}` : "N/A"}
+                    {item.minPrice > 0
+                      ? `৳ ${(item.minPrice * passengers).toLocaleString()}`
+                      : "N/A"}
                   </div>
                 </div>
               </div>

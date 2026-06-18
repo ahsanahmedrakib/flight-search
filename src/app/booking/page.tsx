@@ -1,7 +1,7 @@
 "use client";
 
 import FlightBookingForm from "@/components/FlightBookingForm";
-import { useFlight, useFlightStore, allRawFlights } from "@/store/flightStore";
+import { allRawFlights, useFlight, useFlightStore } from "@/store/flightStore";
 import {
   ArrowRight,
   Briefcase,
@@ -14,11 +14,33 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const WEEKDAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 function BookingContent() {
-  const { selectedFlight, searchCriteria, flights, setSelectedFlight } = useFlight();
+  const { selectedFlight, searchCriteria, flights, setSelectedFlight } =
+    useFlight();
   const [hasHydrated, setHasHydrated] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -29,7 +51,9 @@ function BookingContent() {
       queueMicrotask(() => setHasHydrated(true));
       return;
     }
-    const unsub = useFlightStore.persist.onFinishHydration(() => setHasHydrated(true));
+    const unsub = useFlightStore.persist.onFinishHydration(() =>
+      setHasHydrated(true),
+    );
     return () => unsub();
   }, []);
 
@@ -37,13 +61,22 @@ function BookingContent() {
     if (!hasHydrated) return;
     const flightId = searchParams.get("flightId");
     if (!selectedFlight && flightId) {
-      const found = [...flights, ...allRawFlights].find((f) => f.id === flightId);
+      const found = [...flights, ...allRawFlights].find(
+        (f) => f.id === flightId,
+      );
       if (found) setSelectedFlight(found);
       else router.push("/");
     } else if (!selectedFlight && !flightId) {
       router.push("/");
     }
-  }, [hasHydrated, selectedFlight, flights, searchParams, setSelectedFlight, router]);
+  }, [
+    hasHydrated,
+    selectedFlight,
+    flights,
+    searchParams,
+    setSelectedFlight,
+    router,
+  ]);
 
   const formatTime = (isoString: string) => {
     if (!isoString) return "";
@@ -70,7 +103,9 @@ function BookingContent() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">
         <div className="text-center space-y-4">
-          <div className="animate-bounce text-red-600 text-3xl font-bold">✈️</div>
+          <div className="animate-bounce text-green-600 text-3xl font-bold">
+            ✈️
+          </div>
           <p className="text-gray-500 font-semibold text-sm">
             {!hasHydrated ? "Loading..." : "Redirecting to flight search..."}
           </p>
@@ -91,11 +126,16 @@ function BookingContent() {
       <div className="bg-white border-b border-gray-100 py-4 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
           <div className="flex items-center gap-2 text-xs font-bold text-gray-400">
-            <span className="cursor-pointer hover:text-red-600" onClick={() => router.push("/")}>
+            <span
+              className="cursor-pointer hover:text-green-600"
+              onClick={() => router.push("/")}
+            >
               1. Flight Search
             </span>
             <ArrowRight className="w-3 h-3" />
-            <span className="text-red-600 font-extrabold">2. Passenger Details</span>
+            <span className="text-green-600 font-extrabold">
+              2. Passenger Details
+            </span>
             <ArrowRight className="w-3 h-3" />
             <span>3. Confirmation</span>
           </div>
@@ -115,8 +155,10 @@ function BookingContent() {
           <div className="lg:col-span-4 space-y-6">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="bg-slate-900 p-4 text-white flex items-center gap-2">
-                <Ticket className="w-4 h-4 text-red-500" />
-                <h3 className="text-sm font-bold tracking-tight">Flight Details</h3>
+                <Ticket className="w-4 h-4 text-green-500" />
+                <h3 className="text-sm font-bold tracking-tight">
+                  Flight Details
+                </h3>
               </div>
 
               <div className="p-5 space-y-5">
@@ -160,14 +202,16 @@ function BookingContent() {
                       {formatDuration(selectedFlight.durationMinutes)}
                     </span>
                     <div className="w-full flex items-center gap-1 my-1">
-                      <div className="w-1.5 h-1.5 rounded-full border border-red-500 bg-white" />
+                      <div className="w-1.5 h-1.5 rounded-full border border-green-500 bg-white" />
                       <div className="flex-1 border-t border-dashed border-gray-200 relative">
-                        <Plane className="w-3 h-3 text-red-500 absolute -top-1.5 left-1/2 -translate-x-1/2 rotate-90" />
+                        <Plane className="w-3 h-3 text-green-500 absolute -top-1.5 left-1/2 -translate-x-1/2 rotate-90" />
                       </div>
-                      <div className="w-1.5 h-1.5 rounded-full border border-red-500 bg-white" />
+                      <div className="w-1.5 h-1.5 rounded-full border border-green-500 bg-white" />
                     </div>
-                    <span className="text-[9px] font-bold text-red-500">
-                      {selectedFlight.stops === 0 ? "Non-stop" : `${selectedFlight.stops} Stop`}
+                    <span className="text-[9px] font-bold text-green-500">
+                      {selectedFlight.stops === 0
+                        ? "Non-stop"
+                        : `${selectedFlight.stops} Stop`}
                     </span>
                   </div>
 
@@ -191,7 +235,8 @@ function BookingContent() {
                 <div className="space-y-2.5 pt-2 border-t border-gray-50 text-xs">
                   <div className="flex justify-between text-gray-500">
                     <span className="flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5 text-gray-400" /> Baggage:
+                      <Briefcase className="w-3.5 h-3.5 text-gray-400" />{" "}
+                      Baggage:
                     </span>
                     <span className="font-bold text-gray-700">
                       Cabin {selectedFlight.baggage.cabin} • Checked{" "}
@@ -200,10 +245,15 @@ function BookingContent() {
                   </div>
                   <div className="flex justify-between text-gray-500">
                     <span className="flex items-center gap-1.5">
-                      <RefreshCw className="w-3.5 h-3.5 text-gray-400" /> Refund:
+                      <RefreshCw className="w-3.5 h-3.5 text-gray-400" />{" "}
+                      Refund:
                     </span>
-                    <span className={`font-bold ${selectedFlight.refundable ? "text-emerald-600" : "text-gray-500"}`}>
-                      {selectedFlight.refundable ? "Refundable" : "Non-Refundable"}
+                    <span
+                      className={`font-bold ${selectedFlight.refundable ? "text-emerald-600" : "text-gray-500"}`}
+                    >
+                      {selectedFlight.refundable
+                        ? "Refundable"
+                        : "Non-Refundable"}
                     </span>
                   </div>
                 </div>
@@ -212,12 +262,16 @@ function BookingContent() {
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="bg-slate-900 p-4 text-white flex items-center justify-between">
-                <h3 className="text-sm font-bold tracking-tight">Fare Summary</h3>
+                <h3 className="text-sm font-bold tracking-tight">
+                  Fare Summary
+                </h3>
                 <div className="flex items-center gap-2">
                   {passengers > 1 && (
-                    <span className="text-xs text-gray-300 font-semibold">{passengers} travellers</span>
+                    <span className="text-xs text-gray-300 font-semibold">
+                      {passengers} travellers
+                    </span>
                   )}
-                  <span className="text-xs bg-red-600 text-white font-extrabold px-2 py-0.5 rounded">
+                  <span className="text-xs bg-green-600 text-white font-extrabold px-2 py-0.5 rounded">
                     {currency}
                   </span>
                 </div>
@@ -226,15 +280,21 @@ function BookingContent() {
               <div className="p-5 space-y-3 text-xs">
                 <div className="flex justify-between text-gray-500">
                   <span>Base Fare:</span>
-                  <span className="font-bold text-gray-700">৳ {basePrice.toLocaleString()}</span>
+                  <span className="font-bold text-gray-700">
+                    ৳ {basePrice.toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex justify-between text-gray-500">
                   <span>Taxes & Carrier Fees:</span>
-                  <span className="font-bold text-gray-700">৳ {taxes.toLocaleString()}</span>
+                  <span className="font-bold text-gray-700">
+                    ৳ {taxes.toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex justify-between text-gray-500">
                   <span>Service charge:</span>
-                  <span className="font-bold text-gray-700">৳ {fee.toLocaleString()}</span>
+                  <span className="font-bold text-gray-700">
+                    ৳ {fee.toLocaleString()}
+                  </span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-emerald-600 font-bold">
@@ -244,7 +304,9 @@ function BookingContent() {
                 )}
                 <div className="flex justify-between text-sm font-black text-gray-900 pt-3 border-t border-gray-100">
                   <span>Total Payable:</span>
-                  <span className="text-red-600 text-base">৳ {total.toLocaleString()}</span>
+                  <span className="text-green-600 text-base">
+                    ৳ {total.toLocaleString()}
+                  </span>
                 </div>
               </div>
             </div>
@@ -262,3 +324,4 @@ export default function BookingPage() {
     </Suspense>
   );
 }
+

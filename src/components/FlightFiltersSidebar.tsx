@@ -1,32 +1,43 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useFlight } from "@/store/flightStore";
 import { ChevronDown, ChevronUp, Moon, Sun } from "lucide-react";
 import Image from "next/image";
-import { useFlight } from "@/store/flightStore";
+import { useMemo, useState } from "react";
 
 export default function FlightFilterSidebar() {
   const { filters, setFilters, flights, searchCriteria } = useFlight();
   const passengers = searchCriteria.passengers;
 
   const airlineOptions = useMemo(() => {
-    const seen = new Map<string, { name: string; logo: string; minPrice: number }>();
+    const seen = new Map<
+      string,
+      { name: string; logo: string; minPrice: number }
+    >();
     flights.forEach((f) => {
       const existing = seen.get(f.airline.code);
       if (!existing) {
-        seen.set(f.airline.code, { name: f.airline.name, logo: f.airline.logo, minPrice: f.price.total });
+        seen.set(f.airline.code, {
+          name: f.airline.name,
+          logo: f.airline.logo,
+          minPrice: f.price.total,
+        });
       } else if (f.price.total < existing.minPrice) {
         existing.minPrice = f.price.total;
       }
     });
-    return Array.from(seen.entries()).map(([code, data]) => ({ code, ...data }));
+    return Array.from(seen.entries()).map(([code, data]) => ({
+      code,
+      ...data,
+    }));
   }, [flights]);
 
   const aircraftOptions = useMemo(() => {
     const seen = new Map<string, string>();
     flights.forEach((f) => {
       const code = f.aircraft.model.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
-      if (!seen.has(code)) seen.set(code, `${f.aircraft.manufacturer} ${f.aircraft.model}`);
+      if (!seen.has(code))
+        seen.set(code, `${f.aircraft.manufacturer} ${f.aircraft.model}`);
     });
     return Array.from(seen.entries()).map(([code, label]) => ({ code, label }));
   }, [flights]);
@@ -35,7 +46,10 @@ export default function FlightFilterSidebar() {
     let max = 0;
     flights.forEach((f) => {
       if (f.stops > 0) {
-        const total = f.stopDetails.reduce((acc, s) => acc + (Number(s.durationMinutes) || 0), 0);
+        const total = f.stopDetails.reduce(
+          (acc, s) => acc + (Number(s.durationMinutes) || 0),
+          0,
+        );
         const hours = Math.ceil(total / 60);
         if (hours > max) max = hours;
       }
@@ -46,7 +60,10 @@ export default function FlightFilterSidebar() {
   const { minPrice, maxPriceLimit } = useMemo(() => {
     if (flights.length === 0) return { minPrice: 0, maxPriceLimit: 0 };
     const prices = flights.map((f) => f.price.total * passengers);
-    return { minPrice: Math.min(...prices), maxPriceLimit: Math.max(...prices) };
+    return {
+      minPrice: Math.min(...prices),
+      maxPriceLimit: Math.max(...prices),
+    };
   }, [flights, passengers]);
 
   const [sections, setSections] = useState({
@@ -77,18 +94,27 @@ export default function FlightFilterSidebar() {
     }));
 
   const sliderStyle = (value: number, min: number, max: number) => ({
-    background: `linear-gradient(to right, #dc2626 0%, #dc2626 ${((value - min) / (max - min)) * 100}%, #e5e7eb ${((value - min) / (max - min)) * 100}%, #e5e7eb 100%)`,
+    background: `linear-gradient(to right, #00A63E 0%, #00A63E ${((value - min) / (max - min)) * 100}%, #e5e7eb ${((value - min) / (max - min)) * 100}%, #e5e7eb 100%)`,
   });
 
   const chevron = (open: boolean) =>
-    open ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />;
+    open ? (
+      <ChevronUp className="w-4 h-4 text-gray-400" />
+    ) : (
+      <ChevronDown className="w-4 h-4 text-gray-400" />
+    );
 
   return (
-    <div className="w-full max-w-xs bg-white rounded-2xl shadow-sm border border-gray-100 p-5 font-sans antialiased text-gray-800 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin [&::-webkit-scrollbar]:w-px [&::-webkit-scrollbar-thumb]:bg-red-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+    <div className="w-full max-w-xs bg-white rounded-2xl shadow-sm border border-gray-100 p-5 font-sans antialiased text-gray-800 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin [&::-webkit-scrollbar]:w-px [&::-webkit-scrollbar-thumb]:bg-green-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
       {/* 1. Time of Day */}
       <div className="grid grid-cols-2 gap-2 mb-6">
         {[
-          { key: "afternoon", Icon: Sun, label: "Afternoon", time: "12:00-17:59" },
+          {
+            key: "afternoon",
+            Icon: Sun,
+            label: "Afternoon",
+            time: "12:00-17:59",
+          },
           { key: "evening", Icon: Moon, label: "Evening", time: "18:00-23:59" },
         ].map(({ key, Icon, label, time }) => (
           <button
@@ -101,11 +127,13 @@ export default function FlightFilterSidebar() {
             }
             className={`p-3 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
               filters.selectedTime === key
-                ? "border-red-500 bg-red-50/30 ring-1 ring-red-500"
+                ? "border-green-500 bg-green-50/30 ring-1 ring-green-500"
                 : "border-gray-100 bg-gray-50/40 hover:border-gray-200"
             }`}
           >
-            <Icon className={`w-5 h-5 ${filters.selectedTime === key ? "text-red-500" : "text-gray-400"}`} />
+            <Icon
+              className={`w-5 h-5 ${filters.selectedTime === key ? "text-green-500" : "text-gray-400"}`}
+            />
             <div>
               <div className="text-xs font-bold text-gray-700">{label}</div>
               <div className="text-[10px] text-gray-400 mt-0.5">{time}</div>
@@ -130,20 +158,33 @@ export default function FlightFilterSidebar() {
                 type="range"
                 min={minPrice}
                 max={maxPriceLimit}
-                value={filters.maxPrice === 0 ? maxPriceLimit : filters.maxPrice}
+                value={
+                  filters.maxPrice === 0 ? maxPriceLimit : filters.maxPrice
+                }
                 onChange={(e) =>
                   setFilters((prev) => ({
                     ...prev,
-                    maxPrice: Number(e.target.value) >= maxPriceLimit ? 0 : Number(e.target.value),
+                    maxPrice:
+                      Number(e.target.value) >= maxPriceLimit
+                        ? 0
+                        : Number(e.target.value),
                   }))
                 }
-                style={sliderStyle(filters.maxPrice === 0 ? maxPriceLimit : filters.maxPrice, minPrice, maxPriceLimit)}
-                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-red-600"
+                style={sliderStyle(
+                  filters.maxPrice === 0 ? maxPriceLimit : filters.maxPrice,
+                  minPrice,
+                  maxPriceLimit,
+                )}
+                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-green-600"
               />
               <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 mt-2">
                 <span>৳ {minPrice.toLocaleString()}</span>
-                <span className="text-red-600 bg-red-50 px-1.5 py-0.5 rounded text-[10px]">
-                  ৳ {(filters.maxPrice === 0 ? maxPriceLimit : filters.maxPrice).toLocaleString()}
+                <span className="text-green-600 bg-green-50 px-1.5 py-0.5 rounded text-[10px]">
+                  ৳{" "}
+                  {(filters.maxPrice === 0
+                    ? maxPriceLimit
+                    : filters.maxPrice
+                  ).toLocaleString()}
                 </span>
                 <span>৳ {maxPriceLimit.toLocaleString()}</span>
               </div>
@@ -163,20 +204,29 @@ export default function FlightFilterSidebar() {
           {sections.airlines && (
             <div className="mt-3 space-y-2.5 pl-0.5 animate-fadeIn">
               {airlineOptions.map((airline) => (
-                <label key={airline.code} className="flex items-center gap-3 cursor-pointer group">
+                <label
+                  key={airline.code}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
                   <input
                     type="checkbox"
                     checked={filters.selectedAirlines.includes(airline.code)}
                     onChange={() => handleAirlineChange(airline.code)}
-                    className="w-4 h-4 rounded text-red-600 border-gray-300 focus:ring-red-500 accent-red-600 cursor-pointer"
+                    className="w-4 h-4 rounded text-green-600 border-gray-300 focus:ring-green-500 accent-green-600 cursor-pointer"
                   />
                   <div className="w-5 h-5 relative rounded-full border border-gray-100 overflow-hidden shrink-0">
-                    <Image src={airline.logo} alt={airline.name} width={20} height={20} className="object-contain" />
+                    <Image
+                      src={airline.logo}
+                      alt={airline.name}
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
                   </div>
                   <span className="text-xs font-semibold text-gray-600 group-hover:text-gray-900 transition-colors flex-1">
                     {airline.name}
                   </span>
-                  <span className="text-[10px] font-bold text-red-600 ml-auto">
+                  <span className="text-[10px] font-bold text-green-600 ml-auto">
                     ৳ {(airline.minPrice * passengers).toLocaleString()}
                   </span>
                 </label>
@@ -201,9 +251,12 @@ export default function FlightFilterSidebar() {
                   type="checkbox"
                   checked={filters.partiallyRefundable}
                   onChange={(e) =>
-                    setFilters((prev) => ({ ...prev, partiallyRefundable: e.target.checked }))
+                    setFilters((prev) => ({
+                      ...prev,
+                      partiallyRefundable: e.target.checked,
+                    }))
                   }
-                  className="w-4 h-4 rounded text-red-600 border-gray-300 focus:ring-red-500 accent-red-600 cursor-pointer"
+                  className="w-4 h-4 rounded text-green-600 border-gray-300 focus:ring-green-500 accent-green-600 cursor-pointer"
                 />
                 <span className="text-xs font-semibold text-gray-600 group-hover:text-gray-900 transition-colors">
                   Partially Refundable
@@ -230,14 +283,17 @@ export default function FlightFilterSidebar() {
                 max={maxLayoverHours}
                 value={filters.layoverTime}
                 onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, layoverTime: Number(e.target.value) }))
+                  setFilters((prev) => ({
+                    ...prev,
+                    layoverTime: Number(e.target.value),
+                  }))
                 }
                 style={sliderStyle(filters.layoverTime, 0, maxLayoverHours)}
-                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-red-600"
+                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-green-600"
               />
               <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 mt-2">
                 <span>0 hrs</span>
-                <span className="text-red-600 bg-red-50 px-1.5 py-0.5 rounded text-[10px]">
+                <span className="text-green-600 bg-green-50 px-1.5 py-0.5 rounded text-[10px]">
                   {filters.layoverTime >= maxLayoverHours
                     ? `${maxLayoverHours}+ hrs`
                     : `${filters.layoverTime} hrs`}
@@ -260,12 +316,15 @@ export default function FlightFilterSidebar() {
           {sections.aircraft && (
             <div className="mt-3 space-y-2.5 pl-0.5 animate-fadeIn">
               {aircraftOptions.map((plane) => (
-                <label key={plane.code} className="flex items-center gap-3 cursor-pointer group">
+                <label
+                  key={plane.code}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
                   <input
                     type="checkbox"
                     checked={filters.selectedAircraft.includes(plane.code)}
                     onChange={() => handleAircraftChange(plane.code)}
-                    className="w-4 h-4 rounded text-red-600 border-gray-300 focus:ring-red-500 accent-red-600 cursor-pointer"
+                    className="w-4 h-4 rounded text-green-600 border-gray-300 focus:ring-green-500 accent-green-600 cursor-pointer"
                   />
                   <span className="text-xs font-semibold text-gray-600 group-hover:text-gray-900 transition-colors">
                     {plane.label}
@@ -279,3 +338,6 @@ export default function FlightFilterSidebar() {
     </div>
   );
 }
+
+
+

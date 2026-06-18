@@ -76,7 +76,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
             <span
               className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${
                 flight.refundable
-                  ? "bg-red-50 text-red-600"
+                  ? "bg-green-50 text-green-600"
                   : "bg-gray-100 text-gray-500"
               }`}
             >
@@ -86,7 +86,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
 
             {/* Seat Counter Warning */}
             {flight.seatAvailability <= 5 && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-red-200 text-red-600 bg-red-50/50 text-xs font-bold">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-green-200 text-green-600 bg-green-50/50 text-xs font-bold">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                 {flight.seatAvailability} seat(s) left
               </span>
@@ -181,7 +181,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
 
             <button
               onClick={() => setDetailsOpen(!detailsOpen)}
-              className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 transition-colors ml-auto"
+              className="inline-flex items-center gap-1 text-xs font-bold text-green-600 hover:text-green-700 transition-colors ml-auto"
             >
               <span>View Details</span>
               <ChevronDown
@@ -207,10 +207,10 @@ export default function FlightCard({ flight }: FlightCardProps) {
 
           {/* Dynamic Price Render */}
           <div className="text-left md:text-right mb-4">
-            <span className="text-xs font-bold text-red-600 mr-1">
+            <span className="text-xs font-bold text-green-600 mr-1">
               {flight.price.currency}
             </span>
-            <span className="text-3xl font-black text-red-600 tracking-tight">
+            <span className="text-3xl font-black text-green-600 tracking-tight">
               {(flight.price.total * passengers).toLocaleString()}
             </span>
             <p className="text-[10px] text-gray-400 font-medium mt-0.5">
@@ -231,7 +231,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
                 setSelectedFlight(flight);
                 router.push(`/booking?flightId=${flight.id}`);
               }}
-              className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-red-600/10 active:scale-[0.99] transition-all order-1 md:order-2"
+              className="bg-green-600 hover:bg-green-700 cursor-pointer text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-green-600/10 active:scale-[0.99] transition-all order-1 md:order-2"
             >
               Select
             </button>

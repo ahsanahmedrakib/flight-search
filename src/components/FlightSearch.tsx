@@ -1,5 +1,6 @@
 "use client";
 
+import { useFlight } from "@/store/flightStore";
 import {
   ArrowLeftRight,
   Calendar,
@@ -11,9 +12,8 @@ import {
   Search,
   Users,
 } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useFlight } from "@/store/flightStore";
 
 // Mock Airport Data
 const AIRPORTS = [
@@ -24,14 +24,42 @@ const AIRPORTS = [
   { city: "Jessore", airport: "JSR, Jessore Airport" },
 ];
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
-export default function FlightSearch() {
-  const { searchCriteria, triggerSearch } = useFlight();
+const WEEKDAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+export default function FlightSearch({
+  isSearching,
+}: {
+  isSearching?: boolean;
+}) {
+  const { searchCriteria, triggerSearch, loading } = useFlight();
   const router = useRouter();
   const pathname = usePathname();
   const isResultsPage = pathname === "/flights";
+
+  const isLoading = isSearching ?? loading;
 
   // State management for tabs & layouts
   const [activeTab, setActiveTab] = useState("flight");
@@ -40,23 +68,27 @@ export default function FlightSearch() {
   // Locations
   const [fromLocation, setFromLocation] = useState(() => {
     const found = AIRPORTS.find(
-      (a) => a.city.toLowerCase() === searchCriteria.from.toLowerCase()
+      (a) => a.city.toLowerCase() === searchCriteria.from.toLowerCase(),
     );
     return found || AIRPORTS[0];
   });
   const [toLocation, setToLocation] = useState(() => {
     const found = AIRPORTS.find(
-      (a) => a.city.toLowerCase() === searchCriteria.to.toLowerCase()
+      (a) => a.city.toLowerCase() === searchCriteria.to.toLowerCase(),
     );
     return found || AIRPORTS[1];
   });
 
   // Dates
-  const [departureDate, setDepartureDate] = useState(searchCriteria.departureDate);
+  const [departureDate, setDepartureDate] = useState(
+    searchCriteria.departureDate,
+  );
   const [returnDate, setReturnDate] = useState(searchCriteria.returnDate);
 
   // Passengers
-  const [passengerCount, setPassengerCount] = useState(searchCriteria.passengers);
+  const [passengerCount, setPassengerCount] = useState(
+    searchCriteria.passengers,
+  );
   const [cabinClass, setCabinClass] = useState(searchCriteria.cabinClass);
 
   // Dropdown visibility states
@@ -156,10 +188,18 @@ export default function FlightSearch() {
   };
 
   return (
-    <div className={`relative w-full bg-slate-900 font-sans antialiased overflow-hidden ${isResultsPage ? "min-h-0" : "min-h-screen"}`}>
+    <div
+      className={`relative w-full bg-slate-900 font-sans antialiased overflow-hidden ${isResultsPage ? "min-h-0" : "min-h-screen"}`}
+    >
       {/* Hero Background Gradient */}
-      <div className="absolute inset-0 z-0 select-none pointer-events-none bg-linear-to-br from-slate-900 via-red-950/40 to-slate-800">
-        <div className="absolute inset-0 opacity-20" style={{backgroundImage: "radial-gradient(circle at 20% 50%, rgba(220,38,38,0.4) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(239,68,68,0.3) 0%, transparent 50%)"}} />
+      <div className="absolute inset-0 z-0 select-none pointer-events-none bg-linear-to-br from-slate-900 via-green-950/40 to-slate-800">
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 50%, rgba(220,38,38,0.4) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(239,68,68,0.3) 0%, transparent 50%)",
+          }}
+        />
         <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/20" />
       </div>
 
@@ -183,7 +223,7 @@ export default function FlightSearch() {
             onClick={() => setActiveTab("flight")}
             className={`flex items-center gap-2.5 px-6 py-3 rounded-xl md:rounded-full text-sm font-semibold transition-all duration-200 ${
               activeTab === "flight"
-                ? "bg-red-50 text-red-600"
+                ? "bg-green-50 text-green-600"
                 : "text-gray-600 hover:bg-gray-50"
             }`}
           >
@@ -202,10 +242,10 @@ export default function FlightSearch() {
                 name="tripType"
                 checked={tripType === "one-way"}
                 onChange={() => setTripType("one-way")}
-                className="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500 accent-red-600"
+                className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500 accent-green-600"
               />
               <span
-                className={`transition-colors ${tripType === "one-way" ? "text-red-600 font-bold" : "group-hover:text-gray-900"}`}
+                className={`transition-colors ${tripType === "one-way" ? "text-green-600 font-bold" : "group-hover:text-gray-900"}`}
               >
                 One Way
               </span>
@@ -241,7 +281,7 @@ export default function FlightSearch() {
             <div
               ref={fromRef}
               onClick={() => setIsOpenFrom(!isOpenFrom)}
-              className={`lg:col-span-3 border rounded-xl p-3 px-4 transition-all cursor-pointer relative bg-white ${isOpenFrom ? "border-red-500 ring-2 ring-red-500/10" : "border-gray-200 hover:border-gray-400"}`}
+              className={`lg:col-span-3 border rounded-xl p-3 px-4 transition-all cursor-pointer relative bg-white ${isOpenFrom ? "border-green-500 ring-2 ring-green-500/10" : "border-gray-200 hover:border-gray-400"}`}
             >
               <span className="block text-xs text-gray-400 font-medium uppercase tracking-wider">
                 From
@@ -256,7 +296,7 @@ export default function FlightSearch() {
               <button
                 onClick={handleSwap}
                 type="button"
-                className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 bg-red-600 text-white rounded-full p-1.5 shadow-md hover:bg-red-700 active:scale-95 transition-all max-lg:hidden border-2 border-white"
+                className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 bg-green-600 text-white rounded-full p-1.5 shadow-md hover:bg-green-700 active:scale-95 transition-all max-lg:hidden border-2 border-white"
                 title="Swap Locations"
               >
                 <ArrowLeftRight className="w-3.5 h-3.5" />
@@ -271,7 +311,7 @@ export default function FlightSearch() {
                     <div
                       key={idx}
                       onClick={() => setFromLocation(item)}
-                      className={`flex items-start gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${fromLocation.city === item.city ? "bg-red-50 text-red-600 font-medium" : "text-gray-700 hover:bg-gray-50"}`}
+                      className={`flex items-start gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${fromLocation.city === item.city ? "bg-green-50 text-green-600 font-medium" : "text-gray-700 hover:bg-gray-50"}`}
                     >
                       <MapPin className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <div>
@@ -290,7 +330,7 @@ export default function FlightSearch() {
             <div
               ref={toRef}
               onClick={() => setIsOpenTo(!isOpenTo)}
-              className={`lg:col-span-3 border rounded-xl p-3 px-4 lg:pl-6 transition-all cursor-pointer relative bg-white ${isOpenTo ? "border-red-500 ring-2 ring-red-500/10" : "border-gray-200 hover:border-gray-400"}`}
+              className={`lg:col-span-3 border rounded-xl p-3 px-4 lg:pl-6 transition-all cursor-pointer relative bg-white ${isOpenTo ? "border-green-500 ring-2 ring-green-500/10" : "border-gray-200 hover:border-gray-400"}`}
             >
               <span className="block text-xs text-gray-400 font-medium uppercase tracking-wider">
                 To
@@ -311,7 +351,7 @@ export default function FlightSearch() {
                     <div
                       key={idx}
                       onClick={() => setToLocation(item)}
-                      className={`flex items-start gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${toLocation.city === item.city ? "bg-red-50 text-red-600 font-medium" : "text-gray-700 hover:bg-gray-50"}`}
+                      className={`flex items-start gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${toLocation.city === item.city ? "bg-green-50 text-green-600 font-medium" : "text-gray-700 hover:bg-gray-50"}`}
                     >
                       <MapPin className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <div>
@@ -396,7 +436,7 @@ export default function FlightSearch() {
             <div
               ref={passengerRef}
               onClick={() => setIsOpenPassengers(!isOpenPassengers)}
-              className={`lg:col-span-2 border rounded-xl p-3 px-4 flex justify-between items-center transition-all cursor-pointer relative bg-white ${isOpenPassengers ? "border-red-500 ring-2 ring-red-500/10" : "border-gray-200 hover:border-gray-400"}`}
+              className={`lg:col-span-2 border rounded-xl p-3 px-4 flex justify-between items-center transition-all cursor-pointer relative bg-white ${isOpenPassengers ? "border-green-500 ring-2 ring-green-500/10" : "border-gray-200 hover:border-gray-400"}`}
             >
               <div>
                 <span className="block text-xs text-gray-400 font-medium uppercase tracking-wider">
@@ -465,7 +505,7 @@ export default function FlightSearch() {
                       <select
                         value={cabinClass}
                         onChange={(e) => setCabinClass(e.target.value)}
-                        className="text-xs font-semibold border border-gray-200 rounded-md p-1.5 bg-gray-50 text-gray-800 focus:outline-none focus:border-red-500"
+                        className="text-xs font-semibold border border-gray-200 rounded-md p-1.5 bg-gray-50 text-gray-800 focus:outline-none focus:border-green-500"
                       >
                         <option value="Economy">Economy</option>
                         <option value="Premium Economy">Premium Eco</option>
@@ -484,9 +524,16 @@ export default function FlightSearch() {
             <button
               onClick={() => handleSearchFlight()}
               type="button"
-              className="bg-red-600 cursor-pointer hover:bg-red-700 text-white font-semibold px-10 py-3.5 rounded-xl shadow-lg shadow-red-600/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
+              disabled={isLoading}
+              className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold px-10 py-3.5 rounded-xl shadow-lg shadow-green-600/20 transition-all flex items-center justify-center gap-2 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600 disabled:active:scale-100 active:scale-[0.98]"
             >
-              <span>{isResultsPage ? "Modify Search" : "Search Flights"}</span>
+              <span>
+                {isLoading
+                  ? "Searching..."
+                  : isResultsPage
+                    ? "Modify Search"
+                    : "Search Flights"}
+              </span>
               <Search className="w-5 h-5" />
             </button>
           </div>

@@ -25,10 +25,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Global thin red scrollbar */
+/* Global thin green scrollbar */
 * {
   scrollbar-width: 1px;
-  scrollbar-color: #dc2626 transparent;
+  scrollbar-color: #00A63E transparent;
 }
 
 *::-webkit-scrollbar {
@@ -41,7 +41,7 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #dc2626;
+  background-color: #00A63E;
   border-radius: 999px;
 }
 

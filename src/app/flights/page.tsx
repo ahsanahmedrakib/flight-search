@@ -40,7 +40,7 @@ function EmptyState() {
 
   return (
     <div className="w-full bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-xs flex flex-col items-center justify-center space-y-4">
-      <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center text-3xl">
+      <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-3xl">
         ✈️
       </div>
       <h3 className="text-xl font-bold text-gray-800">No Flights Found</h3>
@@ -60,7 +60,7 @@ function EmptyState() {
             maxPrice: 0,
           });
         }}
-        className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
+        className="bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
       >
         Clear Filters
       </button>
@@ -103,12 +103,37 @@ function FlightsContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!hasSearched && !searchParams.get("from")) return null;
+  const hasUrlParams =
+    searchParams.get("from") &&
+    searchParams.get("to") &&
+    searchParams.get("date");
+
+  if (!hasSearched && !hasUrlParams) return null;
+  if (!hasSearched && hasUrlParams) {
+    // Show loading while search is being triggered
+    return (
+      <main className="flex-1 flex flex-col pb-16">
+        <div ref={searchRef}>
+          <FlightSearch isSearching={true} />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 w-full mt-10">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="lg:col-span-1 hidden lg:block">
+              <div className="w-full h-96 bg-white rounded-2xl border border-gray-100 animate-pulse" />
+            </div>
+            <div className="lg:col-span-3">
+              <LoadingSkeleton />
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="flex-1 flex flex-col pb-16">
       <div ref={searchRef}>
-        <FlightSearch />
+        <FlightSearch isSearching={loading} />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 w-full mt-10">

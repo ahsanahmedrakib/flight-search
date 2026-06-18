@@ -77,7 +77,7 @@ export default function FlightBookingForm() {
   return (
     <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden font-sans antialiased text-gray-800">
       {/* Form Header */}
-      <div className="bg-linear-to-r from-red-50 to-white p-5 border-b border-gray-100 flex items-center justify-between">
+      <div className="bg-linear-to-r from-green-50 to-white p-5 border-b border-gray-100 flex items-center justify-between">
         <div>
           <h2 className="text-lg font-black text-gray-900 tracking-tight">
             Passenger Details
@@ -87,7 +87,7 @@ export default function FlightBookingForm() {
             ID card.
           </p>
         </div>
-        <span className="hidden sm:inline-block bg-red-600 text-white text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-md">
+        <span className="hidden sm:inline-block bg-green-600 text-white text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-md">
           Step 2 of 3
         </span>
       </div>
@@ -96,7 +96,7 @@ export default function FlightBookingForm() {
         {/* 1. Primary Passenger Section */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 pb-1 border-b border-gray-50">
-            <User className="w-4 h-4 text-red-600" />
+            <User className="w-4 h-4 text-green-600" />
             <h3 className="text-sm font-bold text-gray-700">
               Passenger 1 (Adult)
             </h3>
@@ -112,8 +112,8 @@ export default function FlightBookingForm() {
                 {...register("gender")}
                 className={`w-full bg-gray-50/50 border rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none transition-colors ${
                   errors.gender
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-200 focus:border-red-500"
+                    ? "border-green-500 focus:border-green-500"
+                    : "border-gray-200 focus:border-green-500"
                 }`}
               >
                 <option value="male">Male</option>
@@ -121,7 +121,7 @@ export default function FlightBookingForm() {
                 <option value="other">Other</option>
               </select>
               {errors.gender && (
-                <p className="flex items-center gap-1 text-[11px] font-medium text-red-500 mt-1">
+                <p className="flex items-center gap-1 text-[11px] font-medium text-green-500 mt-1">
                   <AlertCircle className="w-3 h-3" /> {errors.gender.message}
                 </p>
               )}
@@ -138,12 +138,12 @@ export default function FlightBookingForm() {
                 {...register("firstName")}
                 className={`w-full bg-gray-50/50 border rounded-xl px-3 py-2.5 text-xs font-semibold placeholder:text-gray-300 focus:outline-none transition-colors ${
                   errors.firstName
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-200 focus:border-red-500"
+                    ? "border-green-500 focus:border-green-500"
+                    : "border-gray-200 focus:border-green-500"
                 }`}
               />
               {errors.firstName && (
-                <p className="flex items-center gap-1 text-[11px] font-medium text-red-500 mt-1">
+                <p className="flex items-center gap-1 text-[11px] font-medium text-green-500 mt-1">
                   <AlertCircle className="w-3 h-3" /> {errors.firstName.message}
                 </p>
               )}
@@ -160,12 +160,12 @@ export default function FlightBookingForm() {
                 {...register("lastName")}
                 className={`w-full bg-gray-50/50 border rounded-xl px-3 py-2.5 text-xs font-semibold placeholder:text-gray-300 focus:outline-none transition-colors ${
                   errors.lastName
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-200 focus:border-red-500"
+                    ? "border-green-500 focus:border-green-500"
+                    : "border-gray-200 focus:border-green-500"
                 }`}
               />
               {errors.lastName && (
-                <p className="flex items-center gap-1 text-[11px] font-medium text-red-500 mt-1">
+                <p className="flex items-center gap-1 text-[11px] font-medium text-green-500 mt-1">
                   <AlertCircle className="w-3 h-3" /> {errors.lastName.message}
                 </p>
               )}
@@ -176,7 +176,7 @@ export default function FlightBookingForm() {
         {/* 2. Contact Information Section */}
         <div className="space-y-4 pt-2">
           <div className="flex items-center gap-2 pb-1 border-b border-gray-50">
-            <Mail className="w-4 h-4 text-red-600" />
+            <Mail className="w-4 h-4 text-green-600" />
             <h3 className="text-sm font-bold text-gray-700">Contact Details</h3>
           </div>
 
@@ -194,13 +194,13 @@ export default function FlightBookingForm() {
                   {...register("email")}
                   className={`w-full bg-gray-50/50 border rounded-xl pl-9 pr-3 py-2.5 text-xs font-semibold placeholder:text-gray-300 focus:outline-none transition-colors ${
                     errors.email
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-gray-200 focus:border-red-500"
+                      ? "border-green-500 focus:border-green-500"
+                      : "border-gray-200 focus:border-green-500"
                   }`}
                 />
               </div>
               {errors.email ? (
-                <p className="flex items-center gap-1 text-[11px] font-medium text-red-500 mt-1">
+                <p className="flex items-center gap-1 text-[11px] font-medium text-green-500 mt-1">
                   <AlertCircle className="w-3 h-3" /> {errors.email.message}
                 </p>
               ) : (
@@ -223,13 +223,13 @@ export default function FlightBookingForm() {
                   {...register("phone")}
                   className={`w-full bg-gray-50/50 border rounded-xl pl-9 pr-3 py-2.5 text-xs font-semibold placeholder:text-gray-300 focus:outline-none transition-colors ${
                     errors.phone
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-gray-200 focus:border-red-500"
+                      ? "border-green-500 focus:border-green-500"
+                      : "border-gray-200 focus:border-green-500"
                   }`}
                 />
               </div>
               {errors.phone && (
-                <p className="flex items-center gap-1 text-[11px] font-medium text-red-500 mt-1">
+                <p className="flex items-center gap-1 text-[11px] font-medium text-green-500 mt-1">
                   <AlertCircle className="w-3 h-3" /> {errors.phone.message}
                 </p>
               )}
@@ -247,7 +247,7 @@ export default function FlightBookingForm() {
               type="text"
               placeholder="AXXXXXXXX"
               {...register("passportNumber")}
-              className="w-full bg-gray-50/50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs font-semibold placeholder:text-gray-300 focus:border-red-500 focus:outline-none transition-colors"
+              className="w-full bg-gray-50/50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs font-semibold placeholder:text-gray-300 focus:border-green-500 focus:outline-none transition-colors"
             />
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function FlightBookingForm() {
             <input
               type="checkbox"
               {...register("agreeToTerms")}
-              className="w-4 h-4 rounded text-red-600 border-gray-300 focus:ring-red-500 accent-red-600 cursor-pointer mt-0.5"
+              className="w-4 h-4 rounded text-green-600 border-gray-300 focus:ring-green-500 accent-green-600 cursor-pointer mt-0.5"
             />
             <span className="text-xs font-medium text-gray-500 leading-tight group-hover:text-gray-700 transition-colors">
               {
@@ -267,7 +267,7 @@ export default function FlightBookingForm() {
             </span>
           </label>
           {errors.agreeToTerms && (
-            <p className="flex items-center gap-1 text-[11px] font-medium text-red-500 mt-0.5 pl-7">
+            <p className="flex items-center gap-1 text-[11px] font-medium text-green-500 mt-0.5 pl-7">
               <AlertCircle className="w-3 h-3" /> {errors.agreeToTerms.message}
             </p>
           )}
@@ -291,7 +291,7 @@ export default function FlightBookingForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md shadow-red-600/10 flex items-center justify-center gap-2 transition-all order-1 sm:order-2"
+            className="w-full sm:w-auto bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md shadow-green-600/10 flex items-center justify-center gap-2 transition-all order-1 sm:order-2"
           >
             <span>
               {isSubmitting ? "Processing..." : "Continue to Payment"}

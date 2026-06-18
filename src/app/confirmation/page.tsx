@@ -44,7 +44,7 @@ export default function ConfirmationPage() {
   const [pnr] = useState(() =>
     selectedFlight
       ? `${selectedFlight.airline.code}-${Math.floor(1000 + Math.random() * 9000)}`
-      : ""
+      : "",
   );
 
   // Parse dates deterministically
@@ -114,9 +114,9 @@ export default function ConfirmationPage() {
         {/* Virtual Boarding Pass Ticket Container */}
         <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-md flex flex-col">
           {/* Ticket Header */}
-          <div className="bg-linear-to-r from-red-600 to-red-700 p-5 text-white flex justify-between items-center">
+          <div className="bg-linear-to-r from-green-600 to-green-700 p-5 text-white flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 relative bg-white border border-red-500 rounded-full flex items-center justify-center overflow-hidden shrink-0">
+              <div className="w-10 h-10 relative bg-white border border-green-500 rounded-full flex items-center justify-center overflow-hidden shrink-0">
                 <Image
                   src={selectedFlight.airline.logo}
                   alt={selectedFlight.airline.name}
@@ -129,7 +129,7 @@ export default function ConfirmationPage() {
                 <h3 className="font-black text-sm tracking-wide uppercase">
                   {selectedFlight.airline.name.split(" ")[0]} AIRLINES
                 </h3>
-                <p className="text-[10px] text-red-100 font-bold tracking-wider">
+                <p className="text-[10px] text-green-100 font-bold tracking-wider">
                   {selectedFlight.flightNumber} •{" "}
                   {selectedFlight.aircraft.manufacturer}{" "}
                   {selectedFlight.aircraft.model}
@@ -137,7 +137,7 @@ export default function ConfirmationPage() {
               </div>
             </div>
             <div className="text-right">
-              <div className="text-[10px] text-red-100 font-bold tracking-widest uppercase">
+              <div className="text-[10px] text-green-100 font-bold tracking-widest uppercase">
                 PNR REF
               </div>
               <div className="text-lg font-black tracking-widest">{pnr}</div>
@@ -200,13 +200,13 @@ export default function ConfirmationPage() {
                     : `${selectedFlight.stops} Stop`}
                 </span>
                 <div className="w-full flex items-center gap-1 my-2">
-                  <div className="w-2 h-2 rounded-full bg-red-600" />
-                  <div className="flex-1 border-t border-dashed border-red-200 relative">
-                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-red-500 transform rotate-90 font-bold">
+                  <div className="w-2 h-2 rounded-full bg-green-600" />
+                  <div className="flex-1 border-t border-dashed border-green-200 relative">
+                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-green-500 transform rotate-90 font-bold">
                       ✈️
                     </span>
                   </div>
-                  <div className="w-2 h-2 rounded-full bg-red-600" />
+                  <div className="w-2 h-2 rounded-full bg-green-600" />
                 </div>
                 <span className="text-[10px] font-extrabold text-slate-800">
                   {Math.floor(selectedFlight.durationMinutes / 60)}h{" "}
@@ -314,7 +314,7 @@ export default function ConfirmationPage() {
 
           <button
             onClick={handleBookAnother}
-            className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-8 py-3 rounded-xl shadow-md shadow-red-600/10 active:scale-[0.98] transition-all cursor-pointer"
+            className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-8 py-3 rounded-xl shadow-md shadow-green-600/10 active:scale-[0.98] transition-all cursor-pointer"
           >
             <Home className="w-4 h-4" />
             <span>Book Another Flight</span>
