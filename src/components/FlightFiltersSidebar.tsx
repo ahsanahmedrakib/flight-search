@@ -190,7 +190,7 @@ export default function FlightFilterSidebar() {
   }, [flights]);
 
   return (
-    <div className="w-full max-w-xs bg-white rounded-2xl shadow-sm border border-gray-100 p-5 font-sans antialiased text-gray-800 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin [&::-webkit-scrollbar]:w-px [&::-webkit-scrollbar-thumb]:bg-green-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+    <div className="w-full max-w-xs bg-white rounded-2xl shadow-sm border border-gray-100 p-5 font-sans antialiased text-gray-800 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin [&::-webkit-scrollbar]:w-px [&::-webkit-scrollbar-thumb]:bg-green-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
       {/* 1. Time of Day - Dynamic + Empty State */}
       <div className="grid grid-cols-4 gap-1.5 mb-6">
         {timeSlots.map(({ key, Icon, label, time, count }) => (

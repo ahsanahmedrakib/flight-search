@@ -152,12 +152,18 @@ function FlightsContent() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-            <div className="lg:col-span-1 w-full sticky top-2">
-              <FlightFilterSidebar />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Filter Sidebar - Hidden on mobile by default, toggleable */}
+            <div className="lg:col-span-3 xl:col-span-3 w-full lg:sticky lg:top-2">
+              <div className="lg:sticky lg:top-4">
+                <FlightFilterSidebar />
+              </div>
             </div>
-            <div className="lg:col-span-3 space-y-6 w-full">
+
+            {/* Main Content Area */}
+            <div className="lg:col-span-9 xl:col-span-9 space-y-6 w-full">
               <FlightSortBar />
+
               {filteredFlights.length === 0 ? (
                 <EmptyState />
               ) : (
