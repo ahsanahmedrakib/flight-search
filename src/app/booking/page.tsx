@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const MONTHS = [
   "Jan",
@@ -44,6 +44,14 @@ function BookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const passengers = searchCriteria.passengers;
+  const [pageLoading, setPageLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPageLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Handle flight selection from URL
   useEffect(() => {
@@ -63,8 +71,8 @@ function BookingContent() {
     }
   }, [selectedFlight, flights, searchParams, setSelectedFlight, router]);
 
-  // Early return if no flight is selected
-  if (!selectedFlight) {
+  // Early return if loading or no flight is selected
+  if (pageLoading || !selectedFlight) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">
         <div className="text-center space-y-4">

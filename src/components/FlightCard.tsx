@@ -37,6 +37,7 @@ interface FlightCardProps {
 
 export default function FlightCard({ flight }: FlightCardProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [isSelecting, setIsSelecting] = useState(false);
   const router = useRouter();
   const { setSelectedFlight, searchCriteria } = useFlight();
   const passengers = searchCriteria.passengers;
@@ -227,13 +228,22 @@ export default function FlightCard({ flight }: FlightCardProps) {
           {/* Call To Actions */}
           <div className="grid grid-cols-2 md:flex md:flex-col gap-2 w-full">
             <button
+              disabled={isSelecting}
               onClick={() => {
+                setIsSelecting(true);
                 setSelectedFlight(flight);
                 router.push(`/booking?flightId=${flight.id}`);
               }}
-              className="bg-green-600 hover:bg-green-700 cursor-pointer text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-green-600/10 active:scale-[0.99] transition-all order-1 md:order-2"
+              className="bg-green-600 hover:bg-green-700 cursor-pointer text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-green-600/10 active:scale-[0.99] transition-all order-1 md:order-2 flex items-center justify-center gap-2 disabled:opacity-80"
             >
-              Select
+              {isSelecting ? (
+                <>
+                  <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Redirecting...</span>
+                </>
+              ) : (
+                "Select"
+              )}
             </button>
           </div>
         </div>
