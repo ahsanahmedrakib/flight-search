@@ -1,12 +1,12 @@
 "use client";
 
-import FlightFilterSidebar from "@/components/FlightFiltersSidebar";
 import FlightCard from "@/components/FlightCard";
+import FlightFilterSidebar from "@/components/FlightFiltersSidebar";
 import FlightSearch from "@/components/FlightSearch";
 import FlightSortBar from "@/components/FlightSortBar";
 import { useFlight } from "@/store/flightStore";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef } from "react";
 
 function LoadingSkeleton() {
   return (
@@ -45,7 +45,8 @@ function EmptyState() {
       </div>
       <h3 className="text-xl font-bold text-gray-800">No Flights Found</h3>
       <p className="text-sm text-gray-500 max-w-md">
-        We couldn&apos;t find any flights matching your criteria. Try modifying your search or resetting filters.
+        We couldn&apos;t find any flights matching your criteria. Try modifying
+        your search or resetting filters.
       </p>
       <button
         onClick={() => {
@@ -67,19 +68,48 @@ function EmptyState() {
   );
 }
 
-export default function FlightsPage() {
-  const { hasSearched, loading, filteredFlights } = useFlight();
-  const router = useRouter();
+function FlightsContent() {
+  const { hasSearched, loading, filteredFlights, triggerSearch } = useFlight();
+  const searchParams = useSearchParams();
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!hasSearched) router.replace("/");
-  }, [hasSearched, router]);
+    const el = searchRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(() => {
+      document.documentElement.style.setProperty(
+        "--search-h",
+        `${el.offsetHeight}px`,
+      );
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
-  if (!hasSearched) return null;
+  useEffect(() => {
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+    const date = searchParams.get("date");
+    if (from && to && date && !hasSearched) {
+      triggerSearch({
+        from,
+        to,
+        departureDate: date,
+        returnDate: searchParams.get("returnDate") ?? "",
+        passengers: Number(searchParams.get("passengers") ?? 1),
+        cabinClass: searchParams.get("class") ?? "Economy",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!hasSearched && !searchParams.get("from")) return null;
 
   return (
     <main className="flex-1 flex flex-col pb-16">
-      <FlightSearch />
+      <div ref={searchRef}>
+        <FlightSearch />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 w-full mt-10">
         {loading ? (
@@ -93,7 +123,7 @@ export default function FlightsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-            <div className="lg:col-span-1 w-full">
+            <div className="lg:col-span-1 w-full sticky top-2">
               <FlightFilterSidebar />
             </div>
             <div className="lg:col-span-3 space-y-6 w-full">
@@ -114,3 +144,12 @@ export default function FlightsPage() {
     </main>
   );
 }
+
+export default function FlightsPage() {
+  return (
+    <Suspense>
+      <FlightsContent />
+    </Suspense>
+  );
+}
+

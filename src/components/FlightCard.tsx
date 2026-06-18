@@ -229,7 +229,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
             <button
               onClick={() => {
                 setSelectedFlight(flight);
-                router.push("/booking");
+                router.push(`/booking?flightId=${flight.id}`);
               }}
               className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-red-600/10 active:scale-[0.99] transition-all order-1 md:order-2"
             >

@@ -2,6 +2,7 @@ import rawFlights from "@/data/flights.json";
 import { BookingFormData } from "@/types/booking";
 import { Flight } from "@/types/flight";
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface SearchCriteria {
   from: string;
@@ -48,7 +49,7 @@ interface FlightStore {
   resetAll: () => void;
 }
 
-const allRawFlights = rawFlights as unknown as Flight[];
+export const allRawFlights = rawFlights as unknown as Flight[];
 
 const defaultCriteria: SearchCriteria = {
   from: "Dhaka",
@@ -68,7 +69,9 @@ const defaultFilters: FiltersState = {
   maxPrice: 0,
 };
 
-export const useFlightStore = create<FlightStore>((set, get) => ({
+export const useFlightStore = create<FlightStore>()(
+  persist(
+    (set, get) => ({
   searchCriteria: defaultCriteria,
   hasSearched: false,
   loading: false,
@@ -208,7 +211,22 @@ export const useFlightStore = create<FlightStore>((set, get) => ({
       bookingDetails: null,
       flights: [],
     }),
-}));
+  }),
+  {
+    name: "flight-store",
+    storage: createJSONStorage(() => sessionStorage),
+    partialize: (state) => ({
+      searchCriteria: state.searchCriteria,
+      hasSearched: state.hasSearched,
+      flights: state.flights,
+      selectedFlight: state.selectedFlight,
+      bookingDetails: state.bookingDetails,
+      sortBy: state.sortBy,
+      filters: state.filters,
+      selectedAirline: state.selectedAirline,
+    }),
+  }
+));
 
 // Backwards-compatible hook — keeps all consumer components unchanged
 export function useFlight() {

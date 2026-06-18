@@ -136,23 +136,31 @@ export default function FlightSearch() {
   };
 
   const handleSearchFlight = () => {
-    triggerSearch({
+    const criteria = {
       from: fromLocation.city,
       to: toLocation.city,
       departureDate,
       returnDate,
       passengers: passengerCount,
       cabinClass,
+    };
+    triggerSearch(criteria);
+    const params = new URLSearchParams({
+      from: criteria.from,
+      to: criteria.to,
+      date: criteria.departureDate,
+      passengers: String(criteria.passengers),
+      class: criteria.cabinClass,
     });
-    router.push("/flights");
+    router.push(`/flights?${params.toString()}`);
   };
 
   return (
-    <div className={`relative w-full bg-slate-900 font-sans antialiased overflow-hidden ${isResultsPage ? "min-h-0" : "min-h-150"}`}>
+    <div className={`relative w-full bg-slate-900 font-sans antialiased overflow-hidden ${isResultsPage ? "min-h-0" : "min-h-screen"}`}>
       {/* Hero Background Gradient */}
-      <div className="absolute inset-0 z-0 select-none pointer-events-none bg-gradient-to-br from-slate-900 via-red-950/40 to-slate-800">
+      <div className="absolute inset-0 z-0 select-none pointer-events-none bg-linear-to-br from-slate-900 via-red-950/40 to-slate-800">
         <div className="absolute inset-0 opacity-20" style={{backgroundImage: "radial-gradient(circle at 20% 50%, rgba(220,38,38,0.4) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(239,68,68,0.3) 0%, transparent 50%)"}} />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/20" />
       </div>
 
       {/* Content Container */}
@@ -161,10 +169,10 @@ export default function FlightSearch() {
         {!isResultsPage && (
           <div className="text-center text-white mb-8 space-y-2">
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-md">
-              Create A New Story With Every Trip
+              Your Journey, Your Story
             </h1>
             <p className="text-sm md:text-lg font-medium opacity-90 tracking-wide drop-shadow-sm">
-              Flight, Holiday, Visa &amp; eSIM at your fingertips
+              Search, Compare &amp; Book Flights Instantly
             </p>
           </div>
         )}
