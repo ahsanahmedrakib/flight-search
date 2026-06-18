@@ -119,7 +119,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 text-sm md:text-base leading-tight">
-                  {flight.airline.name.split(" ")[0]} Airlines
+                  {flight.airline.name}
                 </h4>
                 <p className="text-xs text-gray-400 mt-0.5">
                   {flight.flightNumber}
