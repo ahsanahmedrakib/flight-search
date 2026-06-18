@@ -1,6 +1,7 @@
 "use client";
 
 import { useFlight } from "@/store/flightStore";
+import { Flight } from "@/types/flight";
 import {
   ChevronDown,
   ChevronUp,
@@ -83,6 +84,35 @@ export default function FlightFilterSidebar() {
     aircraft: true,
     punctuality: true,
   });
+
+  const availableAmenities = useMemo(() => {
+    const config = {
+      mealsIncluded: "Meals Included",
+      seatSelectionIncluded: "Seat Selection Included",
+      changeAllowed: "Date Change Allowed",
+      refundable: "Refundable",
+      priorityBoarding: "Priority Boarding",
+      loungeAccess: "Lounge Access",
+      wifiAvailable: "Wi-Fi Available",
+      entertainmentAvailable: "Entertainment",
+      mobileTicketAvailable: "Mobile Ticketing",
+    } as const;
+
+    const activeAmenities = new Set<string>();
+
+    flights.forEach((flight: Flight) => {
+      (Object.keys(config) as Array<keyof typeof config>).forEach((key) => {
+        if (flight[key] === true) {
+          activeAmenities.add(key);
+        }
+      });
+    });
+
+    return Array.from(activeAmenities).map((key) => ({
+      key,
+      label: config[key as keyof typeof config],
+    }));
+  }, [flights]);
 
   const toggleSection = (section: keyof typeof sections) =>
     setSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -316,31 +346,22 @@ export default function FlightFilterSidebar() {
           </button>
           {sections.amenities && (
             <div className="mt-3 space-y-2 pl-0.5 animate-fadeIn">
-              {(
-                [
-                  { key: "mealsIncluded", label: "Meals Included" },
-                  { key: "seatSelectionIncluded", label: "Seat Selection" },
-                  { key: "changeAllowed", label: "Change Allowed" },
-                ] as {
-                  key:
-                    | "mealsIncluded"
-                    | "seatSelectionIncluded"
-                    | "changeAllowed";
-                  label: string;
-                }[]
-              ).map(({ key, label }) => (
+              {availableAmenities.map(({ key, label }) => (
                 <label
                   key={key}
                   className="flex items-center gap-3 cursor-pointer group"
                 >
                   <input
                     type="checkbox"
-                    checked={filters[key]}
+                    checked={Boolean(filters[key as keyof typeof filters])}
                     onChange={(e) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        [key]: e.target.checked,
-                      }))
+                      setFilters(
+                        (prev) =>
+                          ({
+                            ...prev,
+                            [key]: e.target.checked,
+                          }) as typeof prev,
+                      )
                     }
                     className="w-4 h-4 rounded text-green-600 border-gray-300 accent-green-600 cursor-pointer"
                   />
@@ -425,4 +446,3 @@ export default function FlightFilterSidebar() {
     </div>
   );
 }
-
