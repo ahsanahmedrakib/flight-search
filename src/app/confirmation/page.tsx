@@ -43,7 +43,9 @@ const WEEKDAYS = [
 export default function ConfirmationPage() {
   const { selectedFlight, bookingDetails, resetAll } = useFlight();
   const router = useRouter();
-  const [hasHydrated, setHasHydrated] = useState(false);
+  const [hasHydrated, setHasHydrated] = useState(() =>
+    useFlightStore.persist.hasHydrated(),
+  );
   const [mailStatus, setMailStatus] = useState<
     "idle" | "sending" | "sent" | "error"
   >("idle");
@@ -120,14 +122,12 @@ export default function ConfirmationPage() {
 
   // Wait for store hydration
   useEffect(() => {
-    if (useFlightStore.persist.hasHydrated()) {
-      setTimeout(() => setHasHydrated(true), 0);
-      return;
+    if (!useFlightStore.persist.hasHydrated()) {
+      const unsub = useFlightStore.persist.onFinishHydration(() =>
+        setHasHydrated(true),
+      );
+      return () => unsub();
     }
-    const unsub = useFlightStore.persist.onFinishHydration(() =>
-      setTimeout(() => setHasHydrated(true), 0),
-    );
-    return () => unsub();
   }, []);
 
   // After hydration, redirect or send email
@@ -141,7 +141,6 @@ export default function ConfirmationPage() {
     }
 
     if (!sentRef.current) {
-      sentRef.current = true;
       sendEmail(state.selectedFlight, state.bookingDetails, pnr);
     }
   }, [hasHydrated, router, sendEmail, pnr]); // pnr is stable, sendEmail is now stable
@@ -179,7 +178,7 @@ export default function ConfirmationPage() {
           </h1>
           <div className="flex items-center justify-center gap-2 text-sm font-medium min-h-6">
             {mailStatus === "idle" && (
-              <span className="text-white/70 text-xs">Preparing e-ticket…</span>
+              <span className="text-white/70 text-xs">E-ticket</span>
             )}
             {mailStatus === "sending" && (
               <>
@@ -455,4 +454,3 @@ export default function ConfirmationPage() {
     </div>
   );
 }
-
