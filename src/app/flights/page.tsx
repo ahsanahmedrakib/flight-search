@@ -36,7 +36,7 @@ function LoadingSkeleton() {
 }
 
 function EmptyState() {
-  const { setFilters, setSelectedAirline } = useFlight();
+  const { setFilters, setSelectedAirline, actionHistory } = useFlight();
 
   return (
     <div className="w-full bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-xs flex flex-col items-center justify-center space-y-4">
@@ -48,33 +48,41 @@ function EmptyState() {
         We couldn&apos;t find any flights matching your criteria. Try modifying
         your search or resetting filters.
       </p>
-      <button
-        onClick={() => {
-          setSelectedAirline(null);
-          setFilters({
-            selectedTime: null,
-            partiallyRefundable: false,
-            layoverTime: 15,
-            selectedAircraft: [],
-            selectedAirlines: [],
-            maxPrice: 0,
-            stopsFilter: "all",
-            mealsIncluded: false,
-            seatSelectionIncluded: false,
-            changeAllowed: false,
-            minPunctuality: 0,
-          });
-        }}
-        className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
-      >
-        Clear Filters
-      </button>
+      {actionHistory[0]?.type !== "search" && (
+        <button
+          onClick={() => {
+            setSelectedAirline(null);
+            setFilters({
+              selectedTime: null,
+              partiallyRefundable: false,
+              layoverTime: 15,
+              selectedAircraft: [],
+              selectedAirlines: [],
+              maxPrice: 0,
+              stopsFilter: "all",
+              mealsIncluded: false,
+              seatSelectionIncluded: false,
+              changeAllowed: false,
+              minPunctuality: 0,
+            });
+          }}
+          className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
+        >
+          Clear Filters
+        </button>
+      )}
     </div>
   );
 }
 
 function FlightsContent() {
-  const { hasSearched, loading, filteredFlights, triggerSearch } = useFlight();
+  const {
+    hasSearched,
+    loading,
+    filteredFlights,
+    triggerSearch,
+    actionHistory,
+  } = useFlight();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -112,6 +120,10 @@ function FlightsContent() {
     searchParams.get("from") &&
     searchParams.get("to") &&
     searchParams.get("date");
+
+  const lastAction = actionHistory[0];
+  const shouldHideSidebar =
+    lastAction?.type === "search" && filteredFlights.length === 0;
 
   if (!hasSearched && !hasUrlParams) return null;
   if (!hasSearched && hasUrlParams) {
@@ -154,14 +166,18 @@ function FlightsContent() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Filter Sidebar - Hidden on mobile by default, toggleable */}
-            <div className="lg:col-span-3 xl:col-span-3 w-full lg:sticky lg:top-2">
-              <div className="lg:sticky lg:top-4">
-                <FlightFilterSidebar />
+            {!shouldHideSidebar && (
+              <div className="lg:col-span-3 xl:col-span-3 w-full lg:sticky lg:top-2">
+                <div className="lg:sticky lg:top-4">
+                  <FlightFilterSidebar />
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Main Content Area */}
-            <div className="lg:col-span-9 xl:col-span-9 space-y-6 w-full">
+            <div
+              className={`${shouldHideSidebar ? "lg:col-span-12" : "lg:col-span-9 xl:col-span-9"} space-y-6 w-full`}
+            >
               <FlightSortBar />
 
               {filteredFlights.length === 0 ? (

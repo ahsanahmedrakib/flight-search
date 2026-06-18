@@ -2,7 +2,7 @@ import rawFlights from "@/data/flights.json";
 import { BookingFormData } from "@/types/booking";
 import { Flight } from "@/types/flight";
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface SearchCriteria {
   from: string;
@@ -27,6 +27,19 @@ export interface FiltersState {
   minPunctuality: number;
 }
 
+export type ActionData =
+  | SearchCriteria
+  | FiltersState
+  | string
+  | { selectedAirline: string | null }
+  | { selectedFlight: Flight | null };
+
+export interface ActionRecord {
+  type: "search" | "filter" | "sort" | "selection";
+  timestamp: number;
+  data: ActionData;
+}
+
 interface FlightStore {
   searchCriteria: SearchCriteria;
   hasSearched: boolean;
@@ -37,6 +50,7 @@ interface FlightStore {
   filters: FiltersState;
   selectedFlight: Flight | null;
   bookingDetails: BookingFormData | null;
+  actionHistory: ActionRecord[];
 
   // Computed
   filteredFlights: () => Flight[];
@@ -51,6 +65,7 @@ interface FlightStore {
   setSelectedAirline: (airline: string | null) => void;
   setSelectedFlight: (flight: Flight | null) => void;
   setBookingDetails: (details: BookingFormData | null) => void;
+  clearHistory: () => void;
   resetAll: () => void;
 }
 
@@ -82,172 +97,252 @@ const defaultFilters: FiltersState = {
 export const useFlightStore = create<FlightStore>()(
   persist(
     (set, get) => ({
-  searchCriteria: defaultCriteria,
-  hasSearched: false,
-  loading: false,
-  flights: [],
-  selectedAirline: null,
-  sortBy: "cheapest",
-  filters: defaultFilters,
-  selectedFlight: null,
-  bookingDetails: null,
-
-  filteredFlights: () => {
-    const { flights, selectedAirline, filters, sortBy } = get();
-    let result = [...flights];
-
-    if (selectedAirline) {
-      result = result.filter((f) => f.airline.code === selectedAirline);
-    }
-
-    if (filters.selectedTime) {
-      result = result.filter((f) => {
-        const depHour = parseInt(f.departure.split("T")[1] || "0");
-        if (filters.selectedTime === "morning") return depHour >= 5 && depHour < 12;
-        if (filters.selectedTime === "afternoon") return depHour >= 12 && depHour < 18;
-        if (filters.selectedTime === "evening") return depHour >= 18 && depHour <= 23;
-        if (filters.selectedTime === "night") return depHour >= 0 && depHour < 5;
-        return true;
-      });
-    }
-
-    if (filters.stopsFilter === "nonstop") {
-      result = result.filter((f) => f.stops === 0);
-    } else if (filters.stopsFilter === "1stop") {
-      result = result.filter((f) => f.stops === 1);
-    }
-
-    if (filters.mealsIncluded) result = result.filter((f) => f.mealsIncluded);
-    if (filters.seatSelectionIncluded) result = result.filter((f) => f.seatSelectionIncluded);
-    if (filters.changeAllowed) result = result.filter((f) => f.changeAllowed);
-    if (filters.minPunctuality > 0) result = result.filter((f) => f.punctuality >= filters.minPunctuality);
-
-    if (filters.partiallyRefundable) {
-      result = result.filter((f) => f.refundable === true);
-    }
-
-    if (filters.selectedAirlines.length > 0) {
-      result = result.filter((f) => filters.selectedAirlines.includes(f.airline.code));
-    }
-
-    if (filters.layoverTime < 15) {
-      result = result.filter((f) => {
-        if (f.stops === 0) return true;
-        const totalLayoverMins = (
-          f.stopDetails as { durationMinutes?: number }[]
-        ).reduce((acc, stop) => acc + (Number(stop.durationMinutes) || 0), 0);
-        return totalLayoverMins <= filters.layoverTime * 60;
-      });
-    }
-
-    if (filters.selectedAircraft.length > 0) {
-      result = result.filter((f) => {
-        const code = f.aircraft.model.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
-        return filters.selectedAircraft.includes(code);
-      });
-    }
-
-    if (filters.maxPrice > 0) {
-      const pax = get().searchCriteria.passengers;
-      result = result.filter((f) => f.price.total * pax <= filters.maxPrice);
-    }
-
-    result.sort((a, b) => {
-      if (sortBy === "cheapest") return a.price.total - b.price.total;
-      if (sortBy === "fastest") return a.durationMinutes - b.durationMinutes;
-      if (sortBy === "earliest" || sortBy === "more_early_dep")
-        return (
-          new Date(a.departure).getTime() - new Date(b.departure).getTime()
-        );
-      if (sortBy === "more_late_dep")
-        return (
-          new Date(b.departure).getTime() - new Date(a.departure).getTime()
-        );
-      if (sortBy === "more_early_arr")
-        return new Date(a.arrival).getTime() - new Date(b.arrival).getTime();
-      if (sortBy === "more_late_arr")
-        return new Date(b.arrival).getTime() - new Date(a.arrival).getTime();
-      return 0;
-    });
-
-    return result;
-  },
-
-  setSearchCriteria: (criteria) => set({ searchCriteria: criteria }),
-
-  triggerSearch: (criteria) => {
-    set({
-      searchCriteria: criteria,
-      loading: true,
-      hasSearched: true,
-      selectedAirline: null,
-      sortBy: "cheapest",
-      filters: defaultFilters,
-    });
-
-    setTimeout(() => {
-      const matches = allRawFlights.filter((flight) => {
-        const fromMatch =
-          flight.route.origin.city.toLowerCase() ===
-            criteria.from.toLowerCase() ||
-          flight.route.origin.code.toLowerCase() ===
-            criteria.from.toLowerCase();
-        const toMatch =
-          flight.route.destination.city.toLowerCase() ===
-            criteria.to.toLowerCase() ||
-          flight.route.destination.code.toLowerCase() ===
-            criteria.to.toLowerCase();
-        return fromMatch && toMatch;
-      });
-
-      const adjusted = matches.map((flight) => ({
-        ...flight,
-        departure: `${criteria.departureDate}T${flight.departure.split("T")[1] || "12:00:00"}`,
-        arrival: `${criteria.departureDate}T${flight.arrival.split("T")[1] || "13:00:00"}`,
-      }));
-
-      set({ flights: adjusted, loading: false });
-    }, 800);
-  },
-
-  setFilters: (filters) =>
-    set((state) => ({
-      filters: typeof filters === "function" ? filters(state.filters) : filters,
-    })),
-
-  setSortBy: (sort) => set({ sortBy: sort }),
-  setSelectedAirline: (airline) => set({ selectedAirline: airline }),
-  setSelectedFlight: (flight) => set({ selectedFlight: flight }),
-  setBookingDetails: (details) => set({ bookingDetails: details }),
-
-  resetAll: () =>
-    set({
       searchCriteria: defaultCriteria,
       hasSearched: false,
       loading: false,
+      flights: [],
       selectedAirline: null,
       sortBy: "cheapest",
       filters: defaultFilters,
       selectedFlight: null,
       bookingDetails: null,
-      flights: [],
+      actionHistory: [],
+
+      filteredFlights: () => {
+        const { flights, selectedAirline, filters, sortBy } = get();
+        let result = [...flights];
+
+        if (selectedAirline) {
+          result = result.filter((f) => f.airline.code === selectedAirline);
+        }
+
+        if (filters.selectedTime) {
+          result = result.filter((f) => {
+            const depHour = parseInt(f.departure.split("T")[1] || "0");
+            if (filters.selectedTime === "morning")
+              return depHour >= 5 && depHour < 12;
+            if (filters.selectedTime === "afternoon")
+              return depHour >= 12 && depHour < 18;
+            if (filters.selectedTime === "evening")
+              return depHour >= 18 && depHour <= 23;
+            if (filters.selectedTime === "night")
+              return depHour >= 0 && depHour < 5;
+            return true;
+          });
+        }
+
+        if (filters.stopsFilter === "nonstop") {
+          result = result.filter((f) => f.stops === 0);
+        } else if (filters.stopsFilter === "1stop") {
+          result = result.filter((f) => f.stops === 1);
+        }
+
+        if (filters.mealsIncluded)
+          result = result.filter((f) => f.mealsIncluded);
+        if (filters.seatSelectionIncluded)
+          result = result.filter((f) => f.seatSelectionIncluded);
+        if (filters.changeAllowed)
+          result = result.filter((f) => f.changeAllowed);
+        if (filters.minPunctuality > 0)
+          result = result.filter(
+            (f) => f.punctuality >= filters.minPunctuality,
+          );
+
+        if (filters.partiallyRefundable) {
+          result = result.filter((f) => f.refundable === true);
+        }
+
+        if (filters.selectedAirlines.length > 0) {
+          result = result.filter((f) =>
+            filters.selectedAirlines.includes(f.airline.code),
+          );
+        }
+
+        if (filters.layoverTime < 15) {
+          result = result.filter((f) => {
+            if (f.stops === 0) return true;
+            const totalLayoverMins = (
+              f.stopDetails as { durationMinutes?: number }[]
+            ).reduce(
+              (acc, stop) => acc + (Number(stop.durationMinutes) || 0),
+              0,
+            );
+            return totalLayoverMins <= filters.layoverTime * 60;
+          });
+        }
+
+        if (filters.selectedAircraft.length > 0) {
+          result = result.filter((f) => {
+            const code = f.aircraft.model
+              .replace(/[^a-zA-Z0-9]/g, "")
+              .toUpperCase();
+            return filters.selectedAircraft.includes(code);
+          });
+        }
+
+        if (filters.maxPrice > 0) {
+          const pax = get().searchCriteria.passengers;
+          result = result.filter(
+            (f) => f.price.total * pax <= filters.maxPrice,
+          );
+        }
+
+        result.sort((a, b) => {
+          if (sortBy === "cheapest") return a.price.total - b.price.total;
+          if (sortBy === "fastest")
+            return a.durationMinutes - b.durationMinutes;
+          if (sortBy === "earliest" || sortBy === "more_early_dep")
+            return (
+              new Date(a.departure).getTime() - new Date(b.departure).getTime()
+            );
+          if (sortBy === "more_late_dep")
+            return (
+              new Date(b.departure).getTime() - new Date(a.departure).getTime()
+            );
+          if (sortBy === "more_early_arr")
+            return (
+              new Date(a.arrival).getTime() - new Date(b.arrival).getTime()
+            );
+          if (sortBy === "more_late_arr")
+            return (
+              new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
+            );
+          return 0;
+        });
+
+        return result;
+      },
+
+      setSearchCriteria: (criteria) => set({ searchCriteria: criteria }),
+
+      triggerSearch: (criteria) => {
+        const action: ActionRecord = {
+          type: "search",
+          timestamp: Date.now(),
+          data: criteria,
+        };
+        set((state) => ({
+          searchCriteria: criteria,
+          loading: true,
+          hasSearched: true,
+          selectedAirline: null,
+          sortBy: "cheapest",
+          filters: defaultFilters,
+          actionHistory: [action, ...state.actionHistory].slice(0, 50),
+        }));
+
+        setTimeout(() => {
+          const matches = allRawFlights.filter((flight) => {
+            const fromMatch =
+              flight.route.origin.city.toLowerCase() ===
+                criteria.from.toLowerCase() ||
+              flight.route.origin.code.toLowerCase() ===
+                criteria.from.toLowerCase();
+            const toMatch =
+              flight.route.destination.city.toLowerCase() ===
+                criteria.to.toLowerCase() ||
+              flight.route.destination.code.toLowerCase() ===
+                criteria.to.toLowerCase();
+            return fromMatch && toMatch;
+          });
+
+          const adjusted = matches.map((flight) => ({
+            ...flight,
+            departure: `${criteria.departureDate}T${flight.departure.split("T")[1] || "12:00:00"}`,
+            arrival: `${criteria.departureDate}T${flight.arrival.split("T")[1] || "13:00:00"}`,
+          }));
+
+          set({ flights: adjusted, loading: false });
+        }, 800);
+      },
+
+      setFilters: (filters) =>
+        set((state) => {
+          const nextFilters =
+            typeof filters === "function" ? filters(state.filters) : filters;
+          const action: ActionRecord = {
+            type: "filter",
+            timestamp: Date.now(),
+            data: nextFilters,
+          };
+          return {
+            filters: nextFilters,
+            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+          };
+        }),
+
+      setSortBy: (sort) =>
+        set((state) => {
+          const action: ActionRecord = {
+            type: "sort",
+            timestamp: Date.now(),
+            data: sort,
+          };
+          return {
+            sortBy: sort,
+            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+          };
+        }),
+
+      setSelectedAirline: (airline) =>
+        set((state) => {
+          const action: ActionRecord = {
+            type: "filter", // Treat airline selection as a filter
+            timestamp: Date.now(),
+            data: { selectedAirline: airline },
+          };
+          return {
+            selectedAirline: airline,
+            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+          };
+        }),
+
+      setSelectedFlight: (flight) =>
+        set((state) => {
+          const action: ActionRecord = {
+            type: "selection",
+            timestamp: Date.now(),
+            data: { selectedFlight: flight },
+          };
+          return {
+            selectedFlight: flight,
+            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+          };
+        }),
+      setBookingDetails: (details) => set({ bookingDetails: details }),
+      clearHistory: () => set({ actionHistory: [] }),
+
+      resetAll: () =>
+        set({
+          searchCriteria: defaultCriteria,
+          hasSearched: false,
+          loading: false,
+          selectedAirline: null,
+          sortBy: "cheapest",
+          filters: defaultFilters,
+          selectedFlight: null,
+          bookingDetails: null,
+          flights: [],
+          actionHistory: [],
+        }),
     }),
-  }),
-  {
-    name: "flight-store",
-    storage: createJSONStorage(() => sessionStorage),
-    partialize: (state) => ({
-      searchCriteria: state.searchCriteria,
-      hasSearched: state.hasSearched,
-      flights: state.flights,
-      selectedFlight: state.selectedFlight,
-      bookingDetails: state.bookingDetails,
-      sortBy: state.sortBy,
-      filters: state.filters,
-      selectedAirline: state.selectedAirline,
-    }),
-  }
-));
+    {
+      name: "flight-store",
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state) => ({
+        searchCriteria: state.searchCriteria,
+        hasSearched: state.hasSearched,
+        flights: state.flights,
+        selectedFlight: state.selectedFlight,
+        bookingDetails: state.bookingDetails,
+        sortBy: state.sortBy,
+        filters: state.filters,
+        selectedAirline: state.selectedAirline,
+        actionHistory: state.actionHistory,
+      }),
+    },
+  ),
+);
 
 // Backwards-compatible hook — keeps all consumer components unchanged
 export function useFlight() {
@@ -255,6 +350,7 @@ export function useFlight() {
   return {
     ...store,
     filteredFlights: store.filteredFlights(),
+    actionHistory: store.actionHistory,
   };
 }
 
