@@ -14,29 +14,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 export default function ConfirmationPage() {
   const { selectedFlight, bookingDetails, resetAll } = useFlight();
@@ -47,7 +26,6 @@ export default function ConfirmationPage() {
       : "",
   );
 
-  // Parse dates deterministically
   const formatTime = (isoString: string) => {
     if (!isoString) return "";
     const timePart = isoString.split("T")[1] || "00:00:00";
@@ -73,12 +51,8 @@ export default function ConfirmationPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">
         <div className="text-center space-y-4">
-          <div className="animate-pulse text-emerald-600 text-3xl font-bold">
-            ✓
-          </div>
-          <p className="text-gray-500 font-semibold text-sm">
-            Redirecting to home...
-          </p>
+          <div className="animate-pulse text-emerald-600 text-3xl font-bold">✓</div>
+          <p className="text-gray-500 font-semibold text-sm">Redirecting to home...</p>
         </div>
       </div>
     );
@@ -89,34 +63,31 @@ export default function ConfirmationPage() {
     router.push("/");
   };
 
-  const passengerName = `${bookingDetails.firstName} ${bookingDetails.lastName}`;
+  const passengers = bookingDetails.passengers || [];
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans pb-20 antialiased">
-      {/* Top Banner Success Notification */}
-      <div className="bg-emerald-600 text-white py-10 text-center px-4">
-        <div className="max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full">
-            <CheckCircle2 className="w-10 h-10 text-emerald-100" />
+    <div className="min-h-screen bg-slate-100 font-sans pb-20 antialiased">
+      {/* Top Banner */}
+      <div className="bg-emerald-600 text-white py-8 text-center px-4">
+        <div className="max-w-3xl mx-auto space-y-2">
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full">
+            <CheckCircle2 className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            Booking Confirmed!
-          </h1>
-          <p className="text-sm text-emerald-100 font-semibold max-w-md mx-auto">
-            Your ticket booking has been confirmed successfully. We have sent
-            the e-ticket PDF to your email{" "}
-            <span className="underline">{bookingDetails.email}</span>.
+          <h1 className="text-2xl font-black tracking-tight">Booking Confirmed!</h1>
+          <p className="text-sm text-white/90 font-medium">
+            E-ticket sent to <span className="font-bold underline">{bookingDetails.email}</span>
           </p>
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 mt-10 space-y-8">
-        {/* Virtual Boarding Pass Ticket Container */}
-        <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-md flex flex-col">
+      <div className="max-w-2xl mx-auto px-4 mt-8 space-y-5">
+        {/* Ticket Card */}
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+
           {/* Ticket Header */}
-          <div className="bg-linear-to-r from-green-600 to-green-700 p-5 text-white flex justify-between items-center">
+          <div className="bg-slate-800 px-5 py-4 text-white flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 relative bg-white border border-green-500 rounded-full flex items-center justify-center overflow-hidden shrink-0">
+              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden shrink-0">
                 <Image
                   src={selectedFlight.airline.logo}
                   alt={selectedFlight.airline.name}
@@ -126,202 +97,150 @@ export default function ConfirmationPage() {
                 />
               </div>
               <div>
-                <h3 className="font-black text-sm tracking-wide uppercase">
-                  {selectedFlight.airline.name.split(" ")[0]} AIRLINES
-                </h3>
-                <p className="text-[10px] text-green-100 font-bold tracking-wider">
-                  {selectedFlight.flightNumber} •{" "}
-                  {selectedFlight.aircraft.manufacturer}{" "}
-                  {selectedFlight.aircraft.model}
+                <p className="font-black text-sm uppercase tracking-wide">{selectedFlight.airline.name}</p>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  {selectedFlight.flightNumber} · {selectedFlight.aircraft.manufacturer} {selectedFlight.aircraft.model}
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-[10px] text-green-100 font-bold tracking-widest uppercase">
-                PNR REF
-              </div>
-              <div className="text-lg font-black tracking-widest">{pnr}</div>
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest">PNR</p>
+              <p className="text-lg font-black tracking-widest">{pnr}</p>
             </div>
           </div>
 
-          {/* Ticket Body Content */}
-          <div className="p-6 sm:p-8 space-y-6">
-            {/* Passenger Info & Class Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-6 border-b border-dashed border-gray-100 text-xs">
-              <div>
-                <span className="block text-gray-400 font-bold uppercase tracking-wider">
-                  Passenger Name
-                </span>
-                <span className="block font-black text-gray-800 text-sm mt-1">
-                  {passengerName}
-                </span>
+          <div className="p-5 space-y-5">
+            {/* Route */}
+            <div className="grid grid-cols-12 items-center gap-2">
+              <div className="col-span-4">
+                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{selectedFlight.route.origin.city}</p>
+                <p className="text-3xl font-black text-gray-900">{selectedFlight.route.origin.code}</p>
+                <p className="text-base font-bold text-gray-800 mt-0.5">{formatTime(selectedFlight.departure)}</p>
+                <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">{selectedFlight.route.origin.airport}</p>
               </div>
-              <div>
-                <span className="block text-gray-400 font-bold uppercase tracking-wider">
-                  Cabin Class
-                </span>
-                <span className="block font-black text-gray-800 text-sm mt-1">
-                  {selectedFlight.cabinClass}
-                </span>
-              </div>
-              <div>
-                <span className="block text-gray-400 font-bold uppercase tracking-wider">
-                  Booking Status
-                </span>
-                <span className="inline-flex items-center gap-1.5 font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-md mt-1">
-                  ● CONFIRMED
-                </span>
-              </div>
-            </div>
-
-            {/* Travel Route Timeline Grid */}
-            <div className="grid grid-cols-12 gap-3 items-center">
-              {/* Origin Block */}
-              <div className="col-span-4 text-left">
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                  {selectedFlight.route.origin.city}
+              <div className="col-span-4 flex flex-col items-center">
+                <p className="text-[10px] font-bold text-gray-400">
+                  {selectedFlight.stops === 0 ? "Non-stop" : `${selectedFlight.stops} Stop`}
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-black text-gray-800 mt-1">
-                  {selectedFlight.route.origin.code}
-                </h2>
-                <h3 className="text-sm font-black text-gray-800 mt-1">
-                  {formatTime(selectedFlight.departure)}
-                </h3>
-                <p className="text-[10px] text-gray-400 font-medium mt-1 leading-tight">
-                  {selectedFlight.route.origin.airport}
-                </p>
-              </div>
-
-              {/* Stop & Path Graphics */}
-              <div className="col-span-4 flex flex-col items-center justify-center px-1">
-                <span className="text-[9px] font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">
-                  {selectedFlight.stops === 0
-                    ? "Non-stop"
-                    : `${selectedFlight.stops} Stop`}
-                </span>
-                <div className="w-full flex items-center gap-1 my-2">
+                <div className="w-full flex items-center gap-1 my-1.5">
                   <div className="w-2 h-2 rounded-full bg-green-600" />
-                  <div className="flex-1 border-t border-dashed border-green-200 relative">
-                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-green-500 transform rotate-90 font-bold">
-                      ✈️
-                    </span>
-                  </div>
+                  <div className="flex-1 border-t border-dashed border-gray-300" />
                   <div className="w-2 h-2 rounded-full bg-green-600" />
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-800">
-                  {Math.floor(selectedFlight.durationMinutes / 60)}h{" "}
-                  {selectedFlight.durationMinutes % 60}m
-                </span>
+                <p className="text-xs font-bold text-gray-600">
+                  {Math.floor(selectedFlight.durationMinutes / 60)}h {selectedFlight.durationMinutes % 60}m
+                </p>
               </div>
-
-              {/* Destination Block */}
               <div className="col-span-4 text-right">
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                  {selectedFlight.route.destination.city}
+                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{selectedFlight.route.destination.city}</p>
+                <p className="text-3xl font-black text-gray-900">{selectedFlight.route.destination.code}</p>
+                <p className="text-base font-bold text-gray-800 mt-0.5">{formatTime(selectedFlight.arrival)}</p>
+                <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">{selectedFlight.route.destination.airport}</p>
+              </div>
+            </div>
+
+            {/* Date · Class · Status */}
+            <div className="grid grid-cols-3 gap-3 border-t border-b border-dashed border-gray-200 py-4 text-xs">
+              <div>
+                <p className="text-gray-400 font-bold uppercase tracking-wider mb-1">Date</p>
+                <p className="font-bold text-gray-800 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-gray-400" /> {formatDate(selectedFlight.departure)}
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-black text-gray-800 mt-1">
-                  {selectedFlight.route.destination.code}
-                </h2>
-                <h3 className="text-sm font-black text-gray-800 mt-1">
-                  {formatTime(selectedFlight.arrival)}
-                </h3>
-                <p className="text-[10px] text-gray-400 font-medium mt-1 leading-tight">
-                  {selectedFlight.route.destination.airport}
+              </div>
+              <div>
+                <p className="text-gray-400 font-bold uppercase tracking-wider mb-1">Class</p>
+                <p className="font-bold text-gray-800">{selectedFlight.cabinClass}</p>
+              </div>
+              <div>
+                <p className="text-gray-400 font-bold uppercase tracking-wider mb-1">Status</p>
+                <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
+                  <CheckCircle2 className="w-3 h-3" /> Confirmed
+                </span>
+              </div>
+            </div>
+
+            {/* Passengers */}
+            <div className="border-b border-dashed border-gray-200 pb-4">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                Passengers ({passengers.length})
+              </p>
+              <div className="space-y-1.5">
+                {passengers.map((p, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm">
+                    <span className="font-bold text-gray-800">
+                      {p.firstName} {p.lastName}{" "}
+                      <span className="text-gray-400 text-xs font-medium capitalize">({p.gender})</span>
+                    </span>
+                    {p.passportNumber && (
+                      <span className="text-xs text-gray-400">PP: {p.passportNumber}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact + Baggage */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-b border-dashed border-gray-200 pb-4">
+              <div>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Contact</p>
+                <p className="flex items-center gap-1.5 text-gray-700 font-medium">
+                  <Mail className="w-3.5 h-3.5 text-gray-400" /> {bookingDetails.email}
+                </p>
+                <p className="flex items-center gap-1.5 text-gray-700 font-medium mt-1">
+                  <Phone className="w-3.5 h-3.5 text-gray-400" /> {bookingDetails.phone}
+                </p>
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Baggage</p>
+                <p className="text-gray-700 font-medium">
+                  Cabin: <span className="font-bold text-gray-900">{selectedFlight.baggage.cabin}</span>
+                </p>
+                <p className="text-gray-700 font-medium mt-1">
+                  Checked: <span className="font-bold text-gray-900">{selectedFlight.baggage.checked}</span>
                 </p>
               </div>
             </div>
 
-            {/* Travel Date Banner */}
-            <div className="bg-slate-50/70 rounded-xl p-3 flex justify-between items-center text-xs font-bold text-gray-600">
-              <span className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-gray-400" /> Travel Date:
-              </span>
-              <span>{formatDate(selectedFlight.departure)}</span>
-            </div>
-
-            {/* Passenger Contacts and baggage lists */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-gray-100 text-xs">
-              <div className="space-y-2">
-                <h4 className="font-bold text-gray-700 uppercase tracking-wider mb-2">
-                  Contact Details
-                </h4>
-                <p className="flex items-center gap-2 text-gray-500">
-                  <Mail className="w-3.5 h-3.5" /> {bookingDetails.email}
-                </p>
-                <p className="flex items-center gap-2 text-gray-500">
-                  <Phone className="w-3.5 h-3.5" /> {bookingDetails.phone}
+            {/* Barcode */}
+            <div className="flex flex-col items-center gap-2 select-none">
+              <div className="w-full h-10 bg-gray-900 rounded flex items-center justify-center px-4">
+                <p className="text-[9px] font-black text-white tracking-widest truncate">
+                  | ||| || ||| | || | |||| || | ||| || || | || | ||| || ||| | || | |||| || | ||| || || | ||
                 </p>
               </div>
-              <div className="space-y-2">
-                <h4 className="font-bold text-gray-700 uppercase tracking-wider mb-2">
-                  Baggage Allowance
-                </h4>
-                <p className="text-gray-500">
-                  Cabin Handbag:{" "}
-                  <span className="font-bold text-gray-700">
-                    {selectedFlight.baggage.cabin}
-                  </span>
-                </p>
-                <p className="text-gray-500">
-                  Checked Baggage:{" "}
-                  <span className="font-bold text-gray-700">
-                    {selectedFlight.baggage.checked}
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            {/* Simulated QR Code / Barcode styling to look complete */}
-            <div className="pt-6 border-t border-dashed border-gray-100 flex flex-col items-center space-y-2 select-none">
-              <div className="w-full max-w-sm h-12 bg-linear-to-r from-gray-900 via-gray-100 to-gray-900 rounded-sm relative opacity-85 flex items-center justify-between px-6 border-y border-gray-300">
-                <div className="w-full flex justify-between text-[10px] font-black text-gray-900 tracking-wider">
-                  <span>| ||| || ||| | || | |||| || | ||| || || | ||</span>
-                  <span>| ||| || ||| | || | |||| || | ||| || || | ||</span>
-                  <span>| ||| || ||| | || | |||| || | ||| || || | ||</span>
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-gray-400 tracking-widest">
-                {pnr} BOARDING PASS MOB-TKT
-              </span>
+              <p className="text-[10px] font-bold text-gray-400 tracking-widest">
+                {pnr} · BOARDING PASS · MOB-TKT
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Action Button Row */}
+        {/* Actions */}
         <div className="flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => window.print()}
-            className="flex items-center justify-center gap-2 border border-gray-200 text-gray-600 hover:text-gray-800 hover:bg-gray-50 font-bold text-xs px-6 py-3 rounded-xl transition-colors bg-white shadow-xs cursor-pointer"
+            className="flex items-center gap-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-bold text-xs px-5 py-2.5 rounded-xl transition-colors bg-white"
           >
-            <Printer className="w-4 h-4" />
-            <span>Print Pass</span>
+            <Printer className="w-4 h-4" /> Print Pass
           </button>
-
           <button
             onClick={async () => {
               const text = `Flight booking confirmed! PNR: ${pnr}`;
-              if (navigator.share) {
-                await navigator.share({ title: "Flight Booking", text });
-              } else {
-                await navigator.clipboard.writeText(text);
-              }
+              if (navigator.share) await navigator.share({ title: "Flight Booking", text });
+              else await navigator.clipboard.writeText(text);
             }}
-            className="flex items-center justify-center gap-2 border border-gray-200 text-gray-600 hover:text-gray-800 hover:bg-gray-50 font-bold text-xs px-6 py-3 rounded-xl transition-colors bg-white shadow-xs cursor-pointer"
+            className="flex items-center gap-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-bold text-xs px-5 py-2.5 rounded-xl transition-colors bg-white"
           >
-            <Share2 className="w-4 h-4" />
-            <span>Share Booking</span>
+            <Share2 className="w-4 h-4" /> Share Booking
           </button>
-
           <button
             onClick={handleBookAnother}
-            className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-8 py-3 rounded-xl shadow-md shadow-green-600/10 active:scale-[0.98] transition-all cursor-pointer"
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-colors"
           >
-            <Home className="w-4 h-4" />
-            <span>Book Another Flight</span>
+            <Home className="w-4 h-4" /> Book Another Flight
           </button>
         </div>
       </div>
     </div>
   );
 }
-
