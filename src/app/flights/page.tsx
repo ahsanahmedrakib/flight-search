@@ -174,8 +174,8 @@ function FlightsContent() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Desktop Sidebar */}
               {!shouldHideSidebar && (
-                <div className="hidden lg:block lg:col-span-3 xl:col-span-3">
-                  <div className="lg:sticky lg:top-6">
+                <div className="hidden lg:block lg:col-span-3 xl:col-span-3 lg:sticky lg:top-6">
+                  <div>
                     <FlightFilterSidebar />
                   </div>
                 </div>
