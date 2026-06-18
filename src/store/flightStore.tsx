@@ -20,6 +20,11 @@ export interface FiltersState {
   selectedAircraft: string[];
   selectedAirlines: string[];
   maxPrice: number;
+  stopsFilter: "all" | "nonstop" | "1stop";
+  mealsIncluded: boolean;
+  seatSelectionIncluded: boolean;
+  changeAllowed: boolean;
+  minPunctuality: number;
 }
 
 interface FlightStore {
@@ -67,6 +72,11 @@ const defaultFilters: FiltersState = {
   selectedAircraft: [],
   selectedAirlines: [],
   maxPrice: 0,
+  stopsFilter: "all",
+  mealsIncluded: false,
+  seatSelectionIncluded: false,
+  changeAllowed: false,
+  minPunctuality: 0,
 };
 
 export const useFlightStore = create<FlightStore>()(
@@ -92,14 +102,25 @@ export const useFlightStore = create<FlightStore>()(
 
     if (filters.selectedTime) {
       result = result.filter((f) => {
-        const depHour = new Date(f.departure).getHours();
-        if (filters.selectedTime === "afternoon")
-          return depHour >= 12 && depHour < 18;
-        if (filters.selectedTime === "evening")
-          return depHour >= 18 && depHour <= 23;
+        const depHour = parseInt(f.departure.split("T")[1] || "0");
+        if (filters.selectedTime === "morning") return depHour >= 5 && depHour < 12;
+        if (filters.selectedTime === "afternoon") return depHour >= 12 && depHour < 18;
+        if (filters.selectedTime === "evening") return depHour >= 18 && depHour <= 23;
+        if (filters.selectedTime === "night") return depHour >= 0 && depHour < 5;
         return true;
       });
     }
+
+    if (filters.stopsFilter === "nonstop") {
+      result = result.filter((f) => f.stops === 0);
+    } else if (filters.stopsFilter === "1stop") {
+      result = result.filter((f) => f.stops === 1);
+    }
+
+    if (filters.mealsIncluded) result = result.filter((f) => f.mealsIncluded);
+    if (filters.seatSelectionIncluded) result = result.filter((f) => f.seatSelectionIncluded);
+    if (filters.changeAllowed) result = result.filter((f) => f.changeAllowed);
+    if (filters.minPunctuality > 0) result = result.filter((f) => f.punctuality >= filters.minPunctuality);
 
     if (filters.partiallyRefundable) {
       result = result.filter((f) => f.refundable === true);

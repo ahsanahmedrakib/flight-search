@@ -1,7 +1,14 @@
 "use client";
 
 import { useFlight } from "@/store/flightStore";
-import { ChevronDown, ChevronUp, Moon, Sun } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Moon,
+  Sun,
+  Sunrise,
+  Sunset,
+} from "lucide-react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
@@ -68,10 +75,13 @@ export default function FlightFilterSidebar() {
 
   const [sections, setSections] = useState({
     price: true,
+    stops: true,
     airlines: true,
     refundability: true,
+    amenities: true,
     layover: true,
     aircraft: true,
+    punctuality: true,
   });
 
   const toggleSection = (section: keyof typeof sections) =>
@@ -107,15 +117,12 @@ export default function FlightFilterSidebar() {
   return (
     <div className="w-full max-w-xs bg-white rounded-2xl shadow-sm border border-gray-100 p-5 font-sans antialiased text-gray-800 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto scrollbar-thin [&::-webkit-scrollbar]:w-px [&::-webkit-scrollbar-thumb]:bg-green-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
       {/* 1. Time of Day */}
-      <div className="grid grid-cols-2 gap-2 mb-6">
+      <div className="grid grid-cols-4 gap-1.5 mb-6">
         {[
-          {
-            key: "afternoon",
-            Icon: Sun,
-            label: "Afternoon",
-            time: "12:00-17:59",
-          },
-          { key: "evening", Icon: Moon, label: "Evening", time: "18:00-23:59" },
+          { key: "morning", Icon: Sunrise, label: "Morning", time: "05-11" },
+          { key: "afternoon", Icon: Sun, label: "Afternoon", time: "12-17" },
+          { key: "evening", Icon: Sunset, label: "Evening", time: "18-23" },
+          { key: "night", Icon: Moon, label: "Night", time: "00-04" },
         ].map(({ key, Icon, label, time }) => (
           <button
             key={key}
@@ -125,26 +132,58 @@ export default function FlightFilterSidebar() {
                 selectedTime: prev.selectedTime === key ? null : key,
               }))
             }
-            className={`p-3 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
+            className={`p-2 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 ${
               filters.selectedTime === key
                 ? "border-green-500 bg-green-50/30 ring-1 ring-green-500"
                 : "border-gray-100 bg-gray-50/40 hover:border-gray-200"
             }`}
           >
             <Icon
-              className={`w-5 h-5 ${filters.selectedTime === key ? "text-green-500" : "text-gray-400"}`}
+              className={`w-4 h-4 ${filters.selectedTime === key ? "text-green-500" : "text-gray-400"}`}
             />
-            <div>
-              <div className="text-xs font-bold text-gray-700">{label}</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">{time}</div>
-            </div>
+            <div className="text-[10px] font-bold text-gray-700">{label}</div>
+            <div className="text-[9px] text-gray-400">{time}</div>
           </button>
         ))}
       </div>
 
       <div className="space-y-5 divide-y divide-gray-100">
-        {/* 2. Price Range */}
+        {/* 2. Stops */}
         <div className="pt-4 first:pt-0">
+          <button
+            onClick={() => toggleSection("stops")}
+            className="w-full flex items-center justify-between text-sm font-bold text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            <span>Stops</span>
+            {chevron(sections.stops)}
+          </button>
+          {sections.stops && (
+            <div className="mt-3 grid grid-cols-3 gap-1.5 animate-fadeIn">
+              {(["all", "nonstop", "1stop"] as const).map((val) => (
+                <button
+                  key={val}
+                  onClick={() =>
+                    setFilters((prev) => ({ ...prev, stopsFilter: val }))
+                  }
+                  className={`py-1.5 rounded-lg text-[11px] font-bold border transition-all ${
+                    filters.stopsFilter === val
+                      ? "border-green-500 bg-green-50 text-green-700"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300"
+                  }`}
+                >
+                  {val === "all"
+                    ? "All"
+                    : val === "nonstop"
+                      ? "Non-stop"
+                      : "1 Stop"}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 3. Price Range */}
+        <div className="pt-4">
           <button
             onClick={() => toggleSection("price")}
             className="w-full flex items-center justify-between text-sm font-bold text-gray-700 hover:text-gray-900 transition-colors"
@@ -235,7 +274,7 @@ export default function FlightFilterSidebar() {
           )}
         </div>
 
-        {/* 4. Refundability */}
+        {/* 5. Refundability */}
         <div className="pt-4">
           <button
             onClick={() => toggleSection("refundability")}
@@ -266,7 +305,55 @@ export default function FlightFilterSidebar() {
           )}
         </div>
 
-        {/* 5. Layover Time */}
+        {/* 6. Amenities */}
+        <div className="pt-4">
+          <button
+            onClick={() => toggleSection("amenities")}
+            className="w-full flex items-center justify-between text-sm font-bold text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            <span>Amenities</span>
+            {chevron(sections.amenities)}
+          </button>
+          {sections.amenities && (
+            <div className="mt-3 space-y-2 pl-0.5 animate-fadeIn">
+              {(
+                [
+                  { key: "mealsIncluded", label: "Meals Included" },
+                  { key: "seatSelectionIncluded", label: "Seat Selection" },
+                  { key: "changeAllowed", label: "Change Allowed" },
+                ] as {
+                  key:
+                    | "mealsIncluded"
+                    | "seatSelectionIncluded"
+                    | "changeAllowed";
+                  label: string;
+                }[]
+              ).map(({ key, label }) => (
+                <label
+                  key={key}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
+                  <input
+                    type="checkbox"
+                    checked={filters[key]}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        [key]: e.target.checked,
+                      }))
+                    }
+                    className="w-4 h-4 rounded text-green-600 border-gray-300 accent-green-600 cursor-pointer"
+                  />
+                  <span className="text-xs font-semibold text-gray-600 group-hover:text-gray-900 transition-colors">
+                    {label}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 7. Layover Time */}
         <div className="pt-4">
           <button
             onClick={() => toggleSection("layover")}
@@ -304,7 +391,7 @@ export default function FlightFilterSidebar() {
           )}
         </div>
 
-        {/* 6. Aircraft */}
+        {/* 8. Aircraft */}
         <div className="pt-4">
           <button
             onClick={() => toggleSection("aircraft")}
@@ -338,6 +425,4 @@ export default function FlightFilterSidebar() {
     </div>
   );
 }
-
-
 

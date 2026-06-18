@@ -301,8 +301,8 @@ export default function FlightBookingForm() {
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:justify-end pt-2">
           <button
             type="button"
-            onClick={() => router.push("/")}
-            className="w-full sm:w-auto border-2 border-gray-300 text-gray-600 font-bold text-sm px-6 py-3.5 rounded-xl hover:bg-gray-100 hover:border-gray-400 transition-all duration-200 order-2 sm:order-1 shadow-sm hover:shadow-md"
+            onClick={() => router.back()}
+            className="w-full sm:w-auto cursor-pointer border-2 border-gray-300 text-gray-600 font-bold text-sm px-6 py-3.5 rounded-xl hover:bg-gray-100 hover:border-gray-400 transition-all duration-200 order-2 sm:order-1 shadow-sm hover:shadow-md"
           >
             Back to Flights
           </button>

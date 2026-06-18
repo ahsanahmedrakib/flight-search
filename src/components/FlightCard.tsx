@@ -148,7 +148,7 @@ export default function FlightCard({ flight }: FlightCardProps) {
               <div className="w-full flex items-center gap-1.5 my-1.5">
                 <div className="w-2 h-2 rounded-full border-2 border-blue-500 bg-white" />
                 <div className="flex-1 border-t border-dashed border-gray-300 relative flex justify-center">
-                  <Plane className="w-4 h-4 text-blue-500 absolute -top-2 bg-white px-0.5 rotate-90" />
+                  <Plane className="w-4 h-4 text-blue-500 absolute -top-2 bg-white px-0.5 rotate-45" />
                 </div>
                 <div className="w-2 h-2 rounded-full border-2 border-blue-500 bg-white" />
               </div>

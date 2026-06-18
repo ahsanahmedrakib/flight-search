@@ -58,6 +58,11 @@ function EmptyState() {
             selectedAircraft: [],
             selectedAirlines: [],
             maxPrice: 0,
+            stopsFilter: "all",
+            mealsIncluded: false,
+            seatSelectionIncluded: false,
+            changeAllowed: false,
+            minPunctuality: 0,
           });
         }}
         className="bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
