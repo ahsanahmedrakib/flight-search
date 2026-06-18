@@ -16,6 +16,7 @@ import { useFlight } from "@/store/flightStore";
 export default function FlightSortBar() {
   const {
     flights,
+    hasSearched,
     sortBy,
     setSortBy,
     selectedAirline,
@@ -78,6 +79,10 @@ export default function FlightSortBar() {
     setDropdownSortLabel(label);
     setIsDropdownOpen(false);
   };
+
+  if(hasSearched && flights.length <= 0){
+    return null
+  }
 
   return (
     <div className="w-full max-w-5xl space-y-4 font-sans antialiased bg-slate-50 p-4 rounded-2xl">

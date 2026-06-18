@@ -65,7 +65,7 @@ function EmptyState() {
             minPunctuality: 0,
           });
         }}
-        className="bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
+        className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md"
       >
         Clear Filters
       </button>
@@ -182,4 +182,3 @@ export default function FlightsPage() {
     </Suspense>
   );
 }
-
