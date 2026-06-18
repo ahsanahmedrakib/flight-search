@@ -27,19 +27,6 @@ export interface FiltersState {
   minPunctuality: number;
 }
 
-export type ActionData =
-  | SearchCriteria
-  | FiltersState
-  | string
-  | { selectedAirline: string | null }
-  | { selectedFlight: Flight | null };
-
-export interface ActionRecord {
-  type: "search" | "filter" | "sort" | "selection";
-  timestamp: number;
-  data: ActionData;
-}
-
 interface FlightStore {
   searchCriteria: SearchCriteria;
   hasSearched: boolean;
@@ -50,7 +37,7 @@ interface FlightStore {
   filters: FiltersState;
   selectedFlight: Flight | null;
   bookingDetails: BookingFormData | null;
-  actionHistory: ActionRecord[];
+  lastAction: string | null;
 
   // Computed
   filteredFlights: () => Flight[];
@@ -65,7 +52,6 @@ interface FlightStore {
   setSelectedAirline: (airline: string | null) => void;
   setSelectedFlight: (flight: Flight | null) => void;
   setBookingDetails: (details: BookingFormData | null) => void;
-  clearHistory: () => void;
   resetAll: () => void;
 }
 
@@ -106,7 +92,7 @@ export const useFlightStore = create<FlightStore>()(
       filters: defaultFilters,
       selectedFlight: null,
       bookingDetails: null,
-      actionHistory: [],
+      lastAction: null,
 
       filteredFlights: () => {
         const { flights, selectedAirline, filters, sortBy } = get();
@@ -216,19 +202,14 @@ export const useFlightStore = create<FlightStore>()(
       setSearchCriteria: (criteria) => set({ searchCriteria: criteria }),
 
       triggerSearch: (criteria) => {
-        const action: ActionRecord = {
-          type: "search",
-          timestamp: Date.now(),
-          data: criteria,
-        };
-        set((state) => ({
+        set(() => ({
           searchCriteria: criteria,
           loading: true,
           hasSearched: true,
           selectedAirline: null,
           sortBy: "cheapest",
           filters: defaultFilters,
-          actionHistory: [action, ...state.actionHistory].slice(0, 50),
+          lastAction: "search",
         }));
 
         setTimeout(() => {
@@ -260,57 +241,36 @@ export const useFlightStore = create<FlightStore>()(
         set((state) => {
           const nextFilters =
             typeof filters === "function" ? filters(state.filters) : filters;
-          const action: ActionRecord = {
-            type: "filter",
-            timestamp: Date.now(),
-            data: nextFilters,
-          };
           return {
             filters: nextFilters,
-            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+            lastAction: "filter",
           };
         }),
 
       setSortBy: (sort) =>
-        set((state) => {
-          const action: ActionRecord = {
-            type: "sort",
-            timestamp: Date.now(),
-            data: sort,
-          };
+        set(() => {
           return {
             sortBy: sort,
-            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+            lastAction: "sort",
           };
         }),
 
       setSelectedAirline: (airline) =>
-        set((state) => {
-          const action: ActionRecord = {
-            type: "filter", // Treat airline selection as a filter
-            timestamp: Date.now(),
-            data: { selectedAirline: airline },
-          };
+        set(() => {
           return {
             selectedAirline: airline,
-            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+            lastAction: "filter",
           };
         }),
 
       setSelectedFlight: (flight) =>
-        set((state) => {
-          const action: ActionRecord = {
-            type: "selection",
-            timestamp: Date.now(),
-            data: { selectedFlight: flight },
-          };
+        set(() => {
           return {
             selectedFlight: flight,
-            actionHistory: [action, ...state.actionHistory].slice(0, 50),
+            lastAction: "selection",
           };
         }),
       setBookingDetails: (details) => set({ bookingDetails: details }),
-      clearHistory: () => set({ actionHistory: [] }),
 
       resetAll: () =>
         set({
@@ -323,7 +283,7 @@ export const useFlightStore = create<FlightStore>()(
           selectedFlight: null,
           bookingDetails: null,
           flights: [],
-          actionHistory: [],
+          lastAction: null,
         }),
     }),
     {
@@ -338,7 +298,7 @@ export const useFlightStore = create<FlightStore>()(
         sortBy: state.sortBy,
         filters: state.filters,
         selectedAirline: state.selectedAirline,
-        actionHistory: state.actionHistory,
+        lastAction: state.lastAction,
       }),
     },
   ),
@@ -350,7 +310,6 @@ export function useFlight() {
   return {
     ...store,
     filteredFlights: store.filteredFlights(),
-    actionHistory: store.actionHistory,
   };
 }
 

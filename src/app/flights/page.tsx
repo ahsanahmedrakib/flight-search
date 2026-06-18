@@ -36,7 +36,7 @@ function LoadingSkeleton() {
 }
 
 function EmptyState() {
-  const { setFilters, setSelectedAirline, actionHistory } = useFlight();
+  const { setFilters, setSelectedAirline, lastAction } = useFlight();
 
   return (
     <div className="w-full bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-xs flex flex-col items-center justify-center space-y-4">
@@ -48,7 +48,7 @@ function EmptyState() {
         We couldn&apos;t find any flights matching your criteria. Try modifying
         your search or resetting filters.
       </p>
-      {actionHistory[0]?.type !== "search" && (
+      {lastAction !== "search" && (
         <button
           onClick={() => {
             setSelectedAirline(null);
@@ -76,13 +76,8 @@ function EmptyState() {
 }
 
 function FlightsContent() {
-  const {
-    hasSearched,
-    loading,
-    filteredFlights,
-    triggerSearch,
-    actionHistory,
-  } = useFlight();
+  const { hasSearched, loading, filteredFlights, triggerSearch, lastAction } =
+    useFlight();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -121,9 +116,8 @@ function FlightsContent() {
     searchParams.get("to") &&
     searchParams.get("date");
 
-  const lastAction = actionHistory[0];
   const shouldHideSidebar =
-    lastAction?.type === "search" && filteredFlights.length === 0;
+    lastAction === "search" && filteredFlights.length === 0;
 
   if (!hasSearched && !hasUrlParams) return null;
   if (!hasSearched && hasUrlParams) {
