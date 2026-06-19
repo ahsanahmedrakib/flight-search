@@ -1,35 +1,12 @@
 "use client";
 
+import { formatDate, formatDuration, formatTime } from "@/lib/utils";
 import { useFlight } from "@/store/flightStore";
 import type { Flight } from "@/types/flight";
 import { AlertCircle, ChevronDown, Plane, ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
 interface FlightCardProps {
   flight: Flight;
@@ -41,29 +18,6 @@ export default function FlightCard({ flight }: FlightCardProps) {
   const router = useRouter();
   const { setSelectedFlight, searchCriteria } = useFlight();
   const passengers = searchCriteria.passengers;
-
-  // Formatting date helpers for display targets (e.g. "15 Jul, Wednesday" or "06:00") (Deterministic)
-  const formatTime = (isoString: string) => {
-    if (!isoString) return "";
-    const timePart = isoString.split("T")[1] || "00:00:00";
-    const [hour, minute] = timePart.split(":");
-    return `${hour}:${minute}`;
-  };
-
-  const formatDate = (isoString: string) => {
-    if (!isoString) return "";
-    const datePart = isoString.split("T")[0];
-    const [year, month, day] = datePart.split("-").map(Number);
-    const date = new Date(year, month - 1, day);
-    return `${day} ${MONTHS[month - 1]}, ${WEEKDAYS[date.getDay()]}`;
-  };
-
-  // Convert flat minutes into human hours/minutes e.g., 70 -> "1h 10m"
-  const formatDuration = (totalMinutes: number) => {
-    const hours = Math.floor(totalMinutes / 60);
-    const mins = totalMinutes % 60;
-    return `${hours}h ${mins}m`;
-  };
 
   return (
     <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden font-sans">

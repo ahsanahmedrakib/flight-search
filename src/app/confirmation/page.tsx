@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDate, formatTime } from "@/lib/utils";
 import { useFlight } from "@/store/flightStore";
 import {
   Calendar,
@@ -16,30 +17,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
 export default function ConfirmationPage() {
   const { selectedFlight, bookingDetails, resetAll } = useFlight();
   const router = useRouter();
@@ -53,19 +30,6 @@ export default function ConfirmationPage() {
   const [pnr] = useState(() =>
     Math.random().toString(36).substring(2, 8).toUpperCase(),
   );
-
-  const formatTime = (isoString: string) => {
-    if (!isoString) return "";
-    const [hour, minute] = (isoString.split("T")[1] || "00:00").split(":");
-    return `${hour}:${minute}`;
-  };
-
-  const formatDate = (isoString: string) => {
-    if (!isoString) return "";
-    const [year, month, day] = isoString.split("T")[0].split("-").map(Number);
-    const date = new Date(year, month - 1, day);
-    return `${day} ${MONTHS[month - 1]}, ${WEEKDAYS[date.getDay()]}`;
-  };
 
   const sendEmail = useCallback(
     async (

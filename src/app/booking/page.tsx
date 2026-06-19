@@ -1,6 +1,7 @@
 "use client";
 
 import FlightBookingForm from "@/components/FlightBookingForm";
+import { formatDate, formatDuration, formatTime } from "@/lib/utils";
 import { allRawFlights, useFlight } from "@/store/flightStore";
 import {
   ArrowRight,
@@ -13,30 +14,6 @@ import {
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
 function BookingContent() {
   const { selectedFlight, searchCriteria, flights, setSelectedFlight } =
@@ -86,27 +63,6 @@ function BookingContent() {
       </div>
     );
   }
-
-  const formatTime = (isoString: string) => {
-    if (!isoString) return "";
-    const timePart = isoString.split("T")[1] || "00:00:00";
-    const [hour, minute] = timePart.split(":");
-    return `${hour}:${minute}`;
-  };
-
-  const formatDate = (isoString: string) => {
-    if (!isoString) return "";
-    const datePart = isoString.split("T")[0];
-    const [year, month, day] = datePart.split("-").map(Number);
-    const date = new Date(year, month - 1, day);
-    return `${day} ${MONTHS[month - 1]}, ${WEEKDAYS[date.getDay()]}`;
-  };
-
-  const formatDuration = (totalMinutes: number) => {
-    const hours = Math.floor(totalMinutes / 60);
-    const mins = totalMinutes % 60;
-    return `${hours}h ${mins}m`;
-  };
 
   const basePrice = selectedFlight.price.baseFare * passengers;
   const taxes = selectedFlight.price.taxes * passengers;

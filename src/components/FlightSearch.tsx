@@ -1,5 +1,7 @@
 "use client";
 
+import { AIRPORTS } from "@/lib/constants";
+import { formatDateDisplay, formatWeekdayDisplay } from "@/lib/utils";
 import { useFlight } from "@/store/flightStore";
 import {
   ArrowLeftRight,
@@ -14,40 +16,6 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-
-// Mock Airport Data
-const AIRPORTS = [
-  { city: "Dhaka", airport: "DAC, Hazrat Shahjalal International Airport" },
-  { city: "Cox's Bazar", airport: "CXB, Cox's Bazar Airport" },
-  { city: "Chittagong", airport: "CGP, Shah Amanat International" },
-  { city: "Sylhet", airport: "ZYL, Osmani International Airport" },
-  { city: "Jessore", airport: "JSR, Jessore Airport" },
-];
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
 export default function FlightSearch({
   isSearching,
@@ -143,28 +111,6 @@ export default function FlightSearch({
     e.stopPropagation();
     setFromLocation(toLocation);
     setToLocation(fromLocation);
-  };
-
-  // Helper formatting logic for display values (deterministic parsing)
-  const formatDateDisplay = (dateString: string) => {
-    if (!dateString) return "Select Date";
-    const parts = dateString.split("-");
-    if (parts.length !== 3) return "Select Date";
-    const year = Number(parts[0]);
-    const month = Number(parts[1]);
-    const day = Number(parts[2]);
-    return `${day} ${MONTHS[month - 1]} ${year}`;
-  };
-
-  const formatWeekdayDisplay = (dateString: string) => {
-    if (!dateString) return "";
-    const parts = dateString.split("-");
-    if (parts.length !== 3) return "";
-    const year = Number(parts[0]);
-    const month = Number(parts[1]);
-    const day = Number(parts[2]);
-    const date = new Date(year, month - 1, day);
-    return WEEKDAYS[date.getDay()];
   };
 
   const handleSearchFlight = () => {
@@ -380,6 +326,7 @@ export default function FlightSearch({
                   <input
                     ref={departureInputRef}
                     type="date"
+                    min={new Date().toISOString().split("T")[0]}
                     value={departureDate}
                     onChange={(e) => setDepartureDate(e.target.value)}
                     className="absolute inset-0 pointer-events-none opacity-0 w-full h-full -z-10"
