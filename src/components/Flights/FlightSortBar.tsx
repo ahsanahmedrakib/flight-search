@@ -80,8 +80,8 @@ const FlightSortBar = () => {
     setIsDropdownOpen(false);
   };
 
-  if(hasSearched && flights.length <= 0){
-    return null
+  if (hasSearched && flights.length <= 0) {
+    return null;
   }
 
   return (
@@ -91,7 +91,7 @@ const FlightSortBar = () => {
         Showing {flights.length} Flights &{" "}
         {new Set(flights.map((f) => f.airline.code)).size} Carriers
         {passengers > 1 && (
-          <span className="ml-2 text-green-600">({passengers} Travellers)</span>
+          <span className="ml-2 text-green-600">({passengers} Passengers)</span>
         )}
       </div>
 
@@ -293,6 +293,6 @@ const FlightSortBar = () => {
       </div>
     </div>
   );
-}
+};
 
-export default FlightSortBar
+export default FlightSortBar;

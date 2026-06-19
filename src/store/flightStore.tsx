@@ -1,4 +1,5 @@
 import rawFlights from "@/data/flights.json";
+import { getFormattedDate } from "@/lib/utils";
 import { BookingFormData } from "@/types/booking";
 import { Flight } from "@/types/flight";
 import { create } from "zustand";
@@ -57,11 +58,14 @@ interface FlightStore {
 
 export const allRawFlights = rawFlights as unknown as Flight[];
 
+const departureDate = getFormattedDate(0); // Today → YYYY-MM-DD
+const returnDate = getFormattedDate(1);
+
 const defaultCriteria: SearchCriteria = {
   from: "Dhaka",
   to: "Cox's Bazar",
-  departureDate: "2026-06-19",
-  returnDate: "2026-06-26",
+  departureDate: departureDate,
+  returnDate: returnDate,
   passengers: 1,
   cabinClass: "Economy",
 };

@@ -220,7 +220,7 @@ const FlightBookingContent = () => {
                 <div className="flex items-center gap-2">
                   {passengers > 1 && (
                     <span className="text-xs text-gray-300 font-semibold">
-                      {passengers} travellers
+                      {passengers} passengers
                     </span>
                   )}
                   <span className="text-xs bg-green-600 text-white font-extrabold px-2 py-0.5 rounded">

@@ -170,7 +170,7 @@ const FlightCard = ({ flight }: FlightCardProps) => {
             </span>
             <p className="text-[10px] text-gray-400 font-medium mt-0.5">
               ৳ {flight.price.total.toLocaleString()} × {passengers}{" "}
-              {passengers === 1 ? "traveller" : "travellers"}
+              {passengers === 1 ? "passenger" : "passengers"}
             </p>
             {/* Strikeout Base Price display if markdown metrics available */}
             <p className="text-xs text-gray-400 font-medium line-through mt-0.5">

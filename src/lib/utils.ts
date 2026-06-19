@@ -41,3 +41,10 @@ export const formatDuration = (totalMinutes: number) => {
   const mins = totalMinutes % 60;
   return `${hours}h ${mins}m`;
 };
+
+export const getFormattedDate = (daysAhead: number = 0): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + daysAhead);
+  
+  return date.toISOString().split('T')[0];
+};

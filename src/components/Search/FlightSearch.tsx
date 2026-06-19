@@ -387,7 +387,7 @@ const FlightSearch = ({ isSearching }: { isSearching?: boolean }) => {
                 </span>
                 <div className="text-md font-bold text-gray-800 mt-0.5">
                   {passengerCount}{" "}
-                  {passengerCount === 1 ? "Traveller" : "Travellers"}
+                  {passengerCount === 1 ? "Traveller" : "Passengers"}
                 </div>
                 <div className="text-xs text-gray-500 mt-0.5">{cabinClass}</div>
               </div>
