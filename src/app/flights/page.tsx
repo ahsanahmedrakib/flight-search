@@ -138,7 +138,7 @@ function FlightsContent() {
   }
 
   return (
-    <main className="flex-1 flex flex-col pb-16 bg-slate-50/50 min-h-screen">
+    <main className="flex-1 flex flex-col pb-16 bg-slate-900 min-h-screen">
       {/* Search Section */}
       <div className="bg-slate-900 relative">
         <div
@@ -265,7 +265,7 @@ export default function FlightsPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex-1 flex flex-col pb-16 bg-slate-50/50 min-h-screen">
+        <main className="flex-1 flex flex-col pb-16 bg-slate-900 min-h-screen">
           <div className="max-w-7xl mx-auto px-4 w-full mt-10">
             <LoadingSkeleton />
           </div>
