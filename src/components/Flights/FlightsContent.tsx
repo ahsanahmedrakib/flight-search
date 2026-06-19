@@ -19,7 +19,6 @@ const FlightsContent = () => {
     triggerSearch,
     lastAction,
     error,
-    clearError,
   } = useFlight();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
@@ -82,6 +81,15 @@ const FlightsContent = () => {
   if (error) {
     return (
       <main className="flex-1 flex flex-col pb-16 bg-slate-900 min-h-screen">
+        <div className="bg-slate-900 relative">
+          <div
+            className={`transition-all duration-300 ease-in-out overflow-hidden max-h-250 opacity-100`}
+          >
+            <div ref={searchRef}>
+              <FlightSearch isSearching={loading} />
+            </div>
+          </div>
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-12">
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
@@ -92,19 +100,11 @@ const FlightsContent = () => {
               Something went wrong
             </h3>
 
-            <p className="text-gray-400 max-w-md text-lg leading-relaxed mb-8">
+            <p className="text-gray-400 max-w-md text-lg leading-relaxed">
               {error}
             </p>
-
-            <button
-              onClick={clearError}
-              className="bg-green-600 hover:bg-green-700 cursor-pointer transition-colors text-white font-bold px-8 py-3.5 rounded-2xl flex items-center gap-2 text-base shadow-lg active:scale-95"
-            >
-              Try Again
-            </button>
-
             <p className="text-gray-500 text-sm mt-6">
-              You can also modify your search criteria above
+              Modify your search criteria above
             </p>
           </div>
         </div>

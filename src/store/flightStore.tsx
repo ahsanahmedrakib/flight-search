@@ -101,7 +101,7 @@ export const useFlightStore = create<FlightStore>()(
       selectedFlight: null,
       bookingDetails: null,
       lastAction: null,
-      error: null, // ← Added
+      error: null,
 
       filteredFlights: () => {
         const { flights, selectedAirline, filters, sortBy } = get();
