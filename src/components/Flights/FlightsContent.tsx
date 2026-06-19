@@ -5,15 +5,22 @@ import FlightFilterSidebar from "@/components/Flights/FlightFiltersSidebar";
 import FlightSortBar from "@/components/Flights/FlightSortBar";
 import FlightSearch from "@/components/Search/FlightSearch";
 import { useFlight } from "@/store/flightStore";
-import { Filter, X } from "lucide-react";
+import { AlertCircle, Filter, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import FlightEmptyState from "./FlightEmptyState";
 import LoadingSkeleton from "./LoadingSkeleton";
 
 const FlightsContent = () => {
-  const { hasSearched, loading, filteredFlights, triggerSearch, lastAction } =
-    useFlight();
+  const {
+    hasSearched,
+    loading,
+    filteredFlights,
+    triggerSearch,
+    lastAction,
+    error,
+    clearError,
+  } = useFlight();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +74,39 @@ const FlightsContent = () => {
         </div>
         <div className="max-w-7xl mx-auto px-4 w-full mt-10">
           <LoadingSkeleton />
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="flex-1 flex flex-col pb-16 bg-slate-900 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-12">
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
+              <AlertCircle className="w-10 h-10 text-red-500" />
+            </div>
+
+            <h3 className="text-2xl font-semibold text-white mb-3">
+              Something went wrong
+            </h3>
+
+            <p className="text-gray-400 max-w-md text-lg leading-relaxed mb-8">
+              {error}
+            </p>
+
+            <button
+              onClick={clearError}
+              className="bg-green-600 hover:bg-green-700 cursor-pointer transition-colors text-white font-bold px-8 py-3.5 rounded-2xl flex items-center gap-2 text-base shadow-lg active:scale-95"
+            >
+              Try Again
+            </button>
+
+            <p className="text-gray-500 text-sm mt-6">
+              You can also modify your search criteria above
+            </p>
+          </div>
         </div>
       </main>
     );

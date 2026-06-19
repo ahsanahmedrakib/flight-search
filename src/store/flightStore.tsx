@@ -40,6 +40,9 @@ interface FlightStore {
   bookingDetails: BookingFormData | null;
   lastAction: string | null;
 
+  // Error Handling
+  error: string | null;
+
   // Computed
   filteredFlights: () => Flight[];
 
@@ -53,12 +56,13 @@ interface FlightStore {
   setSelectedAirline: (airline: string | null) => void;
   setSelectedFlight: (flight: Flight | null) => void;
   setBookingDetails: (details: BookingFormData | null) => void;
+  clearError: () => void; // New
   resetAll: () => void;
 }
 
 export const allRawFlights = rawFlights as unknown as Flight[];
 
-const departureDate = getFormattedDate(0); // Today → YYYY-MM-DD
+const departureDate = getFormattedDate(0);
 const returnDate = getFormattedDate(1);
 
 const defaultCriteria: SearchCriteria = {
@@ -97,6 +101,7 @@ export const useFlightStore = create<FlightStore>()(
       selectedFlight: null,
       bookingDetails: null,
       lastAction: null,
+      error: null, // ← Added
 
       filteredFlights: () => {
         const { flights, selectedAirline, filters, sortBy } = get();
@@ -213,33 +218,57 @@ export const useFlightStore = create<FlightStore>()(
           selectedAirline: null,
           sortBy: "cheapest",
           filters: defaultFilters,
+          error: null, // Clear previous error
           lastAction: "search",
         }));
 
         setTimeout(() => {
-          const matches = allRawFlights.filter((flight) => {
-            const fromMatch =
-              flight.route.origin.city.toLowerCase() ===
-                criteria.from.toLowerCase() ||
-              flight.route.origin.code.toLowerCase() ===
-                criteria.from.toLowerCase();
-            const toMatch =
-              flight.route.destination.city.toLowerCase() ===
-                criteria.to.toLowerCase() ||
-              flight.route.destination.code.toLowerCase() ===
-                criteria.to.toLowerCase();
-            return fromMatch && toMatch;
-          });
+          try {
+            const matches = allRawFlights.filter((flight) => {
+              const fromMatch =
+                flight.route.origin.city.toLowerCase() ===
+                  criteria.from.toLowerCase() ||
+                flight.route.origin.code.toLowerCase() ===
+                  criteria.from.toLowerCase();
+              const toMatch =
+                flight.route.destination.city.toLowerCase() ===
+                  criteria.to.toLowerCase() ||
+                flight.route.destination.code.toLowerCase() ===
+                  criteria.to.toLowerCase();
+              return fromMatch && toMatch;
+            });
 
-          const adjusted = matches.map((flight) => ({
-            ...flight,
-            departure: `${criteria.departureDate}T${flight.departure.split("T")[1] || "12:00:00"}`,
-            arrival: `${criteria.departureDate}T${flight.arrival.split("T")[1] || "13:00:00"}`,
-          }));
+            if (matches.length === 0) {
+              throw new Error(
+                `No flights found from ${criteria.from} to ${criteria.to}`,
+              );
+            }
 
-          set({ flights: adjusted, loading: false });
+            const adjusted = matches.map((flight) => ({
+              ...flight,
+              departure: `${criteria.departureDate}T${flight.departure.split("T")[1] || "12:00:00"}`,
+              arrival: `${criteria.departureDate}T${flight.arrival.split("T")[1] || "13:00:00"}`,
+            }));
+
+            set({
+              flights: adjusted,
+              loading: false,
+              error: null,
+            });
+          } catch (err) {
+            set({
+              flights: [],
+              loading: false,
+              error:
+                err instanceof Error
+                  ? err.message
+                  : "Failed to fetch flights. Please try again.",
+            });
+          }
         }, 800);
       },
+
+      clearError: () => set({ error: null }),
 
       setFilters: (filters) =>
         set((state) => {
@@ -252,28 +281,23 @@ export const useFlightStore = create<FlightStore>()(
         }),
 
       setSortBy: (sort) =>
-        set(() => {
-          return {
-            sortBy: sort,
-            lastAction: "sort",
-          };
-        }),
+        set(() => ({
+          sortBy: sort,
+          lastAction: "sort",
+        })),
 
       setSelectedAirline: (airline) =>
-        set(() => {
-          return {
-            selectedAirline: airline,
-            lastAction: "filter",
-          };
-        }),
+        set(() => ({
+          selectedAirline: airline,
+          lastAction: "filter",
+        })),
 
       setSelectedFlight: (flight) =>
-        set(() => {
-          return {
-            selectedFlight: flight,
-            lastAction: "selection",
-          };
-        }),
+        set(() => ({
+          selectedFlight: flight,
+          lastAction: "selection",
+        })),
+
       setBookingDetails: (details) => set({ bookingDetails: details }),
 
       resetAll: () =>
@@ -288,6 +312,7 @@ export const useFlightStore = create<FlightStore>()(
           bookingDetails: null,
           flights: [],
           lastAction: null,
+          error: null, // ← Clear error on reset
         }),
     }),
     {
@@ -303,6 +328,7 @@ export const useFlightStore = create<FlightStore>()(
         filters: state.filters,
         selectedAirline: state.selectedAirline,
         lastAction: state.lastAction,
+        error: state.error, // ← Persist error
       }),
     },
   ),
