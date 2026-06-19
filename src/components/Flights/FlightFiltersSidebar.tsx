@@ -13,8 +13,9 @@ import {
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
-export default function FlightFilterSidebar() {
-  const { filters, setFilters, flights, searchCriteria, setSelectedAirline } = useFlight();
+const FlightFilterSidebar = () => {
+  const { filters, setFilters, flights, searchCriteria, setSelectedAirline } =
+    useFlight();
   const passengers = searchCriteria.passengers;
 
   const handleResetFilters = () => {
@@ -526,4 +527,6 @@ export default function FlightFilterSidebar() {
       </div>
     </div>
   );
-}
+};
+
+export default FlightFilterSidebar;

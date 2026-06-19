@@ -17,11 +17,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-export default function FlightSearch({
-  isSearching,
-}: {
-  isSearching?: boolean;
-}) {
+const FlightSearch = ({ isSearching }: { isSearching?: boolean }) => {
   const { searchCriteria, triggerSearch, loading } = useFlight();
   const router = useRouter();
   const pathname = usePathname();
@@ -488,4 +484,6 @@ export default function FlightSearch({
       </div>
     </div>
   );
-}
+};
+
+export default FlightSearch;

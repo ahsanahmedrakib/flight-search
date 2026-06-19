@@ -12,7 +12,7 @@ interface FlightCardProps {
   flight: Flight;
 }
 
-export default function FlightCard({ flight }: FlightCardProps) {
+const FlightCard = ({ flight }: FlightCardProps) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [isSelecting, setIsSelecting] = useState(false);
   const router = useRouter();
@@ -264,4 +264,6 @@ export default function FlightCard({ flight }: FlightCardProps) {
       )}
     </div>
   );
-}
+};
+
+export default FlightCard;

@@ -17,7 +17,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export default function FlightConfirmation() {
+const FlightConfirmation = () => {
   const { selectedFlight, bookingDetails, resetAll } = useFlight();
   const router = useRouter();
 
@@ -394,4 +394,5 @@ export default function FlightConfirmation() {
       </div>
     </div>
   );
-}
+};
+export default FlightConfirmation;

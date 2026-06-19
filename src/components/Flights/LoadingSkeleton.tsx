@@ -1,4 +1,4 @@
-const LoadingSkeleton =() => {
+const LoadingSkeleton = () => {
   return (
     <div className="w-full space-y-4 animate-pulse">
       {[1, 2, 3].map((i) => (
@@ -23,6 +23,6 @@ const LoadingSkeleton =() => {
       ))}
     </div>
   );
-}
+};
 
 export default LoadingSkeleton;

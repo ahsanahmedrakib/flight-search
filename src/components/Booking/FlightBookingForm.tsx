@@ -50,7 +50,7 @@ const bookingSchema = yup
 
 type BookingFormData = yup.InferType<typeof bookingSchema>;
 
-export default function FlightBookingForm() {
+const FlightBookingForm = () => {
   const router = useRouter();
   const { bookingDetails, setBookingDetails, searchCriteria } = useFlight();
   const passengerCount = searchCriteria.passengers;
@@ -321,4 +321,5 @@ export default function FlightBookingForm() {
       </form>
     </div>
   );
-}
+};
+export default FlightBookingForm;

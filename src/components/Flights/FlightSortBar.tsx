@@ -13,7 +13,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFlight } from "@/store/flightStore";
 
-export default function FlightSortBar() {
+const FlightSortBar = () => {
   const {
     flights,
     hasSearched,
@@ -294,3 +294,5 @@ export default function FlightSortBar() {
     </div>
   );
 }
+
+export default FlightSortBar
