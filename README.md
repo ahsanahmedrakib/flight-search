@@ -61,26 +61,41 @@ A high-performance, visually polished, fully responsive, and accessible Flight S
 ```text
 src/
 ├── app/
-│   ├── api/send-confirmation/  # Serverless route for e-ticket booking confirmations
-│   ├── booking/                # Step 2: Passenger details and checkout matrix
-│   ├── confirmation/           # Step 3: Verified PNR ticket print pass screen
-│   ├── flights/                # Step 1: Search modification, sort bar & multi-filter listings
-│   ├── globals.css             # Main stylesheet configuring fonts and visual variables
-│   ├── layout.tsx              # Root HTML boilerplate layout wrapper
-│   └── page.tsx                # Application landpage hosting full-screen Hero search panel
+│   ├── api/
+│   │   └── send-confirmation/   # Serverless route for e-ticket booking confirmations
+│   ├── booking/                 # Step 2: Passenger details and checkout matrix
+│   ├── confirmation/            # Step 3: Verified PNR ticket print pass screen
+│   ├── flights/                 # Step 1: Search modification, sort bar & multi-filter listings
+│   ├── globals.css              # Main stylesheet configuring fonts and visual variables
+│   ├── layout.tsx               # Root HTML boilerplate layout wrapper
+│   └── page.tsx                 # Application landing page hosting full-screen Hero search panel
 ├── components/
-│   ├── FlightBookingForm.tsx   # Dynamic validation form matching passenger numbers
-│   ├── FlightCard.tsx          # Comprehensive card component with inline accordion details
-│   ├── FlightFiltersSidebar.tsx# Collapsible facets (price slider, stops, airline matrices)
-│   ├── FlightSearch.tsx        # Omni-present travel input box with native date pickers
-│   └── FlightSortBar.tsx       # Dynamic sorter (cheapest, fastest, earliest departure, etc.)
+│   ├── Booking/
+│   │   ├── FlightBooking.tsx
+│   │   ├── FlightBookingContent.tsx
+│   │   └── FlightBookingForm.tsx    # Dynamic validation form matching passenger numbers
+│   ├── Confirmation/
+│   │   └── FlightConfirmation.tsx
+│   ├── Flights/
+│   │   ├── FlightCard.tsx           # Comprehensive card component with inline accordion details
+│   │   ├── FlightEmptyState.tsx
+│   │   ├── FlightFiltersSidebar.tsx # Collapsible facets (price slider, stops, airline matrices)
+│   │   ├── FlightSortBar.tsx        # Dynamic sorter (cheapest, fastest, earliest departure, etc.)
+│   │   ├── Flights.tsx
+│   │   ├── FlightsContent.tsx
+│   │   └── LoadingSkeleton.tsx
+│   └── Search/
+│       └── FlightSearch.tsx         # Omni-present travel input box with native date pickers
 ├── data/
-│   └── flights.json            # Mock live-flight database schema definitions
+│   └── flights.json                 # Mock live-flight database schema definitions
+├── lib/
+│   ├── constants.ts
+│   └── utils.ts
 ├── store/
-│   └── flightStore.tsx         # Centralized Zustand reactive store with session persistence
+│   └── flightStore.tsx              # Centralized Zustand reactive store with session persistence
 └── types/
-    ├── booking.ts              # Core passenger & multi-seat checkout TypeScript models
-    └── flight.ts               # Core full-flight and destination airport interface definitions
+    ├── booking.ts                   # Core passenger & multi-seat checkout TypeScript models
+    └── flight.ts                    # Core full-flight and destination airport interface definitions
 ```
 
 ---
