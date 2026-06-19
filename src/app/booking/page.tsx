@@ -1,6 +1,6 @@
 "use client";
 
-import FlightBookingForm from "@/components/FlightBookingForm";
+import FlightBookingForm from "@/components/Booking/FlightBookingForm";
 import { formatDate, formatDuration, formatTime } from "@/lib/utils";
 import { allRawFlights, useFlight } from "@/store/flightStore";
 import {

@@ -1,9 +1,9 @@
 "use client";
 
-import FlightCard from "@/components/FlightCard";
-import FlightFilterSidebar from "@/components/FlightFiltersSidebar";
-import FlightSearch from "@/components/FlightSearch";
-import FlightSortBar from "@/components/FlightSortBar";
+import FlightCard from "@/components/Flights/FlightCard";
+import FlightFilterSidebar from "@/components/Flights/FlightFiltersSidebar";
+import FlightSortBar from "@/components/Flights/FlightSortBar";
+import FlightSearch from "@/components/Search/FlightSearch";
 import { useFlight } from "@/store/flightStore";
 import { Filter, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";

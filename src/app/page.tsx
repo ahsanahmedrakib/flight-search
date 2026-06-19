@@ -1,6 +1,6 @@
 "use client";
 
-import FlightSearch from "@/components/FlightSearch";
+import FlightSearch from "@/components/Search/FlightSearch";
 
 export default function Home() {
   return (
@@ -9,3 +9,4 @@ export default function Home() {
     </main>
   );
 }
+
